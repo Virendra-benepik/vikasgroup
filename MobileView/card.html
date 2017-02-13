@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+  <meta charset="utf-8">
+   
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="apple-touch-icon" href="images/giftboxlogo.png">
+	<link rel="apple-touch-startup-image" href="images/AVIVAsplash screen yellow.jpg">
+<!--*************************************************************mobile jquery (using for performing back as well as so many operation)************************************************************-->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+<!--*************************************************************************************************************************-->
+
+ <!-- Stand-alone settings for iOS. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<!--*************************************** Cokkie start ************************************--->
+<script type="text/javascript" src="js/cookie.js"></script>
+<!--*************************************** Cokkie End ************************************--->
+
+<script type="text/javascript">
+    function OpenLink(theLink){
+        window.location.href = theLink.href;
+    }
+
+$(function(){
+ $("#header").load("header2.html"); 
+ $("#footer").load("footer2.html"); 
+});
+</script>
+<!--for stay window-->
+<script type="text/javascript">
+    function OpenLink(theLink){
+        window.location.href = theLink.href;
+    }
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!--**************************** 2nd css file for iphone6 size of device********************-->
+<link rel="stylesheet" type="text/css" href="css/iphone6.css">
+<link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+<link rel="apple-touch-icon" href="images/giftboxlogo.png">
+<!--*******************this is welcome Image 320x460 ***********************-->
+<link rel="apple-touch-startup-image" href="benepik_logo_card.png">
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script>
+
+var code = getpreference(1);    /* this is for company code fetching from cookie*/
+var mail = getpreference(0);    /* this is for mail id fetching from cookie*/
+
+//alert(code);
+//alert(mail);
+        $.ajax({
+            type:'POST',
+            url: 'http://thomasinternational.benepik.com/webservices/common/view_card.php',
+            data: {
+                   username: mail,
+                   comp: code,
+                    },
+            dataType: 'jsonp',
+            jsonp: 'mm',
+            jsonpCallback: 'jsonpCallback',
+            success: function(){
+               // alert("success");
+            }
+        });
+
+function jsonpCallback(data){
+//$('#jsonpResult').append(JSON.stringify(data));
+var url= JSON.stringify(data.posts[0].image).replace(/['"]+/g, '');
+$('#user_img').attr('src',url);
+
+$('#user_name').html(JSON.stringify(data.posts[0].Name).replace(/['"]+/g, ''));
+$('#user_name2').html(JSON.stringify(data.posts[0].LastName).replace(/['"]+/g, ''));
+$('#no').html(JSON.stringify(data.posts[0].company_code).replace(/['"]+/g, ''));
+$('#no1').html(JSON.stringify(data.posts[0].city_code).replace(/['"]+/g, ''));
+$('#no2').html(JSON.stringify(data.posts[0].emp_code).replace(/['"]+/g, ''));
+$('#valid').html(JSON.stringify(data.posts[0].Valid_Till).replace(/['"]+/g, ''));
+//console.log(JSON.stringify(data.posts[0].emp_code));
+//console.log(JSON.stringify(data.posts[0].Valid-Till));
+   
+}
+
+</script>
+<link rel="stylesheet" type="text/css" href="/css/result-light.css">
+	  
+	  <style type='text/css'>
+		.block {
+		position: relative;
+		-webkit-perspective:500;
+		-moz-perspective:500;
+		-ms-perspective:500;
+		-o-perspective:500;
+		perspective:500;
+	}
+	.side {
+		position: absolute;
+		-webkit-transition:-webkit-transform 0.5s;
+		-moz-transition: -moz-transform 0.5s;
+		-o-transition: -o-transform 0.5s;
+		transition: transform 0.5s;
+		-webkit-backface-visibility:hidden;
+		-moz-backface-visibility:hidden;
+		-ms-backface-visibility:hidden;
+		-o-backface-visibility:hidden;
+		backface-visibility:hidden;
+	}
+	.side.rotated {
+		-webkit-transform:rotateY(360deg);
+		-moz-transform:rotateY(360deg);
+		-ms-transform:rotateY(360deg);
+		-o-transform:rotateY(360deg);
+		transform:rotateY(360deg);
+	}
+	.back {
+		-webkit-transform:rotateY(180deg);
+		-moz-transform:rotateY(180deg);
+		-ms-transform:rotateY(180deg);
+		-o-transform:rotateY(180deg);
+		transform:rotateY(180deg);
+	}
+	#flip-button {
+		background: white;
+		font-family:'open sans';
+		font-weight: 400;
+		color: #5b5b5b;
+		border-radius: 5px;
+		margin-top: 1em;
+	}
+
+	  </style>
+	  
+
+
+
+
+	<script type='text/javascript'>//<![CDATA[
+	$(window).load(function(){
+	$('#flip-button').on('click', function () {
+		$('.side').toggleClass('rotated');
+	});
+	});//]]> 
+
+	</script>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+
+<style>
+#dot{margin-top:-32px;margin-left:50px;}
+#dot1{margin-top:-30px;margin-left:88px;}
+</style>
+</head>
+<body>
+
+  <div id="header"style="margin-left:0px !important;"></div>
+
+<div id="ffixedBack"style="position:fixed;z-index:200;margin-top:28px;"> <a href="#" onclick="goBack()"style="color:#ffffff;"><span class="glyphicon glyphicon-chevron-left"style="color:#ffffff;margin-left:10px;"></span><b>Back</b></a> </div>
+
+
+
+<div id="jsonpResult"></div>
+<div id="content"style="margin-left:0px;">
+<br>
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"id="carddiv">
+	  <div class="block">
+		<div class="front side"">
+			<img src="images/card_front.png" alt=""id="front_side_card" />
+
+		  <!--****************this row will act as  a container for following written data****************-->
+	  <div class="row" id="card_front">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<!--***********row for name & user Pic************-->
+		 <div class="row"id="user_img_name">
+			<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+				<h4 id="user_name"></h4>
+	                        <h4 id="user_name2"></h4>
+
+			</div>
+			<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+				<img src="" class="img img-responsive" id="user_img"/>
+			</div>
+			
+			</div>
+		
+			<!--***********row for Membership No.************-->
+		 <div class="row"><br>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		        <p id="membr"><b>Membership No. : </b></p><p id="no"></p><p id="dot">-</p><p id="no1"></p><p id="no2"></p><p id="dot1">-</p>
+
+			</div>
+			
+			</div>
+			
+			
+			<!--***********row for valid till.************-->
+		 <div class="row"><br>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div id="valid"></div>
+
+			</div>
+			
+			</div>
+			
+			
+			
+			
+			
+			
+			
+		
+		</div>
+	  </div>
+	  
+	 	</div>
+		<div class="back side">
+			<img src="images/card_back.png"id="card_back_side" alt="" />
+	<!--**************************88container row************************-->
+			 <div class="row" id="jjj">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<!--***********row for name & user Pic************-->
+		 <div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<center>	<h3>DEPENDENTS DETAILS </h3></center>
+	                     
+
+			</div>
+			
+			</div>
+		<br>
+			<!--***********row for spouse************-->
+		 <div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<p id="p_back"><b>SPOUSE :- </b></p>
+
+			</div>
+			
+			</div>
+			
+			
+			<!--***********row for children.************-->
+		 <div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<p  id="p_back"><b>CHILDREN 1 :-</b></p>
+				<p  id="p_back"><b>CHILDREN 2 :-</b></p>
+
+			</div>
+			
+			</div>
+			
+			
+			<!--***********row for mother.************-->
+		 <div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<p  id="p_back"><b>MOTHER :-</b></p>
+
+			</div>
+			
+			</div>
+			
+			<!--***********row for father.************-->
+		 <div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<p  id="p_back"><b>FATHER :-</b></p>
+
+			</div>
+			
+			</div>
+			
+			
+			
+			
+			
+			
+			
+		
+		</div>
+	  </div>
+	  
+	  
+			
+		</div>
+ <img src="images/flippp.png"id="flip-button"alt="click flip card"style=""/>
+	
+			
+	
+	
+	</div>
+
+</div>
+</div>
+
+
+ 
+  <div id="footer"style="margin-left:0px !important;width:100%;"></div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer="defer"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer="defer"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" defer="defer"></script>
+
+</body>
+</html>

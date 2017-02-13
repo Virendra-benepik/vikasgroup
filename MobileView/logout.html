@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<!--*************************************** Cokkie start ************************************--->
+<script type="text/javascript" src="js/cookie.js"></script>
+<!--*************************************** Cokkie End ************************************--->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+function logout()
+{
+
+var x = getCookie("UID");
+if (x) {
+    alert(x);
+    console.log(x);
+}
+
+var x1 = getCookie("Code");
+if (x1) {
+    alert(x1);
+    console.log(x1);
+}
+ var t = deleteCookie("UID");
+ alert(t);
+console.log(getCookie("UID"));
+
+
+ var t1 = deleteCookie("Code");
+ alert(t1);
+console.log(getCookie("Code"));
+	}
+</script>
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+<input type="button" onclick="logout()" value="Logout">
+</body>
+</html>

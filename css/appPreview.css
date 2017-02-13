@@ -1,0 +1,28 @@
+
+/*news preview*/
+.NewsPriviewtitle{
+
+    margin-top: 10px;
+
+}
+
+.previewAuthor{
+
+    margin-left: 10px;
+    margin-top: -10px;
+
+}
+
+.previewContent{
+
+}
+.previewImage{
+margin-top:-22px !important;
+}
+
+.date{
+font-size:11px;
+color:gray;
+margin-left:10px;
+}
+.PriviewcontentDiscription{font-weight:normal !important;}

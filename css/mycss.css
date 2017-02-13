@@ -1,0 +1,88 @@
+/*home*/
+.btn-circle.btn-lg {
+  width: 45px;
+  height: 45px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.sonyGray{background-color:#808080 !important;}
+.sony_table thead tr th{text-align:center !important;}
+.padding_right_px{padding-left:22px !important;}
+.MB2{margin-bottom:2px !important;}
+.mydate{    font-size: 12px;    color: gray;}
+.userpic{height: 40px !important;    width: 40px;    margin-top: 12px;    border-radius: 50%;}
+.test{padding:8px 22px !important;}
+.flat-blue .card1
+{
+	    border: 0px solid #E4E4E4 ! important; 
+}
+
+
+                            <ul class="dropdown-menu animated fadeInDown">}
+#RecentComment, #latest_activity{border:1px solid  #ebebe0;padding:20px;}
+.container-fluid{background-color:#FFFFFF;}
+.LatestActivitiesHeading{color:#000000;}
+.LatestActivitiesSub-Heading{font-weight:bold;font-size:14px;color:#333333;}
+.LatestActivitiesDate{font-weight:normal;font-size:12px;color:#666666;}
+.mycomments{font-weight:bold;font-size:13px;color:#333333;}
+#user_image{width:45px;height:45px;border-radius:50px;}
+.Number_users{font-weight:bold;font-size:16px; text-align:center; border-right:1px solid #333333;}
+.pending_Number_users{font-weight:bold;font-size:16px; text-align:center; }
+.user_status{font-weight:bold;font-size:12px;text-align:center; }
+.ActiveUser{color:gray;font-size:12px;text-transform:uppercase;padding:0px;}
+.ActiveUser_subheading{color:gray;font-size:11px;text-transform:uppercase;padding:0px;}
+.ActiveUser_day{color:green;font-size:11px;text-transform:uppercase;padding:0px;}
+.day{color:#434343;font-size:11px;text-transform:uppercase;padding:0px;}
+.UserWorking{font-weight:bold;font-size:16px; text-align:center;}
+.addusertest{position:fixed;z-index:20000;border:1px solid #FFFFFF;margin-top:1%;margin-left:230px;}
+/*news page*/
+
+#news_images2{width:63px;height:60px;}
+#news_images{width:120px;height:60px;}
+#imgprvw{width:200px;height:150px;}
+#imgprvw1{width:200px;height:150px;}
+#demopush, #demomail{display: none;}
+.publication{padding:20px;border:1px solid #cdcdcd;}
+#publication_heading{color:gray;font-size:13px;margin:0px;padding:0px;text-transform:uppercase;}
+.publication_subheading{color:#0099ff;font-size:12px;text-transform:uppercase;margin:0px;padding:0px;}
+.publication_leftcontent{color:gray;font-size:15px;margin:0px;padding:0px;}
+.rightpublicationdiv{margin-bottom:-3px !important;}
+#rightpublicationdiv6{margin-bottom:-3px !important;}
+#long_news_hidden_Publicationdiv, #shortUnpublicationdivcontent, #imagerightcontentdiv,#long_news_hidden_div,  #imagerightUnpublishedcontentdiv, #imagepushtext, #imageemailtext, #shortpublicationdivcontent{display:none;}
+
+#allitems{   
+    padding: 10px;
+    font-size: 15px;
+    font-family: calibri ,sans-serif;
+       text-transform:uppercase;
+
+}
+#selecteditems1{
+border: 1px solid #dddddd;
+    padding: 10px;
+    font-size: 15px;
+    font-family: calibri ,sans-serif;
+        box-shadow: rgb(136, 136, 136) -1px 1px 5px 2px;
+max-height:300px;overflow-y:scroll; font-family: calibri ,sans-serif;
+       text-transform:uppercase;
+
+}
+#group_left{    margin: 20px 10px 10px 10px;
+    border-bottom: 1px dotted #ddd;
+}
+#group{padding:10px 10px 0px 10px;}
+#group:hover{background-color: rgba(136, 136, 136, 0.6);margin:10px;}
+.groupselecteddataheading{font-size:17px;}
+.createnoticedataheading{font-size:17px;margin-top:10px;}
+.groupalldataheading{font-size:16px;margin-top:10px;}
+.groupPicturealldataheading{font-size:18px;margin-top:10px;}
+ .groupalldataMessageheading{font-size:19px;margin-top:10px;}
+#alldatadiv{border:1px solid #dddddd; box-shadow: rgb(136, 136, 136) -1px 1px 5px 2px;max-height:300px;overflow-y:scroll; font-family: calibri ,sans-serif;
+       text-transform:uppercase;
+}
+#alldatadiv #allitems p{padding:10px 10px 0px 10px;}
+#alldatadiv #allitems p:hover{background-color: rgba(136, 136, 136, 0.6);}
+.Myborder{border:1px solid #dcdcdc;padding:2%;}
+

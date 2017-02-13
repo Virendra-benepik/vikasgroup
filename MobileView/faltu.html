@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script> 
+$(function(){
+ $("#header").load("headerwelcome.html"); 
+ $("#footer").load("footer.html"); 
+});
+</script> 
+
+
+
+
+</head>
+<body>
+
+<div class="container">
+
+<div id="header"></div>
+<div id="footer"></div>
+
+<br><br><br><br>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 c0l-md-12 col-lg-12">
+  
+<figure>
+  
+ <img src="images/mujahid.jpg"class="img img-responsive" style="width:100%; max-height:250px;"/> <br>
+ <figcaption><form role="from"action=""method=""><input type="text"class="form-control"placeholder="Add caption"/></form></figcaption>
+
+</figure>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+  <a href="#" >Send All</a>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+  <a id="displayText" href="javascript:toggle();">Selected Group</a>
+  </div>
+ </div>
+  <script language="javascript"> 
+function toggle() {
+	var ele = document.getElementById("toggleText");
+	var text = document.getElementById("displayText");
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+		text.innerHTML = "Selected Group";
+  	}
+	else {
+		ele.style.display = "block";
+		text.innerHTML = "Selected Group2";
+	}
+} 
+</script>
+ <script>
+$("#cclose").click(function(){toggle();
+    $("#toggleText").hide();
+});
+</script>
+
+<div id="toggleText" style="display: none;background:gray;position:absolute; height:300px;width:90%; overflow-y:scroll;margin-top:-74%;">
+<form class="form-inline" role="form"style="margin-left:10%;">
+<p id="cclose"><b>close</b></p>
+
+<div class="row"><b>DEPARTMENTS :-</b>
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+
+<div class="form-group">
+<label ><input type="checkbox" value="">HR</label>
+</div>
+</div>
+
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+<div class="form-group">
+  <label><input type="checkbox" value="">Marketing</label>
+</div>
+</div>
+
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+<div class="form-group">
+  <label ><input type="checkbox" value="">Sales</label>
+</div>
+</div>
+
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+<div class="form-group">
+  <label ><input type="checkbox" value="">Finance</label>
+</div>
+</div>
+
+</div>
+		 
+<div class="row"><b>LOCATIONS :-</b>
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+
+<div class="form-group"><label ><input type="checkbox" value="">Delhi</label></div>
+</div>
+
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+ <div class="form-group"> <label ><input type="checkbox" value="">Gurgaon</label></div>
+</div>
+
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+ <div class="form-group"> <label ><input type="checkbox" value="">New Delhi</label></div>
+</div>
+
+<div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
+ <div class="form-group"> <label ><input type="checkbox" value="">Ghaziabad</label></div>
+</div>
+</div>
+
+
+</form>
+
+
+</div>
+  
+</div> 
+
+</body>
+</html>

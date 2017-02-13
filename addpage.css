@@ -1,0 +1,42 @@
+#addpage2DIV{
+    width: 320px;
+   height: 553px ;
+    border: 1px solid #cdcddc;
+    position: absolute;  
+    background: white;
+   z-index: 100000; box-shadow: rgb(136, 136, 136) -1px 1px 5px 2px;
+   padding:1%;
+    left: 32%;
+    display: none;
+    top: 10%;
+    margin-left:6%;
+
+}
+
+.titlepage{    font-size: 15px;
+    font-weight: bold;
+    text-transform: capitalize;
+    text-align: justify;}
+.pageimg{
+width: 100%;
+    max-height: 170px;
+}
+.contentpage{font-size:15px;text-align:justify;margin-top:-7%;}
+.imagepage{margin-top:-6%;}
+.androidImage{
+	width: 71%;
+    margin-top: -35%;
+    height: 555px;
+	}
+.androidContentTab
+{
+    
+    position: relative;
+    top: -448px;
+    background: #ffffff;
+    margin-left: 55px;
+    /* border-radius: 2%; */
+    margin-top: -0.4%;
+    width: 179px;
+    height: 348px;
+}	

@@ -1,0 +1,49 @@
+#poll_div{
+          width: 320px;
+    height: 589px;
+    border: 1px solid #cdcddc;
+    position: absolute !important;
+    background: white;
+    z-index: 100000;
+    box-shadow: rgb(136, 136, 136) -1px 1px 5px 2px;
+    padding: 1%;
+    left: 51%;
+    display: none;
+    top: 7%;
+    margin-left: -15% !important;
+
+}
+.pollquestion{
+font-size: 15px;
+    font-weight: bold;
+    float: left !important;
+    padding: 5px;
+}
+.polloptions{
+
+    font-size: 16px;
+    margin-left: 2%;
+    font-weight: 500;
+}
+.background_Android_Image{background:url"../images/mobile.jpg");width:191%;margin-left:-71px;}
+
+.androidContentTab{ 
+position: absolute;
+    top: 110px;
+    background: #ffffff;
+    margin-left: -44px;
+    border-radius: 2;
+    margin-top: -0.4%;
+    width: 180px;
+    height: 347px;
+    /* border: 1px solid #dcdcdc; */
+    /* box-shadow: -1px 1px 5px 2px #888888; */
+
+}
+.closebtn
+{margin-left:265px;}
+
+.androidImage{width: 221px;
+    margin-top: -47px;
+    height: 547px;
+    margin-left: 84px;}

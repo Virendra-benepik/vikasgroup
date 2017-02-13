@@ -1,0 +1,584 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        
+        
+        
+        <!--*************************************************************mobile jquery************************************************************-->
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+            <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+            <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+            
+            <!--*************************************************************************************************************************-->
+            
+            <!--*************************************** Cokkie start ************************************--->
+            <script type="text/javascript" src="js/cookie.js"></script>
+            <!--*************************************** Cokkie End ************************************--->
+            
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer="defer"></script>
+            <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script defer="defer">
+                <!-- Latest compiled and minified CSS -->
+                <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+                
+                <script>
+                
+                $(function(){
+                  $("#header").load("header3.html");
+                  $("#footer").load("footer.html");
+                  });
+                </script>
+            <!--------**************** Get Data from Query String function definition start------******************************------->
+            <script>
+                function getParameterByName(name, url) {
+                    if (!url) url = window.location.href;
+                    name = name.replace(/[\[\]]/g, "\\$&");
+                    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return '';
+                    return decodeURIComponent(results[2].replace(/\+/g, " "));
+                }
+            
+            //var book= atob(getParameterByName('appoint'));
+            
+                </script>
+            <!--------**************** Get Data from Query String function definition End----******************************------->
+            <script>
+                function wishlist()
+                {
+                    
+                    var m = getpreference(0);
+                    var d = getParameterByName('deal_id');
+                    var b = getParameterByName('branchid');
+                    
+                    $.ajax({
+                           type:'POST',
+                           url: 'http://thomasinternational.benepik.com/webservices/phonegap/addwish.php',
+                           data: {
+                           email: m,
+                           dealId: d,
+                           branchId: b,
+                           },
+                           dataType: 'jsonp',
+                           jsonp: 'mm',
+                           jsonpCallback: 'addfavourite',
+                           success: function(){
+                           alert("Your deal has added to favourite");
+                           }
+                           });
+                }
+            </script>
+            <script>
+                $(document).ready(function(){
+                                  $("#bookapp").click(function(){
+                                                      
+                                                      show();
+                                                      var mail = getpreference(0);
+                                                      var d = getParameterByName('deal_id');
+                                                      var da= $("#date").val();
+                                                      var t= $("#time").val();
+                                                      
+                                                      var l=  branchName;
+                                                      var m= $("#mob").val();
+                                                      var v= $("#cmm").val();
+                                                      var p= "garbage";
+                                                      var s= "service";
+                                                      
+                                                      $.ajax({
+                                                             type:'POST',
+                                                             url: 'http://thomasinternational.benepik.com/webservices/phonegap/bookappointment.php',
+                                                             data: {
+                                                             email: mail,
+                                                             dealId: d,
+                                                             date: da,
+                                                             time: t,
+                                                             comments:v,
+                                                             mobile:m,
+                                                             appoint_loc:l,
+                                                             mal:p,
+                                                             service: s,
+                                                             },
+                                                             dataType: 'jsonp',
+                                                             jsonp: 'mm',
+                                                             jsonpCallback: 'showAppoinmentNotification',
+                                                             success: function(){
+                                                             }
+                                                             });
+                                                      
+                                                      });
+                                  
+                                  
+                                 
+                                  
+                                  $("#feed").click(function(){
+                                                   var m = getpreference(0);
+                                                   var d = $("#subject").val();
+                                                   var t = $("#comment").val();
+                                                   var da= getpreference(1);
+                                                   
+                                                   $.ajax({
+                                                          type:'POST',
+                                                          url: 'http://thomasinternational.benepik.com/webservices/phonegap/feedback.php',
+                                                          data: {
+                                                          email: m,
+                                                          sub: d,
+                                                          comp: da,
+                                                          msg: t,
+                                                          },
+                                                          dataType: 'jsonp',
+                                                          jsonp: 'mm',
+                                                          jsonpCallback: 'caback',
+                                                          success: function(){
+                                                          alert("Feedback send ");
+                                                          $("#feedback").css({"display":"none"});
+                                                          }
+                                                          });
+                                                   });
+                                  });
+                                  
+                                  function showAppoinmentNotification(data){
+                                      hide();
+                                      if(data.success == "1")
+                                      {
+                                        window.location='display_deal.html?deal_id=' + did + '&branchid='+ branch;
+                                      }
+                                      alert(data.message);
+                                  }
+                </script>
+            <script>
+                $(document).ready(function()
+                                  {
+                                  
+                                  did = getParameterByName('deal_id');
+                                  branch = getParameterByName('branchid');
+                                  //var did = "Deal-3";
+                                  //alert(did);
+                                  //var contact_subject = "did";
+                                  
+                                  $.ajax({
+                                         type:'POST',
+                                         url: 'http://thomasinternational.benepik.com/webservices/phonegap/display_deals.php',
+                                         data: {
+                                         deal_id: did,
+                                         branch_id: branch,
+                                         email:getpreference(0),
+                                         protal:"HK Rewards phonegap app",
+                                         },
+                                         dataType: 'jsonp',
+                                         jsonp: 'mm',
+                                         jsonpCallback: 'jsonpCallback',
+                                         success: function(){
+                                         //  alert("success");
+                                         }
+                                         });
+                                  
+                                  
+                                  });
+                                  
+                                  function jsonpCallback(data){
+                                      if($('#jsonpResult').append(JSON.stringify(data.success)))
+                                      
+                                      { hide();
+                                          
+                                          var deal_name = data.posts[0].Deal_Name;
+                                          var category_name = data.posts[0].cat_nam;
+                                          var m = getpreference(0);
+                                          var por = "HK Rewards Phonegap App";
+                                          
+                                          
+                                          $.ajax({
+                                                 type:'POST',
+                                                 url: 'http://Thomasinternational.benepik.com/webservices/phonegap/offlinemerchant_tracking.php',
+                                                 data: {
+                                                 category: category_name,
+                                                 deal: deal_name,
+                                                 email: m,
+                                                 portal: por ,
+                                                 },
+                                                 dataType: 'jsonp',
+                                                 jsonp: 'mm',
+                                                 jsonpCallback: 'merchantoffline',
+                                                 success: function(){
+                                                 // alert("success");
+                                                 }
+                                                 });
+                                                 
+                                                 
+                                                 
+                                                 
+                                                 branchName =  data.posts[0].appointmentLocation[0];
+                                                 
+                                                 $('#dummy').append(JSON.stringify(data.posts[0].Deal_Name).replace(/['"]+/g, ''));
+                                                                                                                      $('#aboutdetails').append(JSON.stringify(data.posts[0].Deal_Name).replace(/['"]+/g, ''));
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  var mesg= JSON.stringify(data);
+                                                                                                                                                                                                  var jsonData= JSON.parse(mesg);
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  var img_cover = JSON.stringify(data.posts[0].image);
+                                                                                                                                                                                                  //alert(img_cover);
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  $("#appointLoc").html(data.posts[0].appointmentLocation[0]);
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  /*for( var i=0;i<jsonData.posts[0].appointmentLocation.length;i++)
+                                                                                                                                                                                                   {
+                                                                                                                                                                                                   
+                                                                                                                                                                                                   var location= JSON.stringify(data.posts[0].appointmentLocation[i]);
+                                                                                                                                                                                                   var locations= location.replace(/['"]+/g, '');
+                                                                                                                                                                                                   console.log("the values are" + locations);
+                                                                                                                                                                                                   var x = document.getElementById("appointLoc");
+                                                                                                                                                                                                   var option = document.createElement("option");
+                                                                                                                                                                                                   option.text = locations;
+                                                                                                                                                                                                   x.add(option);
+                                                                                                                                                                                                   }*/
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  /*var img_cover = JSON.stringify(data.posts[i].image);
+                                                                                                                                                                                                   var about = JSON.stringify(data.posts[i].companyinfo);
+                                                                                                                                                                                                   var url = JSON.stringify(data.posts[i].image);*/
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  $('#row1').append("<img src=" + img_cover +"id='cover_img' class='img img-responsive'/>");
+                                                                                                                                                                                                  $('#about').append(JSON.stringify(data.posts[0].companyinfo));
+                                                                                                                                                                                                  $('#appointtext').append(JSON.stringify(data.posts[0].appoint).replace(/['"]+/g, ''));
+                                                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                                           for( var i=0;i<jsonData.posts[0].branch.length;i++)
+                                                                                                                                                                                                                                                                           {
+                                                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                                           console.log("the value of i is"+ i);
+                                                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                                           //rt = jsonData.posts[0].branch.length;
+                                                                                                                                                                                                                                                                           //alert(rt +"the value of i is"+ i);
+                                                                                                                                                                                                                                                                           var branch= JSON.stringify(data.posts[0].branch[i].heading);
+                                                                                                                                                                                                                                                                           var branch_name= branch.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                             var adrs= JSON.stringify(data.posts[0].branch[i].address);
+                                                                                                                                                                                                                                                                                                             var addrs= adrs.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                                                       $('#myPopup1').append("<div id='myPopup1'>"+"<hr>"+"<h5 style='width:180px; ' id='branchNameText'>" + branch_name + "</h5>"+"<hr>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                       $('#myPopup1').append("<div id='myPopup1'>"+"<p id='addresscomplete'>" + addrs + "</p>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                                                       for( var j=0;j<jsonData.posts[0].branch[i].contact.length;j++)
+                                                                                                                                                                                                                                                                                                                                       {
+                                                                                                                                                                                                                                                                                                                                       //alert("the value of j is"+ j);
+                                                                                                                                                                                                                                                                                                                                       $k = jsonData.posts[0].branch[i].contact.length;
+                                                                                                                                                                                                                                                                                                                                       //alert($k);
+                                                                                                                                                                                                                                                                                                                                       var name= JSON.stringify(data.posts[0].branch[i].contact[j].name);
+                                                                                                                                                                                                                                                                                                                                       var name1= name.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                 var desig= JSON.stringify(data.posts[0].branch[i].contact[j].designation);
+                                                                                                                                                                                                                                                                                                                                                                 var desig1 = desig.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                                                                              var mob= JSON.stringify(data.posts[0].branch[i].contact[j].mobile);
+                                                                                                                                                                                                                                                                                                                                                                                              var mob1= mob.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                      var email= JSON.stringify(data.posts[0].branch[i].contact[j].email);
+                                                                                                                                                                                                                                                                                                                                                                                                                      var email1= email.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  $('#myPopup1').append("<div id='myPopup1'>"+"<p>"+"<b>" + name1 +"<b>"+ "</p>"+"</div>");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  $('#myPopup1').append("<div id='myPopup1'>"+"<p>" +desig1 + "</p>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  $('#myPopup1').append("<div id='myPopup1'>"+"<p id='mobilecontact11'>"+'<a href="tel:'+mob1 +'">'+'<span class="glyphicon glyphicon-earphone">'+'</span>'+'</a>'+ "</p>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  $('#myPopup1').append("<div id='myPopup1'>"+"<p>" + email1 + "</p>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  console.log("the value of j is"+i+ j);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  console.log("lol"+name);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  $('#myPopup').append("<div id='thumb'>"+"<img src=" + JSON.stringify(data.posts[0].imagethumb) +" id='thumb_img'class='img img-responsive'/>"+ "<br><center><p>"+data.posts[0].dealurl+"</p></center></div>");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  for(var k=0; k<jsonData.posts[0].leadContact.length;k++)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  var name= JSON.stringify(data.posts[0].leadContact[k].name);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  var name1= name.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var desig= JSON.stringify(data.posts[0].leadContact[k].designation);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var desig1 = desig.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         var mob= JSON.stringify(data.posts[0].leadContact[k].mobile);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         var mob1= mob.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 var email= JSON.stringify(data.posts[0].leadContact[k].email);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 var email1= email.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             $('#myPopup').append("<div id='lll'>"+"<p>"+"<b>" + name1 +"<b>"+ "</p>"+"</div>");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             $('#myPopup').append("<div id='lll'>"+"<p id='mobilecontact'>"+'<a href="tel:'+mob1 +'">'+'<span class="glyphicon glyphicon-earphone">'+'</span>'+'</a>'+ "</p>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             $('#myPopup').append("<div id='lll'>"+"<p>" +desig1 + "</p>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             $('#myPopup').append("<div id='lll'>"+"<p>" + email1 + "</p>"+"</div>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             console.log("the value of k is"+ k);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             console.log("lol"+name);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             for(var m=0;m<jsonData.posts[0].offers.length;m++)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             console.log("the value of m is"+ m);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             rt = jsonData.posts[0].offers.length;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             //alert(rt +"the value of m is"+ m);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             var ofhead= JSON.stringify(data.posts[0].offers[m].heading);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             var offer_head= ofhead.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              $('#offer').append("<h6>" + offer_head + "</h6>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              for(var p=0;p<jsonData.posts[0].offers[m].values.length;p++)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              var val= JSON.stringify(data.posts[0].offers[m].values[p]);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              var val1= val.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $('#offer').append("<ul>"+"<li>" + val1 +"</li>"+ "</ul>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      for(var n=0;n<jsonData.posts[0].TermAndCondition.length;n++)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      console.log("the value of n is"+ n);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      rt = jsonData.posts[0].offers.length;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      //alert(rt +"the value of n is"+ n);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      var term= JSON.stringify(data.posts[0].TermAndCondition[n]);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      var term1 = term.replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 $('#term').append("<ul id='terms_para'>"+"<li id='terms_para11'>" + term1 +'</li>'+ "</ul>" );
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </script>
+            
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            function show() {
+                document.getElementById("myDiv").style.display="block";
+            }
+            function hide() {
+                document.getElementById("myDiv").style.display="none";
+            }
+            </script>
+            
+            <style>
+                #myPopup1{width:254px;}
+                #bookappointment {text-transform: capitalize;}
+                #addresscomplete{width:214px !important;}
+                #appointLoc{color:#333333;}
+                option {color:#333333;text-align:center;width:100px;white-space: nowrap; overflow:hidden !important;text-overflow:ellipsis; }
+                #mobilecontact11{float:right;margin-top:-60px;margin-right:40px;width:28px;height:21px;}
+                #mobilecontact{float:right;margin-top:-30px;margin-right:40px;width:28px;height:21px;}
+                #appointtext{text-align:center}
+                #terms_para11{margin-left:-10px;}
+                </style>
+            </head>
+    
+    <body style="background:#f5f5f5;">
+        <div id="header"style="margin-left:0px !important;"></div>
+        
+        <div class="container-fluid"style="padding:0px !important; margin-right:0px !important;background:#f5f5f5;" >
+            <br><br>
+            
+            
+            
+            
+            <a href="#" onclick="goBack()"style="padding-top:8px;color:#ffffff;width:70px;height:34px;text-shadow:none;margin-top:-19px;position:fixed; z-index:300;"> <span class="glyphicon glyphicon-chevron-left"style="color:#ffffff;margin-left:10px;"></span><b>Back</b> </a>
+            <br><br>
+
+            <div id= "row1">
+                
+            </div>
+            
+            <h5 style="color:#203f7c;text-align:center;background:#f5f5f5; "></h5>
+            <div id="offer"style="height:auto;width:100%;padding-left:5px;padding-right:5px;background:#f5f5f5;">
+                
+            </div><hr style="margin-bottom:3px;border-top:1px solid gray;width:100%;">
+            
+            
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                <div data-role="main" class="ui-content">
+                    <a href="#myPopup1" data-rel="popup" data-position-to="window"id="addressTextColorLink"><span class="glyphicon glyphicon-map-marker"></span>Address</a>
+                    
+                    <div data-role="popup" id="myPopup1" class="ui-content"style="width:250px;height:400px;overflow-y:scroll;">
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right"style="position:fixed;z-index:2;margin-top:70px;margin-right:15px;">Close</a>
+                        
+                        
+                        <div id="myPopup"> </div>
+                        
+                        <div id="thumb"> </div>
+                        <div id="lll"></div>
+                        <p id="addresscomplete"></p>
+                        <p id="mobilecontact"></p>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            
+            
+            
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                
+                <div data-role="main" class="ui-content">
+                    <a href="#feedback" data-rel="popup" class="ui-btn-inline ui-corner-all" data-position-to="window"style="font-weight:normal !important;" id="feedbcakTextColorLink" ><b><span class="glyphicon glyphicon-flash" ></span> Feedback</a></b>
+                    
+                    <div data-role="popup" id="feedback" class="ui-content">
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                        
+                        
+                        <div class="row">
+                            
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <center><h4> Feedback </h4></center>
+                                
+                            </div>
+                        </div>
+                        
+                        <form role="form" method="post" action="">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <input type="text"class="form-control"placeholder=" Subject "name="subject" id="subject"/>
+                                </div>
+                            </div>
+                            <div class="row" >
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="10" placeholder="Send Feedback" name="comment" id="comment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <center>
+                                <button type="button" id="feed" name="feed" class="btn" style="width:100px !important;color:#ffffff;">Submit</button></center>
+                        </form>
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+                
+                <br>
+            </div>
+            <hr style="margin-bottom:22px;border-top:1px solid gray;margin-top:-24px !important;width:100%;">
+            
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "id="bookappointmentDivBackground"style="margin-top:-30px;text-align:center;">
+                <div data-role="main" class="ui-content">
+                    <a href="#bookappointment" data-rel="popup"style="text-shadow:none;color:#FFFFFF;"> <script>//document.write(book);</script><div id="appointtext"></div></a>
+                    
+                    <div data-role="popup" id="bookappointment" class="ui-btn-inline ui-corner-all" data-position-to="window"style="width:280px !important;overflow-x:scroll;">
+                        
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right"style="margin-top:17px;margin-right:20px;">Close</a>
+                        <center>
+                            
+                            <div class="row">
+                                
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <center><h4> Booking Appointment </h4></center>
+                                    
+                                </div>
+                            </div>
+                            
+                            <br>
+                            <div class="row">
+                                
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="form-group"style="width:120px;">
+                                        <label for="Select Date">Select Date</label>
+                                        
+                                        
+                                        <input type="date"class="form-control"placeholder=" Select Date"style="maxlength:100%" name="date" id="date"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label for="Select Date">Select Time</label>
+                                        <input type="time"class="form-control"placeholder=" Select Time "style="width:100%" name="time" id="time"/>
+                                    </div></div>
+                                
+                            </div>
+                            <div id = "myDiv">
+                                <img id = "myImage" src = "images/loader.gif"width="140px"height="50px"style="position:absolute;z-index:5;margin-left:-23%; !important;"></div><br>
+                            <div class="row">
+                                <div class="col-xs-1 col-sm-1 col-md-1"></div>
+                                <div class="col-xs-12 col-sm-12 col-md-6">
+                                    
+                                    <div class="form-group">
+                                        <center>
+                                            <!--<select id="appointLoc" style="text-align:center;width:250px !important;white-space: nowrap; overflow:hidden !important;text-overflow:ellipsis;">
+                                             <option style="text-align:center;width:250px !important;white-space: nowrap; overflow:hidden !important;text-overflow:ellipsis;">select location</option>
+                                             </select>-->
+                                            <div id="appointLoc"> </div>
+                                        </center>
+                                    </div></div>
+                            </div>
+                            
+                            <div class="row"style="margin-left:10px;">
+                                <div class="col-xs-11 col-sm-11 col-md-12">
+                                    
+                                    <div class="form-group">
+                                        <label for="Select Date">Contact Number :-</label>
+                                        <center><input type="text" class="form-control"placeholder=" Enter Your Mobile Number " name="mob" id="mob"/></center>
+                                    </div></div>
+                            </div>
+                            
+                            
+                            <div class="row"style="margin-left:10px;">
+                                <div class="col-xs-11 col-sm-11 col-md-12">
+                                    <div class="form-group">
+                                        
+                                        <textarea class="form-control" rows="5" placeholder="Comments... " name="cmm" id="cmm"></textarea>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <center>
+                                <button type="button" id="bookapp" name="bookapp" class="btn"style="width:100px !important;color:#ffffff;">Submit</button></center>
+                        </center>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <div class="row"style="margin-left:3px;background:#f5f5f5;">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    
+                    <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u"data-collapsed="true" data-theme="c" style="width:95%; border:none !important;background-color:#ffffff !important;">
+                        <h4  style="background:#ffffff"><p  id="aboutdetails" style="margin-top:13px;text-align:center;border:none;">About </p></h4>
+                        <div id="about">
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            
+            
+            
+            <div id="term" style="background:#f5f5f5">
+                <h5> Terms & Conditions</h5>
+                    
+                    </div>
+                    
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div id="footer"style="margin-left:0px !important;"></div>
+            </body>
+</html>

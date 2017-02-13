@@ -1,0 +1,96 @@
+
+#close_news_priview{color:#333333;font-size:14px;float:right;margin-right:10px;    position: absolute; z-index: 3; margin-left: 88%; margin-top: 0.5%;}
+#user_image_priview_news{    width: 44px; height: 40px; border-radius: 50%; margin: 5px;box-shadow:-1px 1px 5px 2px #888888;}
+#HRnamenewsPriview{margin-top:10px;margin-bottom:2px;font-weight:bold;}
+#Date_newsPriview{color:#333333;font-size:10px;}
+.titlePost{font-size:14px;margin-left: 4%;margin-bottom:12px;font-weight:bold;}
+.contentPost{font-size:12px;text-align:justify;margin-top:-14px;    margin-left: 4%;    margin-right: 4%;}
+
+.post_img{max-height: 100px; width: 90%; margin-left: 10px; margin-top: -11px;}
+.iphoneSubParentDiv{
+    margin: 0px;
+    background-color: #ffffff;
+    min-height: 347px;}
+.mobile_articals{background-color:#5cb85c;height:32px;margin-left:0px;margin-right:0px;border:1px solid #5cb85c;}
+.white_color{color:#fff;padding-left:10px;padding-top:8px;}
+#testpopup{
+       width: 320px;
+    height: 561px;
+    box-shadow: 1px 1px 5px 1px #888888;
+    position: absolute;
+    background: white;
+    z-index: 1;
+    top: 50%;
+    left: 36%;
+    display: none;
+}
+
+#leftone{
+    width: 30%;
+  
+    height: 569px;
+    float: left;
+}
+
+#leftone p{padding:10px 10px 0px 10px;}
+#leftone p:hover{background:gray;}
+#rightoneIphone5{
+    width: 70%;
+   margin-top:-1%;
+    height: 527px;
+    position: absolute;
+  
+	
+background: white;
+}
+#iphone5{
+   width: 50%;
+    height: 610px;
+    margin: 0px 0px 0px 113px;
+   // background: url("../images/m.png");
+    background-repeat: no-repeat;
+    position: relative;
+    background-size: 103% 97%;
+}
+#inneriphone5{
+      width: 91%;
+    height: 463px;
+    position: absolute;
+    background: #ffffff;
+    top: 10.2%;
+    left: 5.8%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#rightoneIphone6{
+    width: 96%;
+	height: 545px;
+    position: absolute;
+    left: 1%;margin-top:-8%;
+background: #ffffff;
+}
+#iphone6{
+       width: 221px;
+    height: 547px;
+    margin: 26% 0% 0px 18%;
+    background: url("../images/mobile.jpg");
+    background-repeat: no-repeat;
+    position: relative;
+    background-size: 100% 100%;
+    margin-top: -32px;
+}
+#inneriphone6{
+   width: 82%;
+    height: 347px;
+    position: absolute;
+    background: #ffffff;
+    top: 18%;
+    left: 9%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+
+

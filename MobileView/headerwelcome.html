@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css" href="css/iphone6plush.css">
+<link rel="stylesheet" type="text/css" href="css/iphone6.css">
+<link rel="stylesheet" type="text/css" href="css/iphone5s.css">-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script>
+$(document).ready(function(){
+    $("#hide").click(function(){
+        $("#display_content").hide();
+    });
+   
+});
+</script>
+  <script>
+function clickme()
+{
+$("#display_content").css({"display":"block"});
+}
+  </script>
+  
+  <script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+
+
+<!--**************logout with coockies remove**********-->
+
+
+<!--*************************************** Cokkie start ************************************--->
+<script type="text/javascript" src="js/cookie.js"></script>
+<!--*************************************** Cokkie End ************************************--->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+function logout()
+{
+ var t = deleteCookie("UID");
+// alert(t);
+//console.log(getCookie("UID"));
+window.location="index.html";
+
+}
+</script>
+ <script>
+                
+                $(function(){
+                
+                  $("#client_Name").load("clientName.html");
+                  $("#clienttName").load("clientName.html");
+                  });
+                </script>
+
+</head>
+<body>
+<div class="container">
+
+<div id="header">
+
+<div class="row">
+
+
+
+
+<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+<!--remove 11 from onclick="clickme11()" then it will work-->
+   <img src="images/toggle.png" style="float:right; width:20px !important;height:15px !important;margin-top:12px" onclick="clickme11()" />
+
+</div>
+
+<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+   <p id="client_Name"style="margin-top:12px;color:#ffffff;font-weight:bold;text-shadow:none;margin-left:-8%;margin-top:3.5%;"></p>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div >
+<div id="display_content"  style="width:70%;margin-right:10px;border:1px dotted #000000; border-radius: 25px;margin-top:50px;float:left;padding:10px;height:auto;background-color:#ffffff;color:#203f7c ;display:none;margin-left:10px;">
+
+<button id="hide"style="margin-left:63%;margin-top:-30px !important;background-color:#203f7c ;color:#ffffff ;border-radius: 35px;">CLOSE</button><br>
+
+<p ><a href="#"style="color:gray;text-shadow:none;font-weight:normal;" onclick="logout()" value="Logout" onclick="OpenLink(this); return false"><img src="images/icons/ic_action_sign_out.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Sign Out  </a></p>
+
+<p><a href="car.html"style="color:gray;text-shadow:none;font-weight:normal;" onclick="OpenLink(this); return false"><img src="images/icons/car_draw.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Car Details   </a></p>
+
+<p><a href="bank.html"style="color:gray;text-shadow:none;font-weight:normal;" onclick="OpenLink(this); return false"><img src="images/icons/bankicon.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Bank Details  </a></p>
+
+<p><a href="resetpassword.html"style="color:gray;text-shadow:none;font-weight:normal;" onclick="OpenLink(this); return false"><img src="images/icons/reset.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Reset Password  </a> </p>
+
+<p><a href="about.html"style="color:gray;text-shadow:none;font-weight:normal;" onclick="OpenLink(this); return false"><img src="images/icons/ic_action_logo.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;About Mahle Connect </a> </p>
+
+<p><a href="marchantfeedback.html"style="color:gray;text-shadow:none;font-weight:normal;" onclick="OpenLink(this); return false"><img src="images/icons/ic_action_send_feedback.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Send Feedback On Merchant  </a></p>
+
+<p><a href="refermarchant.html"style="color:gray;text-shadow:none;font-weight:normal;" onclick="OpenLink(this); return false"><img src="images/icons/ic_action_refer_merchant.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Refer A Merchant  </a></p>
+
+
+<p><a href="contactus.html"style="color:gray;text-shadow:none;font-weight:normal;" onclick="OpenLink(this); return false"><img src="images/icons/ic_action_refer_merchant.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Contact Us   </a></p>
+
+<p><a href="https://goo.gl/FZOBif"style="color:gray;text-shadow:none;font-weight:normal;" target="_blank"><img src="images/icons/ic_action_twitter12.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Follow Us On Twitter </a> </p>
+<p><a href="https://goo.gl/QjvRb1" target="_blank"style="color:gray;text-shadow:none;font-weight:normal;"><img src="images/icons/link.png"width="20px;height:20px;"/>&nbsp;&nbsp;&nbsp;Follow Us On Linkedin   </a></p>
+
+</div>
+
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer="defer"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+/*for body background*/
+body{background-color:#ffffff !important;}
+
+/*for side menu header/logo */
+.flat-blue .side-menu .navbar-header{
+	 background-color: #FFFFFF !important ; 
+}
+
+/*for left side slide bar menu*/
+
+.flat-blue .side-menu.sidebar-inverse, .flat-blue .side-menu.sidebar-inverse .navbar {
+    background-color: #353d47 !important;
+
+}
+
+/*for left side slide bar menu on hover*/
+
+
+.flat-blue .side-menu.sidebar-inverse  ul li a:hover {
+   /* background-color: rgba(136, 136, 136, 0.5) !important;*/
+background-color:#dcdcdc;
+
+}
+
+/*for toggle icon*/
+.navbar-expand-toggle{color:#ffffff !important;}
+
+/*for user name color*/
+.flat-blue .navbar .navbar-nav > li > a, .flat-blue .navbar.navbar-default .navbar-nav > li > a {
+    color: #ffffff !important;
+}
+
+
+/*for user name color on hover*/
+.flat-blue .navbar .navbar-nav > li > a, .flat-blue .navbar.navbar-default .navbar-nav > li > a:hover {
+    color: #22A7F0 !important;
+/*color: #015DA8 !important;*/
+}
+
+/*for icon size*/
+.app-container .content-container .side-menu .navbar-nav li a .icon{font-size:1.4em !important;}
+
+
+/*for header and sub header */
+.Subheader, .flat-blue .navbar > .container-fluid, .flat-blue .navbar.navbar-default > .container-fluid {
+      background-color: #015DA8 !important; 
+}
+/*for sub header text color*/
+ .Subheader{color:#ffffff !important;}
+
+/*for date in header*/
+.flat-blue .navbar .navbar-breadcrumb li, .flat-blue .navbar.navbar-default .navbar-breadcrumb li {
+    color: #ffffff !important;
+}
+
+/*for > mark in header...near client name*/
+.text-warning {
+    color: #ffffff !important;
+}
+
+/*for div shap of like comment happiness score*/
+.divshape2{ 
+
+    border-top-right-radius: 1.8em !important;
+    border-bottom-left-radius: 1.8em !important;
+ -webkit-transition: border-top-left-radius 1s, border-bottom-right-radius 1s; /* For Safari 3.1 to 6.0 */
+    transition: border-top-left-radius 1s, border-bottom-right-radius 1s;
+
+}
+.divshape2:hover {
+
+border-top-right-radius: 0em !important;
+    border-bottom-left-radius: 0em !important;
+
+ -webkit-transition: border-top-right-radius 1s, border-bottom-left-radius 1s; /* For Safari 3.1 to 6.0 */
+    transition: border-top-right-radius 1s, border-bottom-left-radius 1s;
+
+border-top-left-radius: 1.8em !important;
+    border-bottom-right-radius: 1.8em !important;
+
+}
+/*heading background*/
+
+.LatestActivitiesHeading{background:#e8eaf6;padding:4%;}
+/*for happiness score div in welcome page*/
+  .flat-blue .card.red {
+    background-color: #FA2A00 !important; 
+    color: #FFF; 
+}
+
+
+/* for comment div  in welcome page*/
+ .flat-blue .card.yellow {
+    background-color: #ffb400 !important; 
+    color: #FFF; 
+}
+	
+.myImageRight{    padding-left: 9% !important;
+    padding-right: 7% !important;}	
+/*for like div in welcome page*/	
+ .flat-blue .card.blue {
+    background-color: #22A7F0 !important;  
+    color: #FFF; 
+}	
+
+/*for post view div in welcome page*/
+ .flat-blue .card.green {
+    background-color: #1ABC9C !important; 
+    color: #FFF;
+}
+
+
+/*for  btn in welcome page*/
+.likeBTN, .CommentBTN, .resultBTNN, .updateINFOBTN, .addBTN, .contactdirBtn, .ViewBtn, .showbtn, .ViewPagesBtn, .viewPicture, .createPictureBtn, .viewMessage, .createmessage, .viewNewsBtn, .createNewsBtn, .publishnowBtn,.preview_postBtn, .news_postBtn,.commonColorSubmitBtn,.flat-blue .btn.btn-primary {background-color:#015DA8 !important;border-color: #015DA8  !important; color: #ffffff !important;}
+.hidebutton, .closeBtn{background-color:#FA2A00;color:#ffffff;}
+
+.editbtn{background-color:#FABE28 !important;border-color: #FABE28 !important;color:#ffffff;}
+
+.unpublishBtn{background-color: rgba(1, 93, 168, 0.8) !important; border-color: skyblue !important;color:#ffffff;}
+
+
+
+/**/
+.flat-blue .panel.panel-success .panel-heading {background-color:#015DA8 !important;border-color: #015DA8  !important; color: #ffffff !important;border: 1px solid #015DA8 !important;}
+.flat-blue .panel.panel-success{border: 1px solid #dcdcdc!important;}
+
+/*for pagination of page*/
+.flat-blue .pagination .active > a{background-color:#015DA8 !important;border-color: #015DA8 !important;color:#ffffff; }
+
+
+/*for employee happiness grap circle*/
+#avgValue{
+ width: 83px !important; height: 77px !important;border: 1px solid #ccc !important; border-radius: 50% !important; background: pink !important; position: absolute !important; top: 3.5% !important;right: 30% !important;z-index: 1 !important;text-align: center !important;color: white !important; margin-bottom: 10px; font-size: 30px !important; padding: 15px !important;
+}
+
+.flat-blue .btn.btn-default{background:#ffffff !important;}
+
+#editor1{border:1px solid #ebebe0 !important;}
+
+
+
+
+
+
+
+

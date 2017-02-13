@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="utf-8">
+
+ <!-- Stand-alone settings for iOS. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<!--for stay window-->
+<script type="text/javascript">
+    function OpenLink(theLink){
+        window.location.href = theLink.href;
+    }
+</script>
+
+
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+<!--**************************** 2nd css file for iphone6 size of device********************-->
+
+
+<link rel="stylesheet" type="text/css" href="css/desktop.css">
+<link rel="stylesheet" type="text/css" href="css/motoe.css">
+<link rel="stylesheet" type="text/css" href="css/iphone6plush.css">
+<link rel="stylesheet" type="text/css" href="css/iphone6.css">
+<link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+<link rel="stylesheet" type="text/css" href="css/iphone4s.css">
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script> 
+$(document).ready(function(){
+var value = 1;
+
+        $.ajax({
+            type:'POST',
+            url: 'http://thomasinternational.benepik.com/webservices/previewPost/savePreview.php',
+            data: {
+                   email: value,
+                  },
+            dataType: 'jsonp',
+            jsonp: 'mm',
+            jsonpCallback: 'jsonpCallback',
+            success: function(){
+                
+            }
+        });
+    });
+ 
+function jsonpCallback(data){
+
+value = JSON.stringify(data);
+val = JSON.parse(value);
+
+title = val.posts[0].postTitle;
+content = val.posts[0].postContent;
+img = val.posts[0].postImage;
+
+$(".welcomeUsername").html(title);
+$("#pcontent").html(content);
+$("#pimage").attr("src",img);
+
+}
+
+$(function(){
+ $("#header").load("headerwelcome.html"); 
+ $("#footer").load("footer.html"); 
+});
+</script> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+
+    document.getElementById("message_autohide").style.display="none";
+    $(".showlikepopupdiv").click(function(){
+	show();
+	
+    });
+});
+
+
+function show() {
+    document.getElementById("message_autohide").style.display="block";
+    setTimeout("hide()", 5000);  // 5 seconds
+}
+
+function hide() {
+    document.getElementById("message_autohide").style.display="none";
+}
+
+</script>
+<style>
+.welcomePictureDIV, .welcomeNewsDIV, .welcomeMessageDIV2{ box-shadow: -1px 1px 5px 2px #888888;}
+
+#message_autohide{position:fixed;color:#ffffff; background-color:#262626;text-align:center;box-shadow: -1px 1px 5px 2px #888888;margin-left:80px;z-index:40;}
+.welcomeNewsDIV{ margin:5px 1px 5px 1px;}
+.welcomePictureSubDIV, .welcomeMessageSubDIV2, .welcomeNewsSubDIV{margin:5px 4px 5px 4px;}
+.welcomePictureDIV, .welcomeMessageDIV2{ margin:10px 1px 5px 1px;}
+#welcomeUserImage{width: 50px; border-radius: 50%; -webkit-border-radius: 150px; -moz-border-radius: 150px;-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);margin-top:8px;}
+.welcomeUsername{font-weight:bold;font-size:12px;margin-top:10%;}
+#wlcomenewsTitle{margin-top:10px;font-weight:bold;text-size:14px;}
+#wlcomenewsShortContent{text-size:12px;}
+#welcomeshortnewws{text-size:12px;white-space: nowrap; width: 15em; overflow: hidden;text-overflow: ellipsis;}
+ #rrrr input[type="file"] { display: none;}
+#time_date{font-size:10px;margin-top:-8px;}
+#myupload_img{font-size: 25px;color:#ffffff;text-shadow:none;font-weight:normal;}
+#welcomeTextfieldComment{height:6px;margin-top:-4%;box-shadow:none;}
+#pictureSize{width:100%;max-height:150px;}
+</style>
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+</head>
+
+<body>
+<div class="container">
+<div id="header"></div><br><br><br>
+  
+<div id=""style="box-shadow:-1px 1px 5px 2px #888888;padding-left:10px;padding-right:10px;">
+<div class="row">
+<div class="col-xs-3 col-sm-3 col-md-6 col-lg-6"><img src="images/mujahid.jpg"class="img img-circle" id="welcomeUserImage"> </div>
+       <div class="col-xs-9 col-sm-9 col-md-6 col-lg-6"> 
+          <div class="row"> 
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+              <p class="welcomeUsername"></p>
+  <p  id="time_date">November 05, 2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;02:37:18 pm</p>
+               </div>
+              
+           </div>
+
+        </div>
+</div>
+<div class="row">
+   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <br>
+      <img src="" id="pimage" class="img img-responsive"style="width:100%;max-height:150px;"/>
+<p id="figcaption1"style="font-size:15px;color:#333333;font-weight:bold;">Fig.1 - A view of the pulpit rock in Norway.</p>
+<p style="font-size:14px;color:#444444;" id="pcontent"></p>
+   </div>
+</div>
+
+<div class="row">
+   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <p style="margin-top:5px;">1 Like/ 17 Comment &nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up"style="float:right;"></span></p><hr style="height:1px;color:#333;background-color:#333;width:100%;"/>
+   </div>
+</div>
+<div class="row">
+   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <form role="form"class="form-inline">
+          <div class="form-group">
+ <textarea class="form-control" rows="8" id="comment" placeholder="Add Comments..."></textarea><center>
+<button type="submit" class="ui-btn ui-mini ui-btn-inline ui-corner-all">Send</div></center>
+        </form>
+   </div>
+</div>
+
+</div>
+
+
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="utf-8">
+
+ <!-- Stand-alone settings for iOS. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+<!--for stay window-->
+<script type="text/javascript">
+    function OpenLink(theLink){
+        window.location.href = theLink.href;
+    }
+</script>
+
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+<!--**************************** 2nd css file for iphone6 size of device********************-->
+
+
+<link rel="stylesheet" type="text/css" href="css/iphone6plush.css">
+<link rel="stylesheet" type="text/css" href="css/iphone6.css">
+<link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+<link rel="stylesheet" type="text/css" href="css/iphone4s.css">
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script> 
+$(function(){
+ $("#header").load("headerwelcome.html"); 
+ $("#footer").load("footer.html"); 
+});
+</script> 
+
+
+<script>
+$(document).ready(function(){
+
+
+    document.getElementById("message_autohide").style.display="none";
+    $(".showlikepopupdiv").click(function(){
+	show();
+	
+    });
+});
+
+
+function show() {
+    document.getElementById("message_autohide").style.display="block";
+    setTimeout("hide()", 5000);  // 5 seconds
+}
+
+function hide() {
+    document.getElementById("message_autohide").style.display="none";
+}
+
+</script>
+
+</head>
+<body>
+
+<div class="container">
+
+
+
+<div id="header"></div>
+<div id="footer"></div>
+
+<br><br><br><br><br>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 c0l-md-12 col-lg-12">
+   
+<figure>
+  
+ <img src="images/mujahid.jpg" style="width:100%; max-height:250px;"> <br>
+ <figcaption><form role="from"action=""method=""><input type="text"class="form-control"placeholder="Add caption"/></form></figcaption>
+
+</figure>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+  <a href="#" class="ui-btn ui-btn-inline showlikepopupdiv">Send All</a>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+  <a href="#SelecteGroup"data-rel="popup"  class="ui-btn ui-btn-inline" data-position-to="window">Selected Group</a>
+  </div>
+ </div>
+
+<div data-role="main" class="ui-content">
+   
+
+    <div data-role="popup" id="SelecteGroup" class="ui-content"style="width:138%;height:443px;overflow:scroll;margin:14% 0% 8% -19%; tetx-shadow:none;"><form role="form"method="post"action="">
+      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+     <br> <h4 >Please Select Group</h4>
+   
+<h6 style="font-size:16px;">Department</h6><hr>
+
+
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">HR</label>
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">Marketing</label>
+
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">Sales</label>
+
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">Finance</label>
+
+<h6 style="font-size:16px;">LOCATION</h6><hr>
+
+
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">Delhi</label>
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">Gurgaon</label>
+
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">New Delhi</label>
+
+  <label style="margin-top:15px;"><input type="checkbox" value=""style="margin:0px;">Ghaziabad</label>
+
+<center><a href="#" class="ui-btn ui-btn-inline">Send </a></center>
+</form>
+
+ </div>
+</div>
+
+
+    </div>
+  
+</body>
+</html>

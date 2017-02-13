@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+  <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>  
+<!--*************************************************************mobile jquery (using for performing back as well as so many operation)************************************************************-->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+<!--*************************************************************************************************************************-->  
+<script type="text/javascript">
+    function OpenLink(theLink){
+        window.location.href = theLink.href;
+    }
+</script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/iphone6plush.css">
+<link rel="stylesheet" type="text/css" href="css/iphone6.css">
+<link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+<link rel="apple-touch-icon" href="images/giftboxlogo.png">
+<link rel="apple-touch-startup-image" href="images/AVIVAsplash screen yellow.jpg">
+
+
+<!--*************************************** Cokkie start ************************************--->
+<script type="text/javascript" src="js/cookie.js"></script>
+<!--*************************************** Cokkie End ************************************--->
+
+<script> 
+$(function(){
+ $("#header").load("header.html"); 
+ $("#footer").load("footer.html"); 
+});
+</script> 
+
+<script>
+function goback()
+{
+ window.history.back();
+}
+</script>
+<script>
+$(document).ready(function(){
+ var mail = getpreference(0);
+ var c =   getpreference(1);
+
+$("#fsub").click(function(){
+//var mail= "mk73142@gmail.com";
+//var c="140";
+var mail = getpreference(0);
+var c =   getpreference(1);
+var s= $("#subject").val();
+var com= $("#comment").val();
+
+$.ajax({
+            type:'POST',
+            url: 'http://thomasinternational.benepik.com/webservices/phonegap/merchantfeedback.php',
+            data: {
+                 email:mail,
+                 sub: s,
+                 msg: com,
+                 comp: c,
+                  },
+            dataType: 'jsonp',
+            jsonp: 'mm',
+            jsonpCallback: 'jsonpCallback',
+            success: function(){
+                alert("successfully send");
+                window.location='marchantfeedback.html'; 
+            }
+        });
+   });
+
+});
+</script>
+
+<script type = "text/javascript">
+
+function show() {
+    document.getElementById("myDiv").style.display="block";
+    setTimeout("hide()", 5000);  // 5 seconds
+}
+
+function hide() {
+    document.getElementById("myDiv").style.display="none";
+}
+
+</script>
+
+
+</head>
+<body>
+
+
+
+<div id="header"style="margin-left:0px !important;"></div>
+
+<div id="ffixedBack"style="position:fixed;z-index:200;margin-top:24px;margin-left:78%;"> <a href="#" onclick="goBack()"style="color:#ffffff;"><span class="glyphicon glyphicon-chevron-left"style="color:#ffffff;margin-left:10px;"></span><b>Back</b></a> </div>
+
+<div id = "myDiv" style="display:none"><img id = "myImage" src = "images/loader.gif"width="140px"height="50px"style="margin-left:30%;margin-top:90%;position:absolute;z-index:5;"></div><br>
+
+
+
+<div id="content">
+<br><br>
+
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-md-12"><br>
+<center><h4> Send Feedback on Merchant</h4></center>
+</div></div><br> 
+
+<div class="row"style="margin-left:10px;margin-right:10px;">
+<div class="col-xs-12 col-sm-12">
+<input type="text"class="form-control"name="subject" id="subject" placeholder="Subject">
+</div>
+</div>
+<br>
+<div class="row"style="margin-left:10px;margin-right:10px;">
+<div class="col-xs-12 col-sm-12">
+<textarea class="form-control" rows="5" name="message" id="comment" placeholder="Comments"></textarea>
+</div>
+</div><br>
+<center><button type="button" name="fsub" id="fsub"class="btn buttoncolors" onclick = "show()" >Send Feedback</button></center>
+<br><br><br>
+</div>
+
+<div id="footer"style="margin-left:0px !important;"></div>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer="defer"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" defer="defer"></script>
+
+
+</body>
+</html>

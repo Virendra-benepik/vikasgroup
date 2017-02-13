@@ -1,0 +1,123 @@
+ #preview_div{
+     width: 320px;
+    height: 561px;
+    border: 1px solid #cdcddc;
+    position: absolute !important;
+    box-shadow: rgb(136, 136, 136) -1px 1px 5px 2px;
+    position: fixed;
+    background: white;
+    z-index: 100000;
+    padding: 1%;
+    left: 0%;
+    display: none;
+    top: 7%;
+    margin-left: 36%;
+    text-align: center;
+}
+.preview_content{
+width:100%;
+font-size:18px;font-weight:500;
+
+}
+
+#imgprvw1, #imgprvw{
+    width: 97%;
+    max-height: 200px;margin-top: 5px;
+}
+#closeThoughtPopoUpBtn{float:right;}
+.closeThoughtPopoUpBtn1{float:right;}
+
+.background_Android_Image{background:url("../images/mobile.jpg");width:191%;
+    margin-left: 9px;
+    margin-top: -72px;
+    /* margin: 26% 0% 0px 18%; */
+    margin-right: -150px;
+}}
+.background_iphone_Image{    background: url("../images/mobile.jpg");    width: 82%;    margin-left: 8.77%;}
+
+.androidContentTab{ 
+   position: absolute;
+    top: 96px;
+    background: #ffffff;
+    margin-left: -89px;
+    border-radius: 2%;
+    margin-top: -0.4%;
+    width: 179px;
+    height: 64.48%;
+    border: 1px solid #dcdcdc;
+  
+}
+
+}
+
+
+.iphoneContentTab{position: absolute;
+    border: 1px solid #dcdcdc;
+    top: 29px;
+    background: #ffffff;
+    margin-left: 10.4%;
+    border-radius: 2%;
+    margin-top: -0.4%;
+    width: 40.56%;
+    height: 81.61%;}
+
+.noticetitle{font-size:16px;font-weight:bold;margin:2%;}
+
+.androidImage{width:71%;margin-top: -10%;height:555px;}
+.IphoneImage{        width: 61.22%;
+    margin-top: -10%;
+    height: 626px;}
+
+.wholeAndroidContentHolder{ 
+box-shadow: rgb(136, 136, 136) -1px 1px 5px 2px;
+    margin: 2%;padding: 3%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 420px;
+}
+
+
+.wholeIOSContentHolder{ 
+box-shadow: rgb(136, 136, 136) -1px 1px 5px 2px;
+    margin: 2%;padding: 3%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 490px;
+}
+
+
+#iphoneText, #AndroidText{    font-size: 16px;
+    font-weight: bold;
+    padding: 9%;border-bottom: 1px dotted #cdcdcd;}
+.mytabContent{}
+.Mynav{background-color:#ffffff !important;border:none;}
+
+.Mynav :hover{background-color:#cdcdcd;}
+
+
+
+.closebtn
+{margin-left:126px;margin-top:126;}
+	#iphone6{
+width: 65%;
+    height: 547px;
+    margin: 26% 0% 0px 18%;
+    background: url("../images/mobile.jpg");
+    background-repeat: no-repeat;
+    position: relative;
+    background-size: 100% 100%;
+	margin-top:-32px;
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+

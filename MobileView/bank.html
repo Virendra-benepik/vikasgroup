@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+     
+        <meta charset="utf-8">
+            <!-- Stand-alone settings for iOS. -->
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+            <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+            <script type="text/javascript">
+                function OpenLink(theLink){
+                    window.location.href = theLink.href;
+                }
+            </script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="css/iphone6plush.css">
+                <link rel="stylesheet" type="text/css" href="css/iphone6.css">
+                    <link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+                        <link rel="apple-touch-icon" href="images/giftboxlogo.png">
+                            <link rel="apple-touch-startup-image" href="images/AVIVAsplash screen yellow.jpg">
+                                
+                                
+                                <!--*************************************** Cokkie start ************************************--->
+                                <script type="text/javascript" src="js/cookie.js"></script>
+                                <!--*************************************** Cokkie End ************************************--->
+                                
+                                
+                                <script>
+                                    function goback()
+                                    { window.history.back(); }
+                                    </script>
+                                
+                                <script>
+                                    $(document).ready(function(){
+                                                      
+                                                      var mail = getpreference(0);
+                                                      //        console.log(mail);
+                                                      //var mail = "benepik@outlook.in";
+                                                      
+                                                      $.ajax({
+                                                             type:'POST',
+                                                             url: 'http://thomasinternational.benepik.com/webservices/phonegap/getAccount.php',
+                                                             data: {
+                                                             email: mail,
+                                                             },
+                                                             dataType: 'jsonp',
+                                                             jsonp: 'mm',
+                                                             jsonpCallback: 'jsonpCallback',
+                                                             success: function(){
+                                                             
+                                                             }
+                                                             });
+                                                      
+                                                      $("#deletebank").click(function(){
+                                                                             var ft;
+                                                                             ft = confirm("Are you sure you want to delete ?");
+                                                                             if(ft==true){
+                                                                             
+                                                                             
+                                                                             $.ajax({
+                                                                                    type:'POST',
+                                                                                    url: 'http://thomasinternational.benepik.com/webservices/phonegap/deleteAccount.php',
+                                                                                    data: {
+                                                                                    email: mail,
+                                                                                    },
+                                                                                    dataType: 'jsonp',
+                                                                                    jsonp: 'mm',
+                                                                                    jsonpCallback: 'jsonpCalback',
+                                                                                    success: function(){
+                                                                                    alert("Your bank detail has deleted");
+                                                                                    window.location='bank.html';
+                                                                                    }
+                                                                                    });
+                                                                             
+                                                                             }
+                                                                             });
+                                                      
+                                                      
+                                                      });
+                                                      
+                                                      function jsonpCallback(data){
+                                                          
+                                                          var mesg= JSON.stringify(data);
+                                                          var jsonData= JSON.parse(mesg);
+                                                          
+                                                          
+                                                          for(i=0;i<jsonData.posts.length;)
+                                                          {
+                                                              
+                                                              
+var nam= JSON.stringify(data.posts[i].name).replace(/['"]+/g, '');
+                                                                                                                    
+var acc= JSON.stringify(data.posts[i].account).replace(/['"]+/g, '');
+                                                                                                                                                                             var ban= JSON.stringify(data.posts[i].bank).replace(/['"]+/g, '');
+                                                                                                                                                                                                                                   var ifs= JSON.stringify(data.posts[i].ifsc).replace(/['"]+/g, '');
+                                                                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                                                                         $('#content').append($('<div id="editbankdetails"class="btn ">'
+                                                                                                                                                                                                                                                                                                                +"<a id='edtitbuttontext' onclick = 'show()' href=addbank.html?n="+nam+"&a="+acc+"&b="+ban+"&i="+ifs+">Edit</a>"+'</div>'
+                                                                                                                                                                                                                                                                                                                +'<div class="row"id="mybankcontent22">'+'<div class="col-xs-6 col-sm-6 col-md-6" >'+ " Account Holder's Name"+'</div>'+'<div class="col-xs-6 col-sm-6 col-md-6" >'+ ': &nbsp;&nbsp;'+ JSON.stringify(data.posts[i].name).replace(/['"]+/g, '') +'</div>'+'</div>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                +'<div class="row">'+'<div  class="col-xs-6 col-sm-6 col-md-6"  >'+ "  Bank Account Number"+'</div>'+'<div  class="col-xs-6 col-sm-6 col-md-6"  >'+ ': &nbsp;&nbsp;'+JSON.stringify(data.posts[i].account).replace(/['"]+/g, '') +'</div>'+'</div>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     +'<div class="row">'+'<div  class="col-xs-6 col-sm-6 col-md-6"  >'+ " Name of Bank  "+'</div>'+'<div  class="col-xs-6 col-sm-6 col-md-6"  >'+ ': &nbsp;&nbsp;'+JSON.stringify(data.posts[i].bank).replace(/['"]+/g, '') + '</div>'+'</div>'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 +'<div class="row">'+'<div  class="col-xs-6 col-sm-6 col-md-6"  >'+"  IFSC code"+'</div>'+'<div  class="col-xs-6 col-sm-6 col-md-6"  >'+ ': &nbsp;&nbsp;'+JSON.stringify(data.posts[i].ifsc).replace(/['"]+/g, '')+'</div>' +'</div>'+'<br>'));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        i++;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if(i>0)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        { $("#addDetail").css({"display":"none"});
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+                                </script>
+                                <script> 
+                                    $(function(){
+                                      $("#header").load("header.html"); 
+                                      $("#footer").load("footer.html"); 
+                                      
+                                      });
+                                    </script> 
+                                
+                                </script>
+                                
+                                <script>
+                                    function goBack() {
+                                        window.history.back();
+                                    }
+                                </script>
+                                <script type = "text/javascript">
+                                    
+                                    function show() {
+                                        document.getElementById("myDiv").style.display="block";
+                                        setTimeout("hide()", 5000);  // 5 seconds
+                                    }
+                                
+                                function hide() {
+                                    document.getElementById("myDiv").style.display="none";
+                                }
+                                
+                                    </script>
+                                
+                                
+                                <style>
+                                    #edtitbuttontext{text-size:12px !important;}
+                                    #contentcarleft{width:150px;font-weight:bold;}
+                                    #contentcarright{width:150px;margin-left:46% !important;margin-top:-6%;}
+                                    #tent{}
+                                    </style>
+                                
+    </head>
+    <body>
+        <div id="header"style="margin-left:0px !important;"></div>
+        
+        <div id="ffixedBack"style="position:fixed;z-index:200;margin-top:24px;margin-left:78%;"> <a href="welcome.html" onclick="goBack()"style="color:#ffffff;"><span class="glyphicon glyphicon-chevron-left"style="color:#ffffff;margin-left:10px;"></span><b>Back</b></a> </div>
+        
+        
+        <div id = "myDiv" style="display:none"><img id = "myImage" src = "images/loader.gif"width="140px"height="50px"style="margin-left:25%;margin-top:60%;position:absolute;z-index:5;"></div><br>
+        <div id="content">
+            <br><br>
+            
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <center><h4><br>Your Bank Details</h4>
+                    </center>
+                    <div style="margin-top:-22px;">
+                        <div id="contentcarleft"></div>
+                        <div id="contentcarright"></div>
+                    </div></div></div>
+            
+            <div class="row">
+                <!--<div class="col-xs-2 col-sm-2 col-md-2">
+                 <a href="addbank.html" onclick="OpenLink(this); return false" ><button type="Button"class="btn btn-primary btn-sm">Edit</button>
+                 </a></div>-->
+                <div class="col-xs-2 col-sm-2 col-md-2">
+                    
+                    <button type="Button" id="deletebank" class="btn buttoncolors btn-sm" onclick = "show()" onClick="javascript:if(confirm('Are you sure want to Delete Bank Details ?')){return true;} else{return false}" >Delete</button></div>
+                
+                <div class="col-xs-4 col-sm-4 col-md-4">
+                </div></div><div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4"></div>
+                    <div class="col-xs-2 col-sm-2 col-md-2">
+                        <!--<button type="submit"class="btn btn-primay btn-sm ">Cancel</button>--></div>
+                    <form role="form"method="post"action="">
+                        <div id="addDetail" class="col-xs-12 col-sm-12 col-md-12"><br><a href="addbank.html"style="color:#fffff;" onclick="OpenLink(this); return false">
+                            <button type="button"class="btn  btn-sm buttoncolors2"style="color:#ffffff;margin-left:20%;" onclick = "show()"> Add Details</button></a></div>
+                </div></form><br><br><br></div>
+        
+        <div id="footer"style="margin-left:0px !important;"></div>
+    </body>
+</html>

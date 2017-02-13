@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+       
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+        <meta charset="utf-8">
+            
+            <!-- Stand-alone settings for iOS. -->
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+            <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+            
+            <script type="text/javascript">
+                function OpenLink(theLink){
+                    window.location.href = theLink.href;
+                }
+            </script>
+            <script>
+                function login_comp()
+                {
+                    var code = document.forgotform.elements["comp"].value;
+                    window.location='forgotpassword.html?comp='+code;
+        
+                }
+                //alert(code);
+            </script>
+            
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+                <!--**************************** 1st css file for iphone6 size of device********************-->
+                <link rel="stylesheet" type="text/css" href="css/iphone6plush.css">
+                    <link rel="stylesheet" type="text/css" href="css/iphone6.css">
+                        <!--**************************** 1st css file for iphone5s size of device********************-->
+                        <link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+                            <link rel="stylesheet" type="text/css" href="css/iphone4s.css">
+                                    
+                                        
+                                        
+                                        <!--*************************************** Cokkie start ************************************--->
+                                        <script type="text/javascript" src="js/cookie.js"></script>
+                                        <!--*************************************** Cokkie End ************************************--->
+                                        
+                                        <script>
+                                            
+                                            $(document).ready(function(){
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              $("#regis").click(function(){
+                                                                                show();
+                                                                                
+                                                                                var code = $("#comp").val();
+                                                                                
+                                                                                var mail = $("#username").val();
+                                                                                var pas = $("#password").val();
+                                                                                
+                                                                                //alert("the valu of email is " + mail + "the value of contact is " + pas);
+                                                                                var nam = $("#name").val();
+                                                                                
+                                                                                if(nam == "")
+                                                                                {alert("Fields cannot be empty");
+                                                                                hide();
+                                                                                return;}
+                                                                                
+                                                                                
+                                                                                if(mail == "" && pas == "")
+                                                                                {alert("Please fill either email or mobile number");
+                                                                                hide();
+                                                                                return;
+                                                                                }
+                                                                                $.ajax({
+                                                                                       type:'POST',
+                                                                                       url: 'http://thomasinternational.benepik.com/webservices/mail/registerall.php',
+                                                                                       data: {
+                                                                                       comp: code,
+                                                                                       username: mail,
+                                                                                       mobile: pas,
+                                                                                       name: nam,
+                                                                                       },
+                                                                                       dataType: 'jsonp',
+                                                                                       jsonp: 'mm',
+                                                                                       jsonpCallback: 'jsonpCallback1',
+                                                                                       success: function(){
+                                                                                       hide();
+                                                                                       }
+                                                                                       });
+                                                                                });
+                                                              
+                                                              });
+                                                              
+                                                              function jsonpCallback1(data){
+                                                                  
+                                                                      alert(data.message);
+                                                                   
+                                                              }
+                                        
+                                        
+                                        <!--------------------------------------------------------------Login -------------------------------------------------------->
+                                        
+                                        $(document).ready(function(){
+                                                          
+                                                          
+                                                          function validateform(){
+                                                          alert("yo here");
+                                                          }
+                                                          
+                                                          
+                                                          $("#useJSONP").click(function(){
+                                                                               
+                                                                               show();
+                                                                               
+                                                                               
+                                                                               
+                                                                               
+                                                                               var user=document.getElementById('user').value;
+                                                                               var pass=document.getElementById('pass').value;
+                                                                               
+                                                                               if (user==null || user==""){
+                                                                               alert("Please fill Email id & Password..");
+                                                                               hide();
+                                                                               return;
+                                                                               }
+                                                                               
+                                                                               var code = $("#comp").val();
+                                                                               var mail = $("#user").val();
+                                                                               var pass = $("#pass").val();
+                                                                               var por = "HK Rewards app";
+                                                                               $.ajax({
+                                                                                      type:'POST',
+                                                                                      url: 'http://thomasinternational.benepik.com/webservices/phonegap/login_trackuser.php',
+                                                                                      data: {
+                                                                                      comp: code,
+                                                                                      username: mail,
+                                                                                      password: pass,
+                                                                                      portal : por,
+                                                                                      },
+                                                                                      dataType: 'jsonp',
+                                                                                      jsonp: 'mm',
+                                                                                      jsonpCallback: 'jsonpCallback',
+                                                                                      success: function(){
+                                                                                      hide();
+                                                                                      }
+                                                                                      });
+                                                                               });
+                                                          
+                                                          });
+                                                          
+                                                          function jsonpCallback(data){
+                                                              
+                                                              var val= JSON.stringify(data.success);
+                                                              
+                                                              if(val>0)
+                                                              {
+                                                                  var userid = data.posts[0].email+"|"+data.posts[0].company_code+"|"+data.posts[0].Currentlocation;
+                                                                  createCookie("UID", userid, 30);
+                                                                  //console.log(userid);
+                                                                  var x1 = getpreference(1);
+                                                                  
+                                                                  window.location="welcome.html";
+                                                              }
+                                                              else
+                                                              {
+                                                                  alert("Invalid Username or Password");
+                                                              }
+                                                              
+                                                          }
+                                        
+                                            </script>
+                                        
+                                        
+                                        <script type = "text/javascript">
+                                            
+                                            function show() {
+                                                
+                                                document.getElementById("myDiv").style.display="block";
+                                              
+                                            }
+                                        
+                                        function hide() {
+                                            document.getElementById("myDiv").style.display="none";
+                                        }
+                                        
+                                            </script>
+                                        <script>
+                                            
+                                            </script>
+                                        
+                                        </head>
+    <body >
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <center>
+                        <br><br><br><br>
+                        <img src="images/client_logo.png"id="client_logo" class="img img-responsive"/>
+                      <!--  <img src="images/gift_box.png"class="img img-responsive"id="gift_box"/>-->
+                    </center>
+                    <div id = "myDiv" style="display:none"><img id = "myImage" src = "images/loader.gif"width="140px"height="50px"style="margin-left:20%;margin-top:10%;position:absolute;z-index:5;"></div><br>
+                    
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    
+                                   <ul class="nav nav-tabs">
+                        <li class="active"style="margin-left:20%;"><a data-toggle="tab" href="#home"style="background-color:#f9f9f9;font-weight:bold;">Login</a></li>
+                        <li><a data-toggle="tab" href="#menu1"style="background-color:#f9f9f9;font-weight:bold;">Registration</a></li>
+                        
+                    </ul>
+                    
+                    <div class="tab-content">
+                        <div id="home" class="tab-pane fade in active">
+                            <div id="login">
+                                
+                                
+                                    <form role="form" action=""method="post" name="forgotform">
+                                        <div class="form-group">
+                                            
+                                            <label for="User's Mail-Id">E-Mail </label>
+                                            <input type="email" class="form-control"placeholder="Enter Your E-mail Id or Mobile Number" name="user" id="user">
+                                                </div>
+                                        <div class="form-group">
+                                            
+                                            <label for="User's Mail-Id">Password</label>
+                                            <input type="hidden"  name="comp" id="comp" value="170" />
+                                            <input type="password" id="pass" class="form-control"placeholder="Enter Your Password" name="pass"></div>
+                                        <center><button type="button"onclick = "show()"  class="btn buttoncolors" name="useJSONP"  id="useJSONP" value="this.value='login'"style=" box-shadow: 5px 5px 3px #888888;color:#ffffff;border-top:1px solid #ffffff; border-left:1px solid #ffffff;">Login</button><br><br>
+                                            
+                                        
+                                    </form>
+                                    
+                                    <a href="#" onclick="login_comp()" style="color:gray;">Forgot Password</a></center>
+                                    
+                                    </div>
+                        </div>
+                        <div id="menu1" class="tab-pane fade">
+                            
+                            <form role="form"action=""method="post">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text"class="form-control"placeholder="Enter Name" id="name" name="name"/>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">E-Mail</label>
+                                    <input type="email"class="form-control"placeholder="Enter Email Id" id="username" name="username"pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+                                </div>
+                                
+                               <!-- <center><b>OR</b></center>
+                                <div class="form-group">
+                                    <label for="phone">Mobile Number</label>
+                                    <input type="text"class="form-control"placeholder="Enter Contact Number" id="password" name="password"/>
+                                </div>-->
+                                
+                                <center><input type="button" id="regis" name="regis" class="btn buttoncolors " value="Submit"style="width:60px;text-align;center;padding:3px;height:30px;box-shadow: 5px 5px 3px #888888;color:#ffffff;border-top:1px solid #ffffff; border-left:1px solid #ffffff;"></button>
+                                    
+                                    </center>
+                                
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div id="jsonpResult"></div>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer="defer"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer="defer"></script>
+    </body>
+</html>

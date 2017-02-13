@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Aircel GiftBox</title>
+ <meta charset="utf-8">
+
+ <!-- Stand-alone settings for iOS. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!--**************************** 1st css file for iphone6 size of device********************-->
+<link rel="stylesheet" type="text/css" href="css/iphone6plush.css">
+<link rel="stylesheet" type="text/css" href="css/iphone6.css">
+<!--**************************** 1st css file for iphone5s size of device********************-->
+<link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+<link rel="stylesheet" type="text/css" href="css/iphone4s.css">
+<link rel="apple-touch-icon" href="images/iconi.png">
+<link rel="apple-touch-startup-image" href="images/AVIVAsplash screen yellow.jpg">
+
+<!--*************************************** Cokkie start ************************************--->
+<script type="text/javascript" src="js/cookie.js"></script>
+<!--*************************************** Cokkie End ************************************--->
+
+<script>
+$(document).ready(function(){
+/*var setmail = getCookie("UID");
+alert(setmail);
+if(setmail != null)
+       {
+         window.location="welcome.html";
+       }
+       else
+       {
+        window.location="login.html";
+       }
+
+*/
+});
+</script>
+
+<script type = "text/javascript">
+
+function show() {
+
+var setmail = getCookie("UID");
+//alert(setmail);
+if(setmail != null)
+       {
+         window.location="welcome.html";
+       }
+       else
+       {
+       window.location="login.html";
+       }
+
+       
+    document.getElementById("myDiv").style.display="block";
+    
+    document.getElementById("myDiv").style.display="none";
+}
+
+</script>
+
+
+</head>
+<body  onload = "show()" >
+<div class="container">
+<div id = "myDiv" style="display:none"><img id = "myImage" src = "images/loader.gif"width="140px"height="70px"style="margin-left:20%;margin-top:70%;position:absolute;z-index:100;"></div><br>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<center>
+<br><br><br><br>
+		<!--	<img src="images/client_logo.png"id="" class="img img-responsive"/>-->
+		<!--	<img src="images/gift_box.png"class="img img-responsive"id="gift_box"/> -->
+			</center>
+		<div id = "myDiv" style="display:none"><img id = "myImage" src = "images/loader.gif"width="140px"height="70px"style="margin-left:20%;margin-top:0px;position:absolute;z-index:5;"></div><br>
+
+	</div>
+</div>
+	
+			<div class="logo_div"style="position:fixed;bottom:20%;width:100%;">
+<div class="row">
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+       <!--
+                <center>  <p style="color:#203f7c ;margin:0px;">By</p></center>
+<img src="images/Benepik new logo.png"id="benepik_logo" class="img img-responsive"style="width:60px;height:50px;float:right;margin-right:20px;"/>-->
+                 
+        </div>
+</div>
+      </div>        
+
+</div>
+
+	
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
+			<!--<img src="images/spalsh_footer.png"id="" class="img img-responsive"style="width:100%;position:fixed;bottom:0px;"/>-->
+	
+	</div>
+</div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer="defer"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer="defer"></script>
+</body>
+</html>

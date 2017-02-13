@@ -1,0 +1,16 @@
+
+#files{width: 100%;height:75px; -webkit-appearance: none;}
+#files{content: url('img/hr.jpg');display: block;}
+
+#list .thumbParent img{border:1px solid #cdcdcd; margin-left: 32px; margin-bottom:2%;}
+#server img, .thumb {height: 150px;}
+
+    .thumb {width: 20%;margin: 0.2em -0.7em 0 0;}
+.remove_thumb {  position: relative; top: -76px; right: 5px; background: black; color: white; border-radius: 50px; font-size: 1.5em; padding: 0 0.3em 0;
+text-align: center;cursor: pointer;}
+.remove_thumb:before {content: "x";}
+
+#server img{
+  max-width:100%;margin-bottom:2%;
+}
+    

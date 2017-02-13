@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<!--*************************************************************mobile jquery (using for performing back as well as so many operation)************************************************************-->
+
+
+<!--*************************************************************************************************************************-->
+
+<!--*************************************** Cokkie start ************************************--->
+<script type="text/javascript" src="js/cookie.js"></script>
+<!--*************************************** Cokkie End ************************************--->
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+     </script>
+     
+     <script type="text/javascript" charset="utf-8">
+         function onLoad() {
+             //  alert("i am here");
+             document.addEventListener("deviceready", onDeviceReady, false);
+         }
+     
+     // device APIs are available
+     //
+     function onDeviceReady() {
+         navigator.geolocation.getCurrentPosition(onSuccess, onError);
+         // Now safe to use device APIs
+     }
+     function onSuccess(position) {
+         
+         var element = document.getElementById('geolocation');
+         
+         latitude = position.coords.latitude ;
+         longitude = position.coords.longitude ;
+         // alert("lat long are " + latitude + " " +longitude);
+         showAllDeals();
+         
+         
+         
+     }
+     
+     // onError Callback receives a PositionError object
+     //
+     function onError(error) {
+         alert('code: '    + error.code    + '\n' +
+               'message: ' + error.message + '\n');
+     }
+     
+         </script>
+
+<script>
+
+
+$(function(){
+ $("#header").load("header.html");
+ $("#footer").load("footer.html");
+});
+</script>
+<script type="text/javascript">
+    function OpenLink(theLink){
+        window.location.href = theLink.href;
+    }
+</script>
+
+<script>
+    function calculateDistance(d_merchantLati,d_merchantLongi) {
+        
+        if(d_merchantLati == "")
+        d_merchantLati = latitude;
+        if(d_merchantLongi == "")
+        d_merchantLongi = longitude;
+        var currentLati = latitude;
+        var currentLongi = longitude;
+        console.log("fooooooooo" + "distInKM func");
+        var EARTH_RADIUS_KM = 6371;
+        
+        var lat1Rad = toRadians(currentLati);
+        var lat2Rad = toRadians(d_merchantLati);
+        
+        var dLatRad = toRadians(currentLati - d_merchantLati);
+        var dLonRad = toRadians(currentLongi - d_merchantLongi);
+        
+        
+        var dist_travelled = Math.sin(dLatRad / 2) * Math.sin(dLatRad / 2)
+        + Math.cos(toRadians(lat1Rad))
+        * Math.cos(toRadians(lat2Rad)) * Math.sin(dLonRad / 2)
+        * Math.sin(dLonRad / 2);
+        
+        
+        var c = 2 * Math.asin(Math.sqrt(dist_travelled));
+        var valueResult = EARTH_RADIUS_KM * c;
+        var km = valueResult;
+        ;
+        var meter = valueResult % 1000;
+        
+        console.log("Radius Value"+ "" + valueResult + "   KM  " + km
+                    + " Meter   " + meter);
+                    
+                    var total = km + (meter / 1000);
+                    total = Math.round(total * 100) / 100;
+                    if (total>4000 || total==0)
+                    return "0";
+                    else
+                    return total + " KM";
+                    
+                    
+                    
+                    
+                    
+    }
+function toRadians(degree)
+{
+    return degree * Math.PI / 180;
+}
+
+</script>
+
+<script>
+function remwish(a){
+
+var dealids= a;
+var mail = getpreference(0);
+          console.log(mail);
+$.ajax({
+            type:'POST',
+            url: 'http://thomasinternational.benepik.com/webservices/phonegap/deletewish.php',
+            data: {
+                   email : mail,
+                   branchId : dealids,
+                  },
+            dataType: 'jsonp',
+            jsonp: 'mm',
+            jsonpCallback: 'remfavourite',
+            success: function(){
+                alert("Your deal has removed");
+                window.location="favourite.html";
+            }
+        });
+
+}
+</script>
+<script>
+    
+    function hide() {
+        document.getElementById("myDiv").style.display="none";
+    }
+
+function showAllDeals(){
+
+
+var mail = getpreference(0);
+          console.log(mail);
+
+        $.ajax({
+            type:'POST',
+            url: 'http://thomasinternational.benepik.com/webservices/phonegap/getwish.php',
+            data: {
+                   email : mail,
+                  },
+            dataType: 'jsonp',
+            jsonp: 'mm',
+            jsonpCallback: 'jsonpCallback',
+            success: function(){
+                
+            }
+        });
+}
+
+ 
+function jsonpCallback(data){
+    hide();
+var value = JSON.stringify(data.success);
+
+if(value==0)
+{
+$("#dummy").css({"display":"block"}).text("No Deal Found");
+}
+else
+{
+$("#dummy").css({"display":"none"});
+}
+
+var mesg= JSON.stringify(data);
+var jsonData= JSON.parse(mesg);
+
+for(i=0;i<jsonData.posts.length;i++)
+{
+  var distance = calculateDistance(data.posts[i].latitude,data.posts[i].longitude);
+  if(distance == 0)
+  distance = "";
+  jsonData.posts[i]["distance"] = distance;
+  
+//alert(distance);
+
+var imgp = data.posts[i].imgpath;
+var mernam = data.posts[i].merchantname;
+var offer = data.posts[i].peroffer;
+var deal = data.posts[i].dealid;
+var braid = data.posts[i].branchid;
+var longi = data.posts[i].longitude;
+var lati = data.posts[i].latitude;
+var bnam = data.posts[i].branchname;
+
+ 
+$('#row').append($('<div id="row_line"class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'+"<a href=display_deal.html?deal_id="+deal+">"+
+ '<div id="title">'+"<p id='offerheading'>"+offer+"</p>"
+ +"<p id='testt1'>"+mernam+"</p>"
++" <p  id='testt1'>"+bnam+"</p>"+"<p  id='distance1'>" +distance+"</p>" +"</a>"+"<img id='breakheart' onclick=remwish('"+braid+"') src=images/breakheart.jpg>"
++ '</div>'
++"<a href=display_deal.html?deal_id="+deal+"&branchid="+braid+">"+"<img src=" +imgp+ " class='img img-responsive' id='logo'/>" +"</a>"
++ '</div>'));
+ 
+ 
+ 
+ 
+ 
+}
+
+//jsonData.posts.sort(predicatBy("distance"));
+jsonData.posts.sort(function(a, b) {
+    return parseFloat(a.distance) - parseFloat(b.distance);
+});
+
+
+
+/*for(i=0;i<jsonData.posts.length;i++)
+{
+var url = JSON.stringify(data.posts[i].imgpath);
+var hearturl= "images/breakheart.jpg";
+var deal= JSON.stringify(data.posts[i].dealid);
+var mcat= deal.replace(/['"]+/g, '');
+
+var distance = jsonData.posts[i].distance;
+//alert("the distance computed is " + distance);
+
+
+$('#jsonpResult').append($('<div id="row_line"class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'+ '<div id="title">'+"<p id='offerheading'>" + jsonData.posts[i].peroffer+"</p>"+JSON.stringify(data.posts[i].name).replace(/['"]+/g, '')+" <p  id='testt1'>"+jsonData.posts[i].address+"</p>" +'</div>' + "<a href=display_deal.html?deal_id="+mcat+"><img src=" + url +" class='img img-responsive' id='logo'/></a>" +
+ "<img onclick=remwish(" + deal +  ") src=' images/breakheart.jpg' class='img img-responsive' id='breakheart' />" + "<p  id='distance1'>" +distance+"</p>"+'</div>'));
+ 
+}*/
+}
+
+
+</script>
+<style>
+
+
+#location{position:fixed;z-index:101;margin-top:50px;background-color: #00004d ;text-shadow:none;font-weight:none;float:right;top:27px;color:#ffffff;right:0px;}
+
+#row{width:100% !important;}
+#row_line{width:100% !important;box-shadow: -1px 1px 5px 2px #888888;padding-bottom:5px;margin-bottom:5px;}
+#offerheading{font-weight:bold;color:#203f7c;margin:0px;padding-top:5px;text-align: right;font-size:15px;}
+#testt1{margin:0px;text-align: right;font-size:12px;color:rgb(133, 104, 135);font-weight:bold;}
+#distance1{margin:0px;color:gray;text-align: right;font-size:12px;}
+</style>
+
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css" href="css/iphone6.css">
+
+<link rel="stylesheet" type="text/css" href="css/iphone5s.css">
+
+<link rel="apple-touch-icon" href="images/giftboxlogo.png">
+	<link rel="apple-touch-startup-image" href="images/AVIVAsplash screen yellow.jpg">
+
+ 
+  <script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
+</head>
+ <body onload="onLoad()">
+                                                                                                       
+
+<div id="header"style="margin-left:0px !important;"></div>
+
+<div id="dummy"></div>
+
+<div id="jsonpResult"style="margin-top:61px;"></div>
+
+<div id="imgepath"></div>
+
+<div class="container-fluid"style="padding:0px !important; margin:0px !important;">   
+                                                                                                                    
+<div id="row" >
+  <div id = "myDiv"><img id = "myImage" src = "images/loader.gif"width="140px"height="50px"style="margin-left:25%;margin-top:60%;position:absolute;z-index:5;"></div><br>
+ 
+</div>
+ 
+</div>
+  <br>                                                                                                                    
+<br>                                                                                                                    
+<br>                                                                                                                    
+<br>.
+  <div id="footer"style="margin-left:0px !important;"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" defer="defer"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" defer="defer"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script defer="defer">
+
+</body>
+</html>
