@@ -43,7 +43,7 @@ function updateformvalidation()
 {
 	var userfirstname = document.getElementById("emp_name");
 	var userlastname = document.getElementById("emp_last");
-	var temp_depar = document.getElementById("temp_depar");
+	//var temp_depar = document.getElementById("temp_depar");
 	
 	if(userfirstname.value == "")
 	{
@@ -57,12 +57,12 @@ function updateformvalidation()
 		userlastname.focus();
 		return false;
 	}
-	if(temp_depar.value == "")
+	/*if(temp_depar.value == "")
 	{
 		alert("Please Enter Course");
 		temp_depar.focus();
 		return false;
-	}
+	}*/
 }
 </script>
 <script>
@@ -142,7 +142,7 @@ alert("hello ");
 </div>
 <div class="row">
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-<label for="Department_Name">Department:<span style="color:red">*</span></label><input style="color:#2d2a3b;" type="text"  class="form-control"  name="temp_depar" id="temp_depar"/></div>
+<label for="Department_Name">Department:</label><input style="color:#2d2a3b;" type="text"  class="form-control"  name="temp_depar" id="temp_depar"/></div>
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><label for="Designation">Designation :</label><input  style="color:#2d2a3b;"type="text"class="form-control"  name="emp_desig" id="emp_desig"/></div>
 </div>
 

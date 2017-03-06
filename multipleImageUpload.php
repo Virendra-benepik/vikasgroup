@@ -8,7 +8,29 @@ include 'leftSideSlide.php';
 <script type="text/javascript" src="js/multipleImageUpload.js"></script>
 <script src="js/display_group.js"></script>
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.js"></script>-->
-<script src="js/validation/createPostValidation.js"></script>
+<!--<script src="js/validation/createPostValidation.js"></script>-->
+<script>
+function ValidatePostalbum()
+{
+    var title = document.postalbumform.title;
+    var fi = document.getElementById("files");
+	//var fi = document.postalbumform.album[];
+    if (title.value == "")
+    {
+        window.alert("Please Enter Album Title.");
+        title.focus();
+        return false;
+    }
+    if (fi.value == "")
+    {
+        window.alert("Please Select Image");
+		fi.focus();
+        return false;
+    }
+    return true;
+}
+
+</script>
 <script>
     function check() {
         if (confirm('Are You Sure, You want to publish this post?')) {

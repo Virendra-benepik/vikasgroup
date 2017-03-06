@@ -22,7 +22,8 @@ $folder = 'images/post_img/';      //folder name for add with image insert into 
 /* * ******************************START HERE************************************************ */
 //echo'<pre>';
 //print_r($_POST);die;
-if (!empty($_POST)) {
+if (!empty($_POST)) 
+    {
 
     $flag_value = $_POST['flag'];
     $flag_name = "Leadership : ";
@@ -84,7 +85,7 @@ if (!empty($_POST)) {
         $POST_ID = $maxid;
         $POST_TITLE = $_POST['title'];
         $POST_IMG = $folder . $path_name;
-        $POST_TEASER = $_POST['teasertext'];
+        $POST_TEASER = $_POST['leadername'];
         $POST_CONTENT = $_POST['content'];
         $POST_IMG_THUMB = $thumb_img;
         $DATE = $post_date;
@@ -112,12 +113,15 @@ if (!empty($_POST)) {
         }
 
 
+		 $userimage = $push->getImage($USERID);
+		 $image = $userimage[0]['userImage'];
+		
         /*         * ******************************************* Get GoogleAPIKey and IOSPEM file ********************************* */
         $googleapiIOSPem = $push->getKeysPem($clientid);
         /*         * ************************************************************************************ */
 
         /*         * ********************* insert into database ************************************************ */
-        $result = $obj->create_Post($clientid, $POST_ID, $POST_TITLE, $POST_IMG, $POST_IMG_THUMB, $POST_CONTENT, $DATE, $USERID, $BY, $FLAG, $like, $comment);
+        $result = $obj->create_Post($clientid, $POST_ID, $POST_TITLE, $POST_IMG, $POST_IMG_THUMB,$POST_TEASER,$POST_CONTENT, $DATE, $USERID, $BY, $FLAG, $like, $comment);
 
         $type = 'CEOMessage';
         $result1 = $obj->createWelcomeData($clientid, $POST_ID, $type, $POST_TITLE, $POST_IMG, $DATE, $USERID, $FLAG);
@@ -139,17 +143,20 @@ if (!empty($_POST)) {
 
 
         /*         * *************************get group admin uuid  form group admin table if user type not= all *************************** */
+      
+        
         if ($User_Type != 'All') {
 //echo "within not all user type".$User_Type."<br/>";
-            $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
-            $adminuuid = json_decode($groupadminuuid, true);
+           // $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+           // $adminuuid = json_decode($groupadminuuid, true);
             /* echo "hello groupm admin id";
               echo "<pre>";
               print_r($adminuuid)."<br/>";
               echo "</pre>";
               echo "--------------all employee id---------"; */
 
-            $allempid = array_merge($token, $adminuuid);
+           // $allempid = array_merge($token, $adminuuid);
+             $allempid = array_merge($token);
             /* echo "<pre>";
               print_r($allempid);
               echo "<pre>";
@@ -210,7 +217,9 @@ if (!empty($_POST)) {
 
             /*             * ******************* send push by  push notification******************** */
 
-            $hrimg = SITE_URL . $_SESSION['image_name'];
+           // $hrimg = SITE_URL . $_SESSION['image_name'];
+		   
+		    $hrimg = $userimage;
             $sf = "successfully send";
             $ids = array();
             $idsIOS = array();
@@ -226,6 +235,8 @@ if (!empty($_POST)) {
 
             $data = array('Id' => $POST_ID, 'Title' => $POST_TITLE, 'Content' => $POST_CONTENT, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $DATE, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
 
+			//print_r($data);
+			
             $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
             $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
             $rt = json_decode($revert, true);

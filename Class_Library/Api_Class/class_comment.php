@@ -111,7 +111,7 @@ class Comment {
                             $post["firstname"] = $row["firstName"];
                             $post["lastname"] = $row["lastName"];
                             $post["designation"] = $row["designation"];
-                            $post["userImage"] = $forimage . $row["userImage"];
+                            $post["userImage"] = ($row["userImage"]=="")?"":$forimage . $row["userImage"];
                             $post["cdate"] = $rows[$i]["commentDate"];
 
                             array_push($response["posts"], $post);

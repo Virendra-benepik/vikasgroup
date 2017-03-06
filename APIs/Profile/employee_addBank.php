@@ -44,7 +44,8 @@ if (file_exists("../../Class_Library/Api_Class/class_bank.php") && include("../.
       //  print_r($result);
         if ($result['success'] == 1) {
             $personMail = $result['mailid'];
-            $adminMail = "saurabh.jain@benepik.com,benepik@gmail.com";
+           $adminMail = "saurabh.jain@benepik.com,benepik@gmail.com";
+		   //$adminMail = "monikagupta05051994@gmail.com";
             $prognam = $result['progName'];
             $dedimail = $result['dedicatedEmail'];
 

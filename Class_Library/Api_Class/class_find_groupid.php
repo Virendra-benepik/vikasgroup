@@ -1,7 +1,7 @@
 <?php
 
 if (!class_exists('Connection_Communication')) {
-    require_once('../../Config/class_connect_db_Communication.php');
+    require_once('class_connect_db_Communication.php');
 }
 
 class FindGroup {

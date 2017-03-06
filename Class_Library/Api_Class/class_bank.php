@@ -83,7 +83,7 @@ class Bank {
 
     function GetFromBank($clientid, $employeeid) {
         try {
-            $query = "select Tbl_EmployeeBankDetails.* from Tbl_EmployeeBankDetails join Tbl_EmployeeDetails_Master on Tbl_EmployeeBankDetails.employeeId = Tbl_EmployeeDetails_Master.employeeId where Tbl_EmployeeDetails_Master.clientId=:cli and Tbl_EmployeeDetails_Master.employeeId=:empid";
+            $query = "select Tbl_EmployeeBankDetails.*, DATE_FORMAT(Tbl_EmployeeBankDetails.insertedDate,'%d %b %Y %h:%i %p') as insertedDate from Tbl_EmployeeBankDetails join Tbl_EmployeeDetails_Master on Tbl_EmployeeBankDetails.employeeId = Tbl_EmployeeDetails_Master.employeeId where Tbl_EmployeeDetails_Master.clientId=:cli and Tbl_EmployeeDetails_Master.employeeId=:empid";
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':empid', $employeeid, PDO::PARAM_STR);

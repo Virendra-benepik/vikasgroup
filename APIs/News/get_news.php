@@ -20,12 +20,20 @@ if (file_exists("../../Class_Library/Api_Class/class_dispaly_post_data.php") && 
 
         exit(0);
     }
-          
-   // $jsonArr = json_decode(file_get_contents("php://input"), true);
 
-    if (!empty($jsonArr['clientid'])) {
+//    $jsonArr = json_decode($_POST['data'], true);
+
+    $jsonArr = json_decode(file_get_contents("php://input"), true);
+/*{
+    "clientid":"CO-27",
+        "uid":"HGLF3M0DfwFdqWP3AbWPUWA0cD03O61",
+        "value":0
+}*/
+
+    if (!empty($jsonArr['clientid'])) 
+        {
         $obj = new PostDisplay();
-//$obj = new PostDisplayWelcome();
+
         extract($jsonArr);
 
         $response = $obj->PostDisplay($clientid,$uid,$value,$module);

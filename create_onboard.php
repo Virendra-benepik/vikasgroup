@@ -111,13 +111,13 @@ $(document).ready(function(){
 </div>
 <div class="titlePost"></div>
 <div class="imagePost"><img class="post_img" /></div>
-<div class="useraboutPost"></div>
+<div class="useraboutPost" style="white-space:pre-wrap !important;"></div>
 
 <div class="designationPost"></div>
 <div class="dojPost"></div>
 <div class="locationPost"></div>
 <div class="drinksPost"></div>
-<div class="foodPost"></div>
+<div class="foodPost" style="white-space:pre-wrap !important;"></div>
 <div class="placeiseenPost"></div>
 <div class="projectdonePost"></div>
 <div class="mypersonalPost"></div>
@@ -174,7 +174,7 @@ $(document).ready(function(){
          <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="form-group">
-        <label for="TITLE"> Joinee's Name</label>
+        <label for="TITLE"> Joinee's Name<span style="color:red">*</span></label>
         <input style="color:#2d2a3b;" type="text" name="name" id="title" class="form-control" placeholder="Joinee's Name" />
      
       </div>
@@ -184,12 +184,12 @@ $(document).ready(function(){
   <div class="row">
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
       
-        <label for="Article image">Upload Image</label>
+        <label for="Article image">Upload Image<span style="color:red">*</span></label>
         
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
 
 <script type="text/javascript">
-function showimagepreview1(input) {
+/*function showimagepreview1(input) {
 if (input.files && input.files[0]) {
 var filerdr = new FileReader();
 filerdr.onload = function(e) {
@@ -198,11 +198,53 @@ $('.post_img').attr('src', e.target.result);
 }
 filerdr.readAsDataURL(input.files[0]);
 }
-}
+}*/
+
+											function showimagepreview1(input) 
+											{
+											if (input.files && input.files[0]) {
+											var filerdr = new FileReader();
+											filerdr.onload = function(e) {
+											   var image = new Image();
+                                            image.src = e.target.result;
+                                            image.onload = function () {
+                                                //alert($("#uploadimage")[0].files[0].size);
+                                                var height = this.height;
+                                                var width = this.width;
+                                                var size = parseFloat($("#uploadimage")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+
+                                                else if (height > 1000 || width > 1000) {
+                                                    alert("Width and Height must not exceed 1000 X 1000 px.");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+                                                else
+                                                {
+                                                    $('#imgprvw').attr('src', e.target.result);
+                                                    $('.post_img').attr('src', e.target.result);
+                                                }
+                                            }
+    
+											/*$('#imgprvw').attr('src', e.target.result);
+											$('.post_img').attr('src', e.target.result);*/
+											}
+											filerdr.readAsDataURL(input.files[0]);
+											}
+											}
 </script>
 <img id="imgprvw" alt="uploaded image preview"/>
 <div>
-<input style="color:#2d2a3b;" type="file" id="uploadimage" accept="image/*" name="uploadimage" onchange="showimagepreview1(this)"/>
+<input style="color:#2d2a3b;" type="file" id="uploadimage" accept="image/*" name="uploadimage" onchange="showimagepreview1(this)"/><span>(max upload size: 2 MB)</span>
 </div>
 
       
@@ -211,7 +253,7 @@ filerdr.readAsDataURL(input.files[0]);
     
     <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
     <div class="form-group">
-<label for="comment">About</label>
+<label for="comment">About<span style="color:red">*</span></label>
 <textarea style="color:#2d2a3b;" class="form-control" rows="5" id="userabout" cols="5" name="userabout" placeholder="Short paragraph to draw attention to the article... "></textarea>
 </div>
     </div>
@@ -221,21 +263,21 @@ filerdr.readAsDataURL(input.files[0]);
   
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="form-group">
-        <label for="Articlecontent">Designation</label>
+        <label for="Articlecontent">Designation<span style="color:red">*</span></label>
 		<div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="designation" cols="3" name="designation" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
       </div>
     </div>
     
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="form-group">
-        <label for="Articlecontent">Date of joining</label>
+        <label for="Articlecontent">Date of joining<span style="color:red">*</span></label>
 		<div><input style="color:#2d2a3b;" type="date" class="form-control"  id="area5"  name="doj" placeholder="Short paragraph to draw attention to the article... "></div>
       </div>
     </div>
     
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="form-group">
-        <label for="Articlecontent">Location</label>
+        <label for="Articlecontent">Location<span style="color:red">*</span></label>
 		<div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="location" cols="3" name="location" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
       </div>
     </div>

@@ -75,9 +75,9 @@ $(document).ready(function(){
                 <div class="row mobile_articals"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;"></i><font class="white_color">Article</font></div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                            <p class="titlePost NewsPriviewtitle" style="margin-top:-13px ! important;"></p> 
+                            
                             <p class="author previewAuthor"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
-
+							<p class="titlePost NewsPriviewtitle" ></p> 
                         </div>
                     </div>
                    
@@ -95,7 +95,7 @@ $(document).ready(function(){
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                        <p class="date" style="margin-top:-30px;" >Date: <?php echo date("d/m/Y"); ?></p>
+                        <p class="date">Date: <?php echo date("d/m/Y"); ?></p>
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@ $(document).ready(function(){
 
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <h3><strong>Leadership Message</strong></h3><hr>
+    <h3><strong>Leadership Talk</strong></h3><hr>
     </div>
 
   </div>
@@ -156,58 +156,61 @@ $(document).ready(function(){
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
 
 <script type="text/javascript">
-function showimagepreview1(input) 
-{
-if (input.files && input.files[0]) {
-var filerdr = new FileReader();
-filerdr.onload = function(e) {
-   // alert("hello");
-    var image = new Image();
-        //Set the Base64 string return from FileReader as source.
-               image.src = e.target.result;
-                     
-               //Validate the File Height and Width.
-              
-               image.onload = function () {
-                   var height = this.height;
-                   var width = this.width;
-                   if (height > 500 || width > 500) {
-                       alert("Height and Width must not exceed 500px.");
-                        $('#imgprvw').attr('src', "");
-                        $('.post_img').attr('src', "");
-                         $('#uploadimage').val("");
-                       return false;
-                   }
-                   else
-                   {
-                      // alert ("image gud");
-                        $('#imgprvw').attr('src', e.target.result);
-                        $('.post_img').attr('src', e.target.result);
-                   }
-               }
+											function showimagepreview1(input) 
+											{
+											if (input.files && input.files[0]) {
+											var filerdr = new FileReader();
+											filerdr.onload = function(e) {
+											   var image = new Image();
+                                            image.src = e.target.result;
+                                            image.onload = function () {
+                                                //alert($("#uploadimage")[0].files[0].size);
+                                                var height = this.height;
+                                                var width = this.width;
+                                                var size = parseFloat($("#uploadimage")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+
+                                                else if (height > 1000 || width > 1000) {
+                                                    alert("Width and Height must not exceed 1000 X 1000 px.");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+                                                else
+                                                {
+                                                    $('#imgprvw').attr('src', e.target.result);
+                                                    $('.post_img').attr('src', e.target.result);
+                                                }
+                                            }
     
-/*$('#imgprvw').attr('src', e.target.result);
-$('.post_img').attr('src', e.target.result);*/
-}
-filerdr.readAsDataURL(input.files[0]);
-}
-}
+											/*$('#imgprvw').attr('src', e.target.result);
+											$('.post_img').attr('src', e.target.result);*/
+											}
+											filerdr.readAsDataURL(input.files[0]);
+											}
+											}
 </script>
 <img id="imgprvw" alt="uploaded image preview"/>
 <div>
-<input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />
+<input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" /><span>(max upload size: 2 MB resolution:640*362)</span>
 </div>
 
       
-    </div>
-    
-    
- <!--   <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+    </div> 
+    <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
     <div class="form-group">
-<label for="comment">TEASER TEXT</label>
-<textarea style="color:#2d2a3b;" class="form-control" rows="8" id="comment"cols="8" name="teasertext" placeholder="Short paragraph to draw attention to the article... " ></textarea>
+<label for="comment">Leader Name</label>
+<input style="color:#2d2a3b;" type="text" name="leadername" id="leadername" class="form-control" placeholder="Leader Name" />
 </div>
-    </div>-->
+    </div>
   </div>
   
   <div class="row">

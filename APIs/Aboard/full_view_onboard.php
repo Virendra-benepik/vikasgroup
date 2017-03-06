@@ -38,6 +38,7 @@ else {
 
     $val = $jsonArr['val'];
     $clientid = $jsonArr['comp'];
+	
 
     /*{
       $val = 0;
@@ -119,6 +120,7 @@ if ($dev == 'd2') {
                         <?php
                     }
                 } else {
+	            if ($value['success'] == 1) {
                     foreach ($value['posts'] as $values) {
                         //echo '<pre>';print_r($values);die;
                         $post_content_keys = explode("#Benepik#", $values['post_content']);
@@ -145,15 +147,16 @@ if ($dev == 'd2') {
                         $response_data[] = array_combine($final_data_keys, $final_data_value);
                     }
                     //echo'<pre>';print_r($response_data);die;
-                    if (!empty($response_data)) {
+                    
                         $response['success'] = 1;
-                        $response['message'] = "Onboard Data Available";
+                        $response['message'] = "Post Available";
                         $response['total_post'] = $value['totals'];
                         $response['post'] = $response_data;
                     } else {
                         $response['success'] = 0;
-                        $response['message'] = "Onboard Data Unavailable";
+                        $response['message'] = "No more post available";
                     }
+                    header("Content-type: application/json");
                     echo json_encode($response);
                     die;
                 }

@@ -1,6 +1,7 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);
-if (file_exists("../Class_Library/class_getNotice.php") && include("../Class_Library/class_getNotice.php")) {
+error_reporting(E_ALL); ini_set('display_errors', 1);
+
+if (file_exists("../../Class_Library/class_getNotice.php") && include("../../Class_Library/class_getNotice.php")) {
 
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -32,7 +33,7 @@ if (file_exists("../Class_Library/class_getNotice.php") && include("../Class_Lib
         $obj = new GetNotice();
         $module = '';
         extract($jsonArr);
-        $response = $obj->getAllNoticesDetails($clientid,$employeeid,$value,$module);
+        $response = $obj->getAllNoticesDetails($clientid,$employeeid,$value);
     } 
 	else {
         $response['success'] = 0;

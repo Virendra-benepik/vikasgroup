@@ -28,12 +28,17 @@ $count = count($val);
 
                             <div class="card-title">
                                 <div class="title"><strong>ALL Messages</strong></div>
+								<!--<?php echo $user_type;
+								echo $clientid;
+								echo $user_uniqueid;
+								
+								?>-->
                             </div>
-                           <!-- <div style="float:left; margin-top:13px; font-size:20px;"> 
-                                <a href="postmessage.php">
-                                    <button type="button" class="btn btn-primary btn-sm">Create New Message</button>
-                                </a>
-                            </div>--->
+                            <!-- <div style="float:left; margin-top:13px; font-size:20px;"> 
+                                 <a href="postmessage.php">
+                                     <button type="button" class="btn btn-primary btn-sm">Create New Message</button>
+                                 </a>
+                             </div>--->
                         </div>
 
 
@@ -42,8 +47,8 @@ $count = count($val);
                                 <thead>
                                     <tr>
                                         <th>Title</th>
-										<th>Message</th>
-                                       <th>Total View</th>
+                                        <th>Message</th>
+                                        <th>Total View</th>
                                         <th>Unique View</th>
                                         <th>Like</th>
                                         <th>Comment</th> 
@@ -56,7 +61,7 @@ $count = count($val);
                                 <tfoot>
                                     <tr>
                                         <th>Title</th>
-										<th>Message</th>
+                                        <th>Message</th>
                                         <th>Total View</th>
                                         <th>Unique View</th>
                                         <th>Like</th>
@@ -86,7 +91,7 @@ $count = count($val);
                                         // echo $path.$val[$i]['post_img']."<br/>";
                                         ?>       	
                                         <tr>
-										<!--<td style="padding-left:40px;"><?php echo $val[$i]['post_title']; ?></td>-->
+                                                                                <!--<td style="padding-left:40px;"><?php echo $val[$i]['post_title']; ?></td>-->
                                             <td style="width:15% !important;"><a target="_blank" href="full_view_message.php?idpost=<?php echo $val[$i]['post_id'] ?>"> <?php
                                                     $cont = $val[$i]['post_title'];
                                                     $words = explode(" ", $cont);
@@ -94,22 +99,21 @@ $count = count($val);
                                                     echo $word;
                                                     //echo $val[$i]['post_content']; 
                                                     ?></div></a></td>
-													
-													<?php 
-												$string = strip_tags($val[$i]['post_content']);
-												if (strlen($string) > 50) 
-												{
-												$stringCut = substr($string, 0, 50);
-												
-												$string = substr($stringCut, 0, strrpos($stringCut, ' '))."....<a style='color:#00a4fd;margin-left:30px !important' href='full_view_message.php?idpost=".$val[$i]['post_id']."'>Read More</a>";   
-												}
-										        ?>
-												
-													
-													
-													<td style="padding-left:40px;"><?php echo $string; ?></td>
-													
-                                           <td style="padding-left:40px;"><?php echo $val[$i]['TotalCount']; ?></td>
+
+                                            <?php
+                                            $string = strip_tags($val[$i]['post_content']);
+                                            if (strlen($string) > 50) {
+                                                $stringCut = substr($string, 0, 50);
+
+                                                $string = substr($stringCut, 0, strrpos($stringCut, ' ')) . "....<a style='color:#00a4fd;margin-left:30px !important' href='full_view_message.php?idpost=" . $val[$i]['post_id'] . "'>Read More</a>";
+                                            }
+                                            ?>
+
+
+
+                                            <td style="padding-left:40px;"><?php echo $string; ?></td>
+
+                                            <td style="padding-left:40px;"><?php echo $val[$i]['TotalCount']; ?></td>
                                             <td style="padding-left:40px;"><?php echo $val[$i]['ViewPostCount']; ?></td>
                                             <td style="padding-left:30px;"><?php echo $val[$i]['likeCount']; ?></td>
                                             <td style="padding-left:40px;"><?php echo $val[$i]['commentCount']; ?></td>
@@ -119,14 +123,16 @@ $count = count($val);
                                             <button type="button"class="btn btn-sm  btn-success"><?php echo $val[$i]['status']; ?>
     </button>
     </a> --->
-   
-                                        <td class="padding_right_px"><?php echo $d; ?></td>
 
-        <td><!--<a onClick="javascript:if(confirm('Are you sure want to Delete Post ?')){return true;} else{return false}" href="Link_Library/delete_post.php?idpost=<?php echo $val[$i]['post_id']; ?>&page=mesg"><button type="button"class="btn btn-sm  btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</button></a>-->
+                                            <td class="padding_right_px"><?php echo $d; ?></td>
+
+            <td><!--<a onClick="javascript:if(confirm('Are you sure want to Delete Post ?')){return true;} else{return false}" href="Link_Library/delete_post.php?idpost=<?php echo $val[$i]['post_id']; ?>&page=mesg"><button type="button"class="btn btn-sm  btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</button></a>-->
 
                                                 <a target="_blank" href="full_view_message.php?idpost=<?php echo $val[$i]['post_id'] ?>" style="color:#00a4fd;margin-left:29px !important;" >View</a>
 
-                                                <a href="Link_Library/post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>&page=mesg" style="color:#CE3030;margin-left:30px !important"><?php echo $action; ?>
+												<a target="_blank" href="update_message.php?idpost=<?php echo $val[$i]['post_id']; ?>&page=message" style="color:#00a4fd;margin-left:29px !important;">Edit</a>
+												
+                                                <a href="Link_Library/link_post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>&page=mesg" style="color:#CE3030;margin-left:30px !important"><?php echo $action; ?>
 
                                                 </a>
 
@@ -146,4 +152,4 @@ $count = count($val);
         </div>
     </div>
 
-<?php include 'footer.php'; ?>
+    <?php include 'footer.php'; ?>

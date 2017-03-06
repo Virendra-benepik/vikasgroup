@@ -310,8 +310,37 @@ function ValidatePostEvent()
                         if (input.files && input.files[0]) {
                             var filerdr = new FileReader();
                             filerdr.onload = function (e) {
-                                $('#imgprvw').attr('src', e.target.result);
-                                $('.post_img').attr('src', e.target.result);
+								var image = new Image();
+                                            image.src = e.target.result;
+                                            image.onload = function () {
+                                                //alert($("#uploadimage")[0].files[0].size);
+                                                var height = this.height;
+                                                var width = this.width;
+                                                var size = parseFloat($("#uploadimage")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+
+                                                else if (height > 1000 || width > 1000) {
+                                                    alert("Width and Height must not exceed 1000 X 1000 px.");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+                                                else
+                                                {
+                                                    $('#imgprvw').attr('src', e.target.result);
+                                                    $('.post_img').attr('src', e.target.result);
+                                                }
+                                            }
+                               // $('#imgprvw').attr('src', e.target.result);
+                               // $('.post_img').attr('src', e.target.result);
                             }
                             filerdr.readAsDataURL(input.files[0]);
                         }
@@ -319,7 +348,7 @@ function ValidatePostEvent()
                                 </script>
                                 <img id="imgprvw" alt="uploaded image preview"/>
                                 <div>
-                                    <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />
+                                    <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" /><span>(max upload size: 2 MB)</span>
                                 </div>
 
 
@@ -392,6 +421,36 @@ function ValidatePostEvent()
                         <div class="publication">
                             <!---------------------------------------------------------------------->
                            
+						   <!------------------ like comment ----------------------->
+						   <div class="publication"><p id="publication_heading">Options</p><hr>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+                                        <p class="publication_leftcontent" style="font-weight:500;" data-toggle="tooltip" data-placement="left" title="Post Comment (Enable/Disable) in case of Enable(On) User enable to comment on the post ">Comment ?</p>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+
+
+                                        <div class="checkbox"style="margin-top:-10px;">
+                                            <label><input type="checkbox" data-toggle="toggle" name="comment" value="COMMENT_YES" checked></label>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+                                        <p class="publication_leftcontent" style="font-weight:500;"data-toggle="tooltip" data-placement="left" title="Post Like(Enable/Disable) in case of Enable(On) User enable to like the post ">Like ?</p>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+                                        <div class="checkbox"style="margin-top:-10px;">
+                                            <label><input type="checkbox" data-toggle="toggle" name="like" value="LIKE_YES" checked></label></div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+						   <!----------- end like comment -------------------------->
+						   
                             <div class="publication"><p id="publication_heading">Notification</p><hr>
                                 
                                 <div class="row">

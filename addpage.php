@@ -37,7 +37,7 @@ $(".contentpage").html(content);
 </script>
                
 			   <div class="side-body padding-top">
-				
+				<div class="row mobile_articals"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;"></i><font class="white_color"></font></div>
 
 <div id="addpage2DIV">
 
@@ -46,26 +46,38 @@ $(".contentpage").html(content);
 	
 		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 			<div class="">
-				<div id="" class="">  
+				<div id="" class=""> 
 					<div class="">
-						<img src="images/mobile.jpg"class="img img-responsive " style="height: 547px;width:221px;margin-top:-103px;margin-left:37px;;
+						<img src="images/mobile.jpg"class="img img-responsive " style="height: 544px;width:221px;margin-top:-103px;margin-left:37px;;
     width: 221px ! important;
     margin-top: -125px;"/>
 					</div>
 					<div class="androidContentTab">
 						<div class="wholeAndroidContentHolder">
 
-<div class="row">
+<div class="row" style="background-color: #5cb85c;
+    margin: 0px;
+    height: 32px;border: 1px solid #5cb85c;">
 
-<div class="col-xs-3 col-md-3 col-lg-2 col-sm-2"><span class="glyphicon glyphicon-folder-open"></span></div>
-<div class="col-xs-9 col-md-9 col-lg-9 col-sm-9">
-<div class="titlepage"></div>
-</div>
-</div>
+<div class="col-xs-12 col-md-12 col-lg-12 col-sm-12" ><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;"></i><font style="color:white;">&nbsp;Article</font><!--<span class="glyphicon glyphicon-folder-open"></span>--></div></div>
+
 
 <div class="row">
 <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
-<div class="contentpage"  style="overflow-y:scroll;height:271px;"></div>										
+<div class="titlepage"></div>
+</div></div>
+
+
+<div class="row">
+<div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+<div class="contentpage"  style="overflow-y:scroll;margin-top:0px;height:205px;"></div>		<div class="row"style="margin:0px;padding-top: 14px;">
+                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 "><font style="font-size:10px;">0 Likes</font><br> <button type="button" class="btn btn-xs"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><font style="font-size:10px;">Like</font></button> </div>
+                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 "><font style="font-size:10px;"> 0 Comments</font><br> <button type="button" class="btn btn-xs"><i class="fa fa-commenting-o" aria-hidden="true"></i><font style="font-size:10px;">Comments</font></button></div
+                    <hr style="height:1px;background-color:gray;width:92%;">
+                </div>
+               
+
+            </div>								
 </div>
 </div>	
 						</div>
@@ -76,12 +88,12 @@ $(".contentpage").html(content);
 						<img src="images/i6.png"class="img img-responsive IphoneImage"/>
 					</div>
 					<div class="iphoneContentTab">
-					<div class="wholeIOSContentHolder">
+						<div class="wholeIOSContentHolder">
 
 						
 <div class="row">
 
-<div class="col-xs-3 col-md-3 col-lg-2 col-sm-2"><span class="glyphicon glyphicon-folder-open"></span></div>
+<div class="col-xs-3 col-md-3 col-lg-2 col-sm-2"><!--<span class="glyphicon glyphicon-folder-open"></span>--></div>
 <div class="col-xs-9 col-md-9 col-lg-9 col-sm-9">
 <div class="titlepage"></div>
 </div>
@@ -141,7 +153,7 @@ $(".contentpage").html(content);
 						<input style="color:#2d2a3b;" type="text" name="pagetitle" id="pagetitle" class="form-control" required>
 					</div>
 					<div class="form-group">
-						<label for="Articlecontent">Select Image</label>
+						<label for="Articlecontent">Select Image(resolution 720*720)</label>
 						<input style="color:#2d2a3b;" type="file" name="pageimage" accept="image/*" class="form-control" onchange="showimagepreview1(this)" >
 					</div>
 					
@@ -245,7 +257,7 @@ $(document).ready(function(){
 		</div>
 		
 		<br>
-		
+	<!--	
 <div class="publication"><p id="publication_heading">Options</p><hr>
 		
 			
@@ -270,7 +282,7 @@ $(document).ready(function(){
 </div>
 		
 		
-		</div>
+		</div>-->
 		
 
 		</div>

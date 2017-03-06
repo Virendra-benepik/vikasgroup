@@ -77,9 +77,9 @@
                 <div class="row mobile_articals"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;"></i><font class="white_color">Article</font></div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                            <p class="titlePost NewsPriviewtitle" style="margin-top:-13px ! important;"></p> 
+                             
                             <p class="author previewAuthor"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
-
+							<p class="titlePost NewsPriviewtitle"></p>
                         </div>
                     </div>
                    
@@ -97,7 +97,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                        <p class="date" style="margin-top:-30px;" >Date: <?php echo date("d/m/Y"); ?></p>
+                        <p class="date">Date: <?php echo date("d/m/Y"); ?></p>
                     </div>
                 </div>
 
@@ -131,7 +131,7 @@
 
             <div class="row " >
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h3><strong> News </strong></h3><hr>
+                    <h3><strong> What's up </strong></h3><hr>
                 </div>
             </div>
 
@@ -279,8 +279,37 @@
                                         $("#videoPlayer").hide();
                                         var filerdr = new FileReader();
                                         filerdr.onload = function (e) {
-                                            $('#imgprvw').attr('src', e.target.result);
-                                            $('.post_img').attr('src', e.target.result);
+											var image = new Image();
+                                            image.src = e.target.result;
+                                            image.onload = function () {
+                                                //alert($("#uploadimage")[0].files[0].size);
+                                                var height = this.height;
+                                                var width = this.width;
+                                                var size = parseFloat($("#uploadimage")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+
+                                                else if (height > 1000 || width > 1000) {
+                                                    alert("Width and Height must not exceed 1000 X 1000 px.");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+                                                else
+                                                {
+                                                    $('#imgprvw').attr('src', e.target.result);
+                                                    $('.post_img').attr('src', e.target.result);
+                                                }
+                                            }
+                                           // $('#imgprvw').attr('src', e.target.result);
+                                           // $('.post_img').attr('src', e.target.result);
                                         }
                                         filerdr.readAsDataURL(input.files[0]);
                                     } else
@@ -346,7 +375,7 @@
                             <img id="imgprvw" alt="uploaded image preview"/>
                             <div>
                                <!-- <input type="file" id="uploadimage" name="uploadimage" accept="image/video" onchange="showimagepreview1(this)" /> -->
-							   <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />
+							   <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />(max upload size: 2 MB resoulution:640*362)
                             </div>
 
 
@@ -358,7 +387,7 @@
                         <!--------------------This code is used to browse and display the image  and video end------------------------->
 
                         <br><br><br><br><br><br><br><br><br><br><br>
-                        <div class="publication" style="margin-top:23px;">
+                        <div class="publication" style="margin-top:30px;">
                             <!---------------------------------------------------------------------->
                             <div class="publication"><p id="publication_heading">Options</p><hr>
                                 <div class="row">
@@ -432,6 +461,11 @@
                             &nbsp;&nbsp;&nbsp;<a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 53.5%" value="Preview" />
                             </a>
 
+<!--                            <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2" style="margin-bottom:8px;"><center>
+                                    <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 280%;" value="Preview" />
+                                    </a>
+                                </center>
+                            </div>-->
                         </div>
                     </center>
 

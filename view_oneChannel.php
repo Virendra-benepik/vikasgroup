@@ -14,6 +14,7 @@ $groupid = $_GET["groupid"];
 $result = $obj->getGroupDetails($clientid,$groupid);
 
 $value = json_decode($result, TRUE);
+print_r($value);
 $getcat = $value['posts'][0];
 
 ?>

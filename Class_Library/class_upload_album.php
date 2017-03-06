@@ -134,7 +134,15 @@ class Album {
         $this->author = $uuid;
         try {
             $server_name = ($device == '') ? dirname(SITE_URL) . '/' : SITE;
+			
+			if($device=="panel")
+			{
             $query = "select ad.*,DATE_FORMAT(ad.createdDate,'%d %b %Y %h:%i %p') as createdDate,concat('" . $server_name . "',ai.imgName) as image , concat(count(ai.albumId),' Photos') as totalimage from Tbl_C_AlbumDetails as ad join Tbl_C_AlbumImage as ai on ad.albumId = ai.albumId where ad.clientId =:cid group by ad.albumId order by autoId desc";
+			}
+			else
+			{
+			 $query = "select ad.*,DATE_FORMAT(ad.createdDate,'%d %b %Y %h:%i %p') as createdDate,concat('" . $server_name . "',ai.imgName) as image , concat(count(ai.albumId),' Photos') as totalimage from Tbl_C_AlbumDetails as ad join Tbl_C_AlbumImage as ai on ad.albumId = ai.albumId where ad.clientId =:cid AND ad.status = 1 And ai.status = 1 group by ad.albumId order by autoId desc";
+			}
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);
 
@@ -147,7 +155,7 @@ class Album {
                 return json_encode($response);
             } else {
                 $response["success"] = 0;
-                $response["message"] = "No Albums Available";
+                $response["message"] = "No more post available";
                 return json_encode($response);
             }
         } catch (PDOException $e) {
@@ -159,7 +167,15 @@ class Album {
         $this->albumid = $albumid;
         try {
             $server_name = ($device == '') ? dirname(SITE_URL) . '/' : SITE;
+			
+			if($device == 'panel')
+			{
             $query = "select *, if(thumbImgName IS NULL or thumbImgName ='', concat('" . $server_name . "',imgName), concat('" . $server_name . "',thumbImgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid order by autoId desc";
+			}
+			else
+			{
+			$query = "select *, if(thumbImgName IS NULL or thumbImgName ='', concat('" . $server_name . "',imgName), concat('" . $server_name . "',thumbImgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid AND status = 1 order by autoId desc";
+			}
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':aid', $this->albumid, PDO::PARAM_STR);
 
@@ -248,7 +264,7 @@ class Album {
             $server_name = ($device == '') ? dirname(SITE_URL) . '/' : SITE;
 
 
-            $query = "select *, if(thumbImgName IS NULL or thumbImgName='',concat('" . $server_name . "',imgName),concat('" . $server_name . "',thumbImgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid order by autoId desc";
+            $query = "select *, if(thumbImgName IS NULL or thumbImgName='',concat('" . $server_name . "',imgName),concat('" . $server_name . "',thumbImgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid AND status = 1 order by autoId desc";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':aid', $this->albumid, PDO::PARAM_STR);
 
@@ -453,6 +469,267 @@ class Album {
     }
 
     /*     * ********************** end album image comment *************************************** */
+	
+/************************************************ album status change ***********************************/	
+public $idpost;
+public $statuspost;
+function status_Post($com, $coms) {
+
+        $this->idpost = $com;
+        $this->statuspost = $coms;
+        if ($this->statuspost == 1) {
+            $welstatus = "Publish";
+        } else {
+            $welstatus = "Unpublish";
+        }
+        try {
+            $query = "update Tbl_C_AlbumImage set status = :sta where albumId = :comm";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':comm', $this->idpost, PDO::PARAM_STR);
+            $stmt->bindParam(':sta', $this->statuspost, PDO::PARAM_STR);
+            $stmt->execute();
+
+			$pquery = "update Tbl_C_AlbumDetails set status = :sta3 where albumId = :comm3 ";
+            $stmtp = $this->DB->prepare($pquery);
+            $stmtp->bindParam(':comm3', $this->idpost, PDO::PARAM_STR);
+            $stmtp->bindParam(':sta3', $this->statuspost, PDO::PARAM_STR);
+            $stmtp->execute();
+			
+			$cquery = "update Tbl_Analytic_AlbumComment set status = :sta4 where albumId = :comm4 ";
+            $stmtc = $this->DB->prepare($cquery);
+            $stmtc->bindParam(':comm4', $this->idpost, PDO::PARAM_STR);
+            $stmtc->bindParam(':sta4', $this->statuspost, PDO::PARAM_STR);
+            $stmtc->execute();
+			
+			$lquery = "update Tbl_Analytic_AlbumLike set status = :sta5 where albumId = :comm5 ";
+            $stmtl = $this->DB->prepare($lquery);
+            $stmtl->bindParam(':comm5', $this->idpost, PDO::PARAM_STR);
+            $stmtl->bindParam(':sta5', $this->statuspost, PDO::PARAM_STR);
+            $stmtl->execute();
+			
+			$squery = "update Tbl_Analytic_AlbumSentToGroup set status = :sta6 where albumId = :comm6 ";
+            $stmts = $this->DB->prepare($squery);
+            $stmts->bindParam(':comm6', $this->idpost, PDO::PARAM_STR);
+            $stmts->bindParam(':sta6', $this->statuspost, PDO::PARAM_STR);
+            $stmts->execute();
+			
+            $wquery = "update Tbl_C_WelcomeDetails set status = :sta1 where id = :comm1 And flagType = 11";
+            $stmtw = $this->DB->prepare($wquery);
+            $stmtw->bindParam(':comm1', $this->idpost, PDO::PARAM_STR);
+            $stmtw->bindParam(':sta1', $this->statuspost, PDO::PARAM_STR);
+            //$stmtw->execute();
+			
+            $response = array();
+
+            if ($stmtw->execute()) {
+                $response["success"] = 1;
+                $response["message"] = "status has changed";
+                return json_encode($response);
+            }
+			else
+			{
+				$response["success"] = 0;
+                $response["message"] = "status not changed";
+                return json_encode($response);
+				
+			}
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+/*********************************************** end album status change ********************************/
+
+/**********************************album image status ****************************************/
+
+
+function status_albumImage($albumid, $status,$imgid) {
+
+       
+        try {
+			$aquery = "Select * from Tbl_C_AlbumImage where albumId = :albumid3 AND status = 1";
+            $stmta = $this->DB->prepare($aquery);
+            $stmta->bindParam(':albumid3', $albumid, PDO::PARAM_STR);
+            //$stmta->bindParam(':sta3', $status, PDO::PARAM_STR);
+			//$stmta->bindParam(':imgid3', $imgid, PDO::PARAM_STR);
+            $stmta->execute();
+			$row = $stmta->fetchAll();
+			//echo "<pre>";
+			//print_r($row); 
+			$rowcount = count($row);
+			if($rowcount <= 1)
+			{
+			/************************************************************************************/
+				if($rowcount == 1 && $status == 1)
+				{
+					$cquery = "update Tbl_Analytic_AlbumComment set status = :sta1 where albumId = :albumid1 AND imageId =:imgid1 ";
+					$stmtc = $this->DB->prepare($cquery);
+					$stmtc->bindParam(':albumid1', $albumid, PDO::PARAM_STR);
+					$stmtc->bindParam(':sta1', $status, PDO::PARAM_STR);
+					$stmtc->bindParam(':imgid1', $imgid, PDO::PARAM_STR);
+					$stmtc->execute();
+					
+					$lquery = "update Tbl_Analytic_AlbumLike set status = :sta2 where albumId = :albumid2 And imageId =:imgid2 ";
+					$stmtl = $this->DB->prepare($lquery);
+					$stmtl->bindParam(':albumid2', $albumid, PDO::PARAM_STR);
+					$stmtl->bindParam(':sta2', $status, PDO::PARAM_STR);
+					$stmtl->bindParam(':imgid2', $imgid, PDO::PARAM_STR);
+					$stmtl->execute();
+					
+					$query = "update Tbl_C_AlbumImage set status = :sta where albumId = :albumid And autoId = :imgid";
+					$stmt = $this->DB->prepare($query);
+					$stmt->bindParam(':albumid', $albumid, PDO::PARAM_STR);
+					$stmt->bindParam(':sta', $status, PDO::PARAM_STR);
+					$stmt->bindParam(':imgid', $imgid, PDO::PARAM_STR);
+					$tres = $stmt->execute();
+					
+					$response = array();
+					
+							if ($tres) {
+								$response["success"] = 1;
+								$response["message"] = "status has changed";
+								return json_encode($response);
+							}
+							else
+							{
+								$response["success"] = 0;
+								$response["message"] = "status not changed";
+								return json_encode($response);
+								
+							}
+				}
+		/********************************************************************/
+				elseif($rowcount == 1 && $status == 0)
+				{
+				$albumunpublish = self::status_Post($albumid,$status);
+				$value1 = json_decode($albumunpublish,true);
+				$response = array();
+					if ($value1['success'] == 1) 
+					{
+						$response["success"] = 1;
+						$response["message"] = "status has changed";
+						return json_encode($response);
+					}
+					else
+					{
+						$response["success"] = 0;
+						$response["message"] = "status not changed";
+						return json_encode($response);	
+					}
+				}
+				
+				
+		/*******************************************************************************/
+		  elseif($rowcount == 0 && $status == 1)
+		  {
+					
+				
+		    $query = "update Tbl_C_AlbumImage set status = :sta where albumId = :comm And autoId =:imgid ";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':comm', $albumid, PDO::PARAM_STR);
+            $stmt->bindParam(':sta', $status, PDO::PARAM_STR);
+			$stmt->bindParam(':imgid', $imgid, PDO::PARAM_STR);
+            $stmt->execute();
+
+			$pquery = "update Tbl_C_AlbumDetails set status = :sta3 where albumId = :comm3 ";
+            $stmtp = $this->DB->prepare($pquery);
+            $stmtp->bindParam(':comm3', $albumid, PDO::PARAM_STR);
+            $stmtp->bindParam(':sta3', $status, PDO::PARAM_STR);
+            $stmtp->execute();
+			
+			$cquery = "update Tbl_Analytic_AlbumComment set status = :sta4 where albumId = :comm4 And imageId =:imgid ";
+            $stmtc = $this->DB->prepare($cquery);
+            $stmtc->bindParam(':comm4', $albumid, PDO::PARAM_STR);
+            $stmtc->bindParam(':sta4', $status, PDO::PARAM_STR);
+			$stmtc->bindParam(':imgid', $imgid, PDO::PARAM_STR);
+            $stmtc->execute();
+			
+			$lquery = "update Tbl_Analytic_AlbumLike set status = :sta5 where albumId = :comm5 And imageId=:imgid";
+            $stmtl = $this->DB->prepare($lquery);
+            $stmtl->bindParam(':comm5', $albumid, PDO::PARAM_STR);
+            $stmtl->bindParam(':sta5', $status, PDO::PARAM_STR);
+			$stmtl->bindParam(':imgid', $imgid, PDO::PARAM_STR);
+            $stmtl->execute();
+			
+			$squery = "update Tbl_Analytic_AlbumSentToGroup set status = :sta6 where albumId = :comm6 ";
+            $stmts = $this->DB->prepare($squery);
+            $stmts->bindParam(':comm6', $albumid, PDO::PARAM_STR);
+            $stmts->bindParam(':sta6', $status, PDO::PARAM_STR);
+            $stmts->execute();
+			
+            $wquery = "update Tbl_C_WelcomeDetails set status = :sta1 where id = :comm1 And flagType = 11";
+            $stmtw = $this->DB->prepare($wquery);
+            $stmtw->bindParam(':comm1', $albumid, PDO::PARAM_STR);
+            $stmtw->bindParam(':sta1', $status, PDO::PARAM_STR);
+            //$stmtw->execute();
+			
+            $response = array();
+
+            if ($stmtw->execute()) {
+                $response["success"] = 1;
+                $response["message"] = "status has changed";
+                return json_encode($response);
+            }
+			else
+			{
+				$response["success"] = 0;
+                $response["message"] = "status not changed";
+                return json_encode($response);
+				
+			}
+			
+			
+				}
+			
+			/******************************************************************************/
+			
+			}	
+			else
+			{
+			$cquery = "update Tbl_Analytic_AlbumComment set status = :sta1 where albumId = :albumid1 AND imageId =:imgid1 ";
+            $stmtc = $this->DB->prepare($cquery);
+            $stmtc->bindParam(':albumid1', $albumid, PDO::PARAM_STR);
+            $stmtc->bindParam(':sta1', $status, PDO::PARAM_STR);
+			$stmtc->bindParam(':imgid1', $imgid, PDO::PARAM_STR);
+            $stmtc->execute();
+			
+			$lquery = "update Tbl_Analytic_AlbumLike set status = :sta2 where albumId = :albumid2 And imageId =:imgid2 ";
+            $stmtl = $this->DB->prepare($lquery);
+            $stmtl->bindParam(':albumid2', $albumid, PDO::PARAM_STR);
+            $stmtl->bindParam(':sta2', $status, PDO::PARAM_STR);
+			$stmtl->bindParam(':imgid2', $imgid, PDO::PARAM_STR);
+            $stmtl->execute();
+			
+            $query = "update Tbl_C_AlbumImage set status = :sta where albumId = :albumid And autoId = :imgid";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':albumid', $albumid, PDO::PARAM_STR);
+            $stmt->bindParam(':sta', $status, PDO::PARAM_STR);
+			$stmt->bindParam(':imgid', $imgid, PDO::PARAM_STR);
+            $tres = $stmt->execute();
+            
+			$response = array();
+			
+            if ($tres) {
+                $response["success"] = 1;
+                $response["message"] = "status has changed";
+                return json_encode($response);
+            }
+			else
+			{
+				$response["success"] = 0;
+                $response["message"] = "status not changed";
+                return json_encode($response);
+				
+			}
+			}
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+
+/****************************************** end album image status ******************************/
+	
 }
 
 ?>

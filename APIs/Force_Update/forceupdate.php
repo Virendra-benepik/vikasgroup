@@ -21,19 +21,15 @@ if (file_exists("../../Class_Library/Api_Class/class_employee_app_login.php") &&
     }
 
     $jsonArr = json_decode(file_get_contents("php://input"), true);
- /*{
-     "clientid":"",
-             "uid":""
- }*/
-    if ($jsonArr["clientid"]) {
+
+    if ($jsonArr["clientid"]) 
+        {
         $obj = new LoginUser();
         $cid = $jsonArr["clientid"];
        //echo "clientid ".$cid."<br>";
         $uid = $jsonArr['uid'];
        //echo "user id ".$uid;
-        $response = $obj->forceValidUserUpdation($cid, $uid);
-
-        
+        $response = $obj->forceValidUserUpdation($cid, $uid);    
     }
     else {
         $response['success'] = 0;

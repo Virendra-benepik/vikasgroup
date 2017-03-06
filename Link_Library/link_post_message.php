@@ -68,7 +68,7 @@ if (!empty($_POST)) {
     } else {
         $like_val = 'Yes';
     }
-
+//echo $like;
     $comment = $_POST['comment'];
     if (!isset($comment) && $comment != 'COMMENT_YES') {
         $comment = 'COMMENT_NO';
@@ -76,13 +76,14 @@ if (!empty($_POST)) {
     } else {
         $comment_val = 'Yes';
     }
+	//echo $comment;
     $push_noti = $_POST['push'];
     if (!isset($push_noti) && $push_noti != 'PUSH_YES') {
         $PUSH_NOTIFICATION = 'PUSH_NO';
     } else {
         $PUSH_NOTIFICATION = 'PUSH_YES';
     }
-
+//echo $PUSH_NOTIFICATION;
     /*     * ******************************************** like push selection end ***************************************** */
 
 //echo $PUSH_NOTIFICATION;
@@ -150,18 +151,21 @@ $device = 1;
 
 
     /*     * *************************get group admin uuid  form group admin table if user type not= all *************************** */
-    if ($User_Type != 'All') {
-        $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+ 
+      if ($User_Type != 'All') {
+  
+       // $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
 
 
-        $adminuuid = json_decode($groupadminuuid, true);
+       // $adminuuid = json_decode($groupadminuuid, true);
        /*  echo "hello groupm admin id";
           echo "<pre>";
           print_r($adminuuid)."<br/>";
           echo "</pre>";*/
          
 
-        $allempid = array_merge($token, $adminuuid);
+        //$allempid = array_merge($token, $adminuuid);
+        $allempid = array_merge($token);
         /* echo "<pre>";
 		 echo "employee and admin";
           print_r($allempid);
@@ -177,7 +181,7 @@ $device = 1;
     } else {
         $allempid1 = $token;
     }
-
+  
     /*     * ******* insert into post sent to table for analytic sstart************ */
 
     $total = count($allempid1);
@@ -197,10 +201,10 @@ $device = 1;
     /*     * *** get all registration token  for sending push **************** */
     $reg_token = $push->getGCMDetails($allempid1, $clientid);
     $token1 = json_decode($reg_token, true);
-   /* echo "----regtoken------";
+    /*echo "----regtoken------";
       echo "<pre>";
       print_r($token1);
-      echo "<pre>"; */
+      echo "<pre>";*/ 
 
     /*     * *******************Create file of user which this post send  start******************** */
     $val[] = array();
@@ -234,14 +238,18 @@ $device = 1;
         }
 
         $data = array('Id' => $maxid, 'Title' => $POST_TITLE, 'Content' => $POST_CONTENT, 'SendBy' => $BY, 'Picture' => $hrimg, 'Date' => $post_date, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
+		
+		//print_r($data);
+		
 //echo "hello";
 //echo'<pre>';print_r($idsIOS);die;
         $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
         $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
         $rt = json_decode($revert, true);
 		
-		//print_r($rt);
-		//print_r($IOSrevert);
+		/*echo "<pre>";
+		print_r($rt);
+		print_r($IOSrevert);*/
 				
 //echo $IOSrevert;
         if ($rt['success'] == 1) {

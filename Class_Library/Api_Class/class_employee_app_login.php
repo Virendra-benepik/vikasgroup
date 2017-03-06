@@ -15,21 +15,30 @@ class LoginUser {
 
     /*     * ************************* dIf Valid the Api Returns the data of user needed by client  ************************************* */
 
-    function detectValidUser($packageName = '', $username, $password) {
+    function detectValidUser($packageName, $username, $password, $usertype) {
 //        echo "pack-".$packageName."\n";
 //        echo "use=".$username."\n";
 //       echo "passs-".$password."\n";
+	if(!empty($usertype)){
         try {
-            $query = "select udp.userDOB,udp.userFatherName,udp.userMothername,udp.userSpouseName,udp.childrenName,ud.accessibility, bcd.defaultLocation, bcd.client_id,bcd.androidAppVersion,bcd.iosAppVersion, ASCII(SUBSTRING(bcd.defaultLocation, 1, 1)) as cityCode,bcd.clientType,if(bcd.logoImageName IS NULL or bcd.logoImageName='', '', concat('" . site_url . "',bcd.logoImageName)) as  logoImageName,if(bcd.welcomeImageName IS NULL or bcd.welcomeImageName='', '', concat('" . site_url . "',bcd.welcomeImageName)) as welcomeImageName,bcd.googleApiKey,ud.employeeId,ud.firstName,ud.middleName,ud.lastName,ud.emailId,ud.validity,ud.department,ud.designation, if(udp.userImage IS NULL or udp.userImage='','', concat('" . site_url . "',udp.userImage)) as  userImage from Tbl_EmployeeDetails_Master as ud join  Tbl_ClientDetails_Master as bcd on bcd.client_id = ud.clientId join Tbl_EmployeePersonalDetails as udp on udp.employeeId = ud.employeeId where (UPPER(ud.employeeCode)=:ecode or ud.contact=:ecode) and ud.password = :password and ud.status = 'Active' and bcd.status = 'Active'";
+            $query = "select udp.userDOB,udp.userFatherName,udp.userMothername,udp.userSpouseName,udp.childrenName,ud.accessibility, bcd.defaultLocation, bcd.client_id,bcd.androidAppVersion,bcd.iosAppVersion, ASCII(SUBSTRING(bcd.defaultLocation, 1, 1)) as cityCode,bcd.clientType,if(bcd.logoImageName IS NULL or bcd.logoImageName='', '', concat('" . site_url . "',bcd.logoImageName)) as  logoImageName,if(bcd.welcomeImageName IS NULL or bcd.welcomeImageName='', '', concat('" . site_url . "',bcd.welcomeImageName)) as welcomeImageName,bcd.googleApiKey,ud.employeeId,ud.firstName,ud.middleName,ud.lastName,ud.emailId,ud.validity,ud.department,ud.designation,ud.contact,ud.companyName, if(udp.userImage IS NULL or udp.userImage='','', concat('" . site_url . "',udp.userImage)) as  userImage from Tbl_EmployeeDetails_Master as ud join  Tbl_ClientDetails_Master as bcd on bcd.client_id = ud.clientId join Tbl_EmployeePersonalDetails as udp on udp.employeeId = ud.employeeId where ((UPPER(ud.employeeCode)=:ecode) or (UPPER(ud.emailId)=:ecode)) and ud.password = :password and ud.status = 'Active' and bcd.status = 'Active' and bcd.packageName= :pack";
 
-            $password1 = md5($password);
+            if ($usertype == "Guest") {
+                $query .= " and ud.accessibility='guestuser'";
+            }else{
+                $query .= " and (ud.accessibility='User' or ud.accessibility='SubAdmin' or ud.accessibility='Admin')";
+            }
+            
+            $username1 = strtoupper(trim($username));
+            $password1 = md5(trim($password));
+            $packageName = strtoupper(trim($packageName));
             $stmt = $this->db_connect->prepare($query);
-            $stmt->bindParam(':ecode', trim(strtoupper($username)), PDO::PARAM_STR);
-            $stmt->bindParam(':password', trim($password1), PDO::PARAM_STR);
-          //  $stmt->bindParam(':pack',trim(strtoupper($packageName)), PDO::PARAM_STR);
+            $stmt->bindParam(':ecode', $username1, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $password1, PDO::PARAM_STR);
+            $stmt->bindParam(':pack', $packageName, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-               // print_r($result);die;
+                // print_r($result);die;
                 if ($result) {
                     $response = array();
                     $response["success"] = 1;
@@ -50,24 +59,28 @@ class LoginUser {
             $response["success"] = 0;
             $response["message"] = "Some Error Occured Please Try Again Later To Report Please write to us at info@benepik.com";
             $response["posts"] = $e;
-            return $response;
         }
+        }else{
+	    $response["success"] = 0;
+ 	    $response["message"] = "Usertype not defined";
+        }
+        return $response;
     }
 
     /*     * ****************************** this is for force update ******************************** */
-    
+
     function forceValidUserUpdation($clientid, $uid) {
         //  echo "client id = ".$clientid;
         // echo "user id -".$uid;
         try {
-            $query = "select ud.firstName,bcd.client_id, ASCII(SUBSTRING(bcd.defaultLocation, 1, 1)) as cityCode,epd.userFatherName,epd.userMotherName,epd.userSpouseName,epd.childrenName,epd.userCompanyname, concat('" . site_url . "',epd.userImage) as  userImage,bcd.iosAppVersion,bcd.androidAppVersion,epd.userDOB,epd.emailId, ud.accessibility, ud.employeeCode, ud.validity from Tbl_EmployeeDetails_Master as ud join  Tbl_ClientDetails_Master as bcd on bcd.client_id = ud.clientId join Tbl_EmployeePersonalDetails as epd where ud.employeeId =:uid and ud.status = 'Active' and bcd.status = 'Active' and bcd.client_id = :cid and epd.clientId = :cid and epd.employeeId = :uid";
+            $query = "select ud.firstName,bcd.client_id, ASCII(SUBSTRING(bcd.defaultLocation, 1, 1)) as cityCode,epd.userFatherName,epd.userMotherName,epd.userSpouseName,epd.childrenName,ud.companyName, if(epd.userImage IS NULL or epd.userImage='','',concat('" . site_url . "',epd.userImage)) as  userImage,bcd.iosAppVersion,bcd.androidAppVersion,epd.userDOB,epd.emailId, ud.accessibility, ud.employeeCode, ud.validity from Tbl_EmployeeDetails_Master as ud join  Tbl_ClientDetails_Master as bcd on bcd.client_id = ud.clientId join Tbl_EmployeePersonalDetails as epd where ud.employeeId =:uid and ud.status = 'Active' and bcd.status = 'Active' and bcd.client_id = :cid and epd.clientId = :cid and epd.employeeId = :uid";
 
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':uid', $uid, PDO::PARAM_STR);
             $stmt->bindParam(':cid', $clientid, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                // print_r($result);
+                //  print_r($result);
                 $ert = count($result);
                 //  echo "ert = ".$ert;
                 if ($ert > 0) {

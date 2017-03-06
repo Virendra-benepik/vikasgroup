@@ -14,7 +14,7 @@ var queryParams = "&clientid="+clientId +"&groupid="+groupId;
 
 console.log(queryParams);
 //var url = "http://admin.benepik.com/employee/virendra/Mahle_AdminPanel/Link_Library/link_update_client.php?callback=JSON_CALLBACK"+queryParams;
-var url = "http://52.66.21.120/Haier/Link_Library/link_update_client.php?callback=JSON_CALLBACK"+queryParams;
+var url = "http://52.66.130.250/Benepik_testing/vikasgroup/Link_Library/link_update_client.php?callback=JSON_CALLBACK"+queryParams;
 
 $http.jsonp(url)
 .success(function(data){
@@ -74,7 +74,7 @@ $scope.choices.splice(lastItem);
 $scope.values = [];
 
 //var url = "http://admin.benepik.com/employee/virendra/Mahle_AdminPanel/Link_Library/link_get_client_demography.php?callback=JSON_CALLBACK"+queryParams;
-var url = "http://52.66.21.120/Haier/Link_Library/link_get_client_demography.php?callback=JSON_CALLBACK"+queryParams;
+var url = "http://52.66.130.250/Benepik_testing/vikasgroup/Link_Library/link_get_client_demography.php?callback=JSON_CALLBACK"+queryParams;
 
 $http.jsonp(url)
 .success(function(data){

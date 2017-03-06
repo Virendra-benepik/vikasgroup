@@ -99,8 +99,11 @@ $count = count($val);
     </a>-->
 
                                             <a target="_blank" href="full_view_news.php?idpost=<?php echo $val[$i]['post_id'] ?>" style="color:#00a4fd;margin-left:29px !important;">View</a>
-
-                                            <a href="Link_Library/post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>" style="color:#CE3030;margin-left:30px !important">
+											
+											<a target="_blank" href="update_news.php?idpost=<?php echo $val[$i]['post_id'] ?>&page=news" style="color:#00a4fd;margin-left:29px !important;">Edit</a>
+											
+											 <!--<a target="_blank" href="update_news.php?idpost=<?php echo $val[$i]['post_id'] ?>&page=news" style="color:#00a4fd;margin-left:29px !important;">Edit</a>-->
+                                            <a href="Link_Library/link_post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>" style="color:#CE3030;margin-left:30px !important">
 
                                                 <?php echo $action; ?>
 

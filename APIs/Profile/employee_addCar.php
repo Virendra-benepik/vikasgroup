@@ -46,7 +46,7 @@ if (file_exists("../../Class_Library/Api_Class/class_car.php") && include("../..
            // $mailid = "webveeru@gmail.com";
             $sub = "Car details has been added";
 
-            $mailMessage.="A new Car Has Been Added";
+            $mailMessage ="A new Car Has Been Added";
             $mailMessage.="<br/><br/><br/>";
             $mailMessage.="Email :" . $response['family']['posts']['emailId'];
             $mailMessage.="<br/>";

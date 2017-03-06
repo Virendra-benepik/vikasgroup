@@ -1,5 +1,4 @@
 <?php
-
 require_once('../Class_Library/class_create_group.php');
 require_once('../Class_Library/class_get_useruniqueid.php');   // this class for getting user unique id
 
@@ -53,9 +52,9 @@ $groupadmin = $obj->createGroupAdmin($clientid,$groupmaxid,$uniqueuserid,$create
 $adminmaxid = $obj->getAdminMaxId();
 //echo "admin max id :- ".$adminmaxid."<br/>";
 $subadmin = $obj->createSubAdmin($adminmaxid,$clientid,$uniqueuserid,$channel_date,$emailid);
-/*echo "<pre>";
-print_r($subadmin);
-echo "</pre>";*/
+//echo "<pre>";
+//print_r($subadmin);
+//echo "</pre>";
 }
 //echo $groupadmin['msg'];
 /************************** insert group  demo graphy ******************************************/
@@ -94,6 +93,7 @@ $result = $obj->createGroupDemoGraphy($clientid,$groupmaxid,$valdemo1[0],$valdem
 if($groupadmin['success'] == 1)
 {
 echo "<script>alert('Group successfully created')</script>";
+//
 echo "<script>window.location='../addchannel.php?clientid=".$clientid."'</script>";
 //print_r($result);
 }

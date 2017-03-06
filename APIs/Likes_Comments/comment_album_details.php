@@ -53,12 +53,12 @@ if (!empty($jsonArr['clientid'])) {
     $POST_TITLE = "Comment";
     $POST_IMG = "";
     $POST_TEASER = "";
-    $POST_CONTENT = substr($createComment['posts'][0]['firstname'] . $createComment['posts'][0]['lastname'] . " commented " . $createComment['posts'][0]['content'], 0, 30) . '.....';
+    $POST_CONTENT = substr($createComment['posts'][0]['firstname'] . $createComment['posts'][0]['lastname'] . " commented " . '"'.$createComment['posts'][0]['content'], 0, 30) . '....."';
     $DATE = date('Y-m-d H:i:s A');
     $FLAG = $flag;
     $fullpath = '';
     $flag_name = "Comment : ";
-    $BY = $createComment['posts'][0]['firstname'] . $createComment['posts'][0]['lastname'];
+    $BY = $createComment['posts'][0]['firstname'] ." ". $createComment['posts'][0]['lastname'];
 
     /*     * ******************************************** like push selection start ***************************************** */
     $like = 'LIKE_YES';
@@ -109,10 +109,13 @@ if (!empty($jsonArr['clientid'])) {
 //echo "within all user type".$User_Type."<br/>";
         $allempid1 = $token;
     }
+	//print_r($allempid1);
 
     /**     * ** get all registration token  for sending push **************** */
     $reg_token = $push->getGCMDetails($allempid1, $clientid);
     $token1 = json_decode($reg_token, true);
+	
+	//print_r($token1);
 
     /*     * *******************Create file of user which this post send  start******************** */
     $val = array();
@@ -128,7 +131,7 @@ if (!empty($jsonArr['clientid'])) {
     @fclose($file);
     /*     * *******************Create file of user which this post send End******************** */
 
-    $hrimg = SITE_URL . $image;
+    $hrimg = dirname(SITE_URL)."/" . $image;
     $sf = "successfully send";
     $ids = array();
     $idsIOS = array();
@@ -145,12 +148,18 @@ if (!empty($jsonArr['clientid'])) {
     $content = str_replace("\r\n", "", strip_tags($POST_CONTENT));
     $data = array('Id' => $POST_ID, 'Title' => $POST_TITLE, 'Content' => $POST_CONTENT, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $DATE, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
 
-    $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'], $device);
-    $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
+	//print_r($data);
+	
+    //$IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'], $device);
+    //$revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
 //
-    $rt = json_decode($revert, true);
-    $iosrt = json_decode($IOSrevert, true);
+    //$rt = json_decode($revert, true);
+    //$iosrt = json_decode($IOSrevert, true);
 
+	//echo "<pre>";
+	//print_r($rt);
+	//print_r($iosrt);
+	
     $response = $createComment;
 } else {
     $response['success'] = 0;

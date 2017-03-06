@@ -29,7 +29,9 @@ if (!empty($_POST)) {
         if ($suc == 1) {
             move_uploaded_file($filtempname, $target . $upload_file_name);
             echo "<script>alert('data successfully uploaded')</script>";
-            echo "<script>window.location='../add_user.php'</script>";
+           echo "<script>window.location='../add_user.php'</script>";
+            //print_r($result);
+            die;
         } else {
             echo $message;
         }
@@ -40,7 +42,7 @@ if (!empty($_POST)) {
 //        echo '<pre>';print_r($_POST);die;
         extract($_POST);
 
-        $result = $obj->userForm($clientid, $user, $first_name, $middle_name, $last_name, $emp_code, $dob, $fathername, $email_id, $designation, $department, $contact, $location, $branch, $grade, $gender);
+        $result = $obj->userForm($clientid, $user, $first_name, $middle_name, $last_name, $emp_code, $dob, $fathername, $email_id, $designation, $department, $contact, $location, $branch, $grade, $gender,$companyname);
         print_r($result);
     }
 } else {

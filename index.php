@@ -8,7 +8,7 @@ $obj = new Auth();
 <html lang="en">
     <head>
         <title>Vikas Group :- Login</title>
-        <link rel="shortcut icon" href="images/m.png" />
+        <link rel="shortcut icon" href="img/launchicon.png" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">

@@ -189,17 +189,20 @@ $device = 1;
 
 
         /*         * *************************get group admin uuid  form group admin table if user type not= all *************************** */
+       
+        
         if ($User_Type != 'All') {
 //echo "within not all user type".$User_Type."<br/>";
-            $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
-            $adminuuid = json_decode($groupadminuuid, true);
+        //    $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+        //    $adminuuid = json_decode($groupadminuuid, true);
             /* echo "hello groupm admin id";
               echo "<pre>";
               print_r($adminuuid)."<br/>";
               echo "</pre>";
               echo "--------------all employee id---------"; */
 
-            $allempid = array_merge($token, $adminuuid);
+            //$allempid = array_merge($token, $adminuuid);
+            $allempid = array_merge($token);
             /* echo "<pre>";
               print_r($allempid);
               echo "<pre>";
@@ -234,10 +237,10 @@ $device = 1;
         /*         * *** get all registration token  for sending push **************** */
         $reg_token = $push->getGCMDetails($allempid1, $clientid);
         $token1 = json_decode($reg_token, true);
-        /* echo "----regtoken------";
+         /*echo "----regtoken------";
           echo "<pre>";
           print_r($token1);
-          echo "<pre>"; */
+          echo "<pre>";*/ 
         /*         * *******************Create file of user which this post send  start******************** */
         $val[] = array();
         foreach ($token1 as $row) {
@@ -278,26 +281,36 @@ $device = 1;
 
             $data = array('Id' => $POST_ID, 'Title' => $POST_TITLE, 'Content' => $about, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $DATE, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
 
+			//print_r($data);
+			
             //echo '<pre>';print_r($ids);die;
             $device = "Panel";
             $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $getpush_keys['iosPemfile'],$device);
             $revert = $push->sendGoogleCloudMessage($data, $ids, $getpush_keys['googleApiKey']);
             $rt = json_decode($revert, true);
 
+			//echo "<pre>";
+			//print_r($IOSrevert);
+			//print_r($rt);
+			
             if ($rt) {
                 if ($dev == 'd1') {
                     echo "<script>alert('Post Successfully Send');</script>";
                     echo $rt;
                 } else {
                     echo "<script>alert('Post Successfully Send');</script>";
-//print_r($rt);
                     echo "<script>window.location='../create_onboard.php'</script>";
-echo $revert;
+
                 }
             }
+			else
+			{
+				 echo "<script>alert('Post Successfully Send');</script>";
+				 echo "<script>window.location='../create_onboard.php'</script>";
+			}
         } else {
             echo "<script>alert('Post Successfully Send');</script>";
-          //  echo "<script>window.location='../create_onboard.php'</script>";
+            echo "<script>window.location='../create_onboard.php'</script>";
         }
 
 

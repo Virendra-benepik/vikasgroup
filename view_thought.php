@@ -6,8 +6,9 @@ require_once('Class_Library/class_get_useruniqueid.php');
 $gt = new UserUniqueId();
 $thought_obj = new ThoughtOfDay();
 $clientid = $_SESSION['client_id'];
-
-$result = $thought_obj->thoughtDetails($clientid);
+$user_uniqueid = $_SESSION['user_unique_id'];
+$user_type = $_SESSION['user_type'];
+$result = $thought_obj->thoughtDetails($clientid,$user_uniqueid,$user_type);
 $getcat = json_decode($result,true);
 //print_r($result);
 $value = $getcat['posts'];
@@ -45,10 +46,10 @@ $count = count($value);
                                                 
                                                 <th>Thought Quote</th>
                                                 <th>Created by</th>
-                                                <th>Created Date</th>
-                                                <!--<th>Status</th>
-                                                <th>Action</th>
-                                                 <th>Salary</th>-->
+                                                <th>Status</th>
+												<th>Created Date</th>
+												<th>Action</th>
+                                                 <!--<th>Salary</th>-->
                                             </tr>
                                         </thead>
                                         <tfoot>
@@ -57,10 +58,10 @@ $count = count($value);
                                                 
                                                 <th>Thought Quote</th>
                                                 <th>Created by</th>
+												<th>Status</th>
                                                 <th>Created Date</th>
-                                                <!--<th>Status</th>
                                                 <th>Action</th>
-                                                 <th>Salary</th>-->
+                                                <!--<th>Salary</th>-->
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -73,6 +74,25 @@ if($imagevalue!="")
 {$valueimage = $imagevalue; }
 else
 {$valueimage = "Poll/poll_img/dummy.png";}
+
+$thoughtstatus = $value[$i]['status'];
+if($thoughtstatus == 1)
+{
+	$act = 'Publish';
+}
+else
+{
+	$act = 'Unpublish';
+}
+
+if($thoughtstatus == 1)
+{
+	$action = 'Unpublish';
+}
+else
+{
+	$action = 'Publish';
+}
 
                                      ?>       	
 					      <tr>
@@ -99,7 +119,19 @@ echo $value[$i]['message'];
                                               
                                                 
                                                 ?></td>
-                                   <td class="padding_right_px"><?php echo $value[$i]['publishingTime']; ?></td>                                             
+								<td class="padding_right_px"><?php echo $act; ?></td>
+                                   <td class="padding_right_px"><?php echo $value[$i]['publishingTime']; ?></td>         
+								   <!--<td  style="width:16% !important;">-->
+								   <td>
+								   
+								   <a target="_blank" href="update_thought.php?idpost=<?php echo $value[$i]['thoughtId']; ?>&page=thought" style="color:#00a4fd;margin-left:29px !important;">Edit</a>
+								   
+								   <a href="Link_Library/link_thought_status.php?postid=<?php echo $value[$i]['thoughtId']; ?>&poststatus=<?php echo $value[$i]['status']; ?>" style="color:#CE3030;margin-left:30px !important">
+
+                                                <?php echo $action; ?>
+
+                                            </a>
+								    </td>
                                                 <!--<td><?php echo $value[$i]['status'];  ?></td>
                                              <td>                                                                                        
 <a href="view_poll_result.php?pollid=<?php echo $value[$i]['pollId']; ?>&clientid=<?php echo $value[$i]['clientId']; ?>"> <button type="button"class="btn btn-sm  btn-default"><span class="glyphicon glyphicon-filter"></span>Result</button></a>

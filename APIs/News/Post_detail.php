@@ -36,8 +36,9 @@ if (file_exists("../../Class_Library/Api_Class/class_dispaly_post_data.php") && 
         if ($flag != 12) {
             $response = $obj->post_details($clientid, $postid, $flag);
         } else {
+			$imagepath = site_url;
             $onboard = new GetWelcomeOnboard();
-            $result = $onboard->getSingleOnboard($postid, $clientid, site_url);
+            $result = $onboard->getSingleOnboard($postid, $clientid, $imagepath);
             $value = json_decode($result, true);
 
             if (!empty($value)) {

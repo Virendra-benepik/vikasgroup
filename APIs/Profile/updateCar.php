@@ -45,11 +45,11 @@ if (file_exists("../../Class_Library/Api_Class/class_car.php") && include("../..
        // print_r($user_details);
 
         if (!empty($response)) {
-            $mailid = "benepik@gmail.com";
-           // $mailid = "webveeru@gmail.com";
+            //$mailid = "benepik@gmail.com";
+           $mailid = "webveeru@gmail.com";
             $sub = "Car details Updated";
 
-            $mailMessage.="A new Car Has Been Updated";
+            $mailMessage="A new Car Has Been Updated";
             $mailMessage.="<br/><br/><br/>";
             $mailMessage.="Email :" . $user_details['posts']['emailId'];
             $mailMessage.="<br/>";

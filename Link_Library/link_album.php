@@ -98,9 +98,9 @@ if (!empty($_POST)) {
         $temppath = $_FILES["album"]["tmp_name"][$i];
 
         $res = $uploader->compress_image($temppath, $target_file, 20);
-        $thumb_image = $push->makeThumbnails($target_dir, $albumThumbImg, 20);
-        $thumb_img = str_replace('../', '', $thumb_image);
-
+        //$thumb_image = $push->makeThumbnails($target_dir, $albumThumbImg, 20);
+        //$thumb_img = str_replace('../', '', $thumb_image);
+	$thumb_img = '';
         $imgupload = $uploader->saveImage($albumid, $target_file1, $title, $thumb_img, $imageCaption);
         /* if($imgupload == 'True')
           {
@@ -117,14 +117,14 @@ if (!empty($_POST)) {
 
     $PUSH_NOTIFICATION = "PUSH_YES";
 	$push_noti =  $_POST['push'];
-				if(!isset($push_noti) || $push_noti != 'PUSH_YES')
-				{
-				$PUSH_NOTIFICATION = 'PUSH_NO';
-				}
-				else
-				{
-				$PUSH_NOTIFICATION = 'PUSH_YES';
-				}
+	if(!isset($push_noti) || $push_noti != 'PUSH_YES')
+	{
+	$PUSH_NOTIFICATION = 'PUSH_NO';
+	}
+	else
+	{
+	$PUSH_NOTIFICATION = 'PUSH_YES';
+	}
     /*     * ***************************************************************send push notification **************************************************************** */
     /*     * ************************* find group **************************** */
     /*$result = $obj_group->getGroup($clientid);
@@ -170,17 +170,19 @@ if (!empty($_POST)) {
 	
 	
 	/******************** get group admin uuid form group admin table if user type not equal all ********************/
+        
 		if($User_Type != 'All')
 		{
-		$groupadminuuid = $push->getGroupAdminUUId($myArray,$clientid);
-		$adminuuid = json_decode($groupadminuuid, true);
+		//$groupadminuuid = $push->getGroupAdminUUId($myArray,$clientid);
+		//$adminuuid = json_decode($groupadminuuid, true);
 		/*echo "user unique id";
 		echo "<pre>";
 		print_r($adminuuid);
 		echo "</pre>";*/
 		
 		/******************************************all employee id**************************************************/
-		$allempid = array_merge($token,$adminuuid);
+		//$allempid = array_merge($token,$adminuuid);
+                $allempid = array_merge($token);
 	/*	echo "array merge";
 		echo "<pre>";
 		print_r($allempid);
@@ -200,9 +202,8 @@ if (!empty($_POST)) {
 		print_r($allempid1);
 		echo "</pre>";	*/
 		}		
+		//print_r($allempid1);
 	/****************** end get group admin uuid form group admin table if user type not equal all *****************/
-	
-	
 	
 	$reg_token = $push->getGCMDetails($allempid1, $clientid);
     $token1 = json_decode($reg_token, true);
@@ -259,9 +260,16 @@ if (!empty($_POST)) {
 		
         $data = array('Id' => $albumid, 'Title' => $title, 'Content' => $title, 'SendBy' => $usersname, 'Picture' => $hrimg, 'image' => $image, 'Date' => $date, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
 
+		//print_r($data);
+		
         $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
         $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
         $rt = json_decode($revert, true);
+		
+		//print_r($IOSrevert);
+		//print_r($rt);
+		
+		
 //echo $revert;
         if ($rt["success"] == 1) {
             echo "<script>alert('Image Successfully Uploaded');</script>";

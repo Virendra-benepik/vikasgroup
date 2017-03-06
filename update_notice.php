@@ -9,7 +9,7 @@
 function check() 
 {
 
-        if (confirm('Are You Sure, You want to send this notice to all locations ?')) 
+        if (confirm('Are You Sure, You want to publish this notice?')) 
        {
            return true;
        } else {
@@ -17,8 +17,20 @@ function check()
        }
 }
 </script>
-
-	<!-------------------------------SCRIPT END FROM HERE   --------->	
+<script>
+function ValidateNotice()
+{
+    var noticetitle = document.form1.noticetitle;
+    if (noticetitle.value == "")
+    {
+        window.alert("Please Enter Title.");
+        noticetitle.focus();
+        return false;
+    }
+	return true;
+}
+</script>
+<!-------------------------------SCRIPT END FROM HERE   --------->	
 	
                
 			   <div class="side-body padding-top">
@@ -64,7 +76,7 @@ function check()
 		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 	<!----------------------------------------message  start from here---------------------------------------->	
             <div class="row">
-			<form role="form" method="post" action="Link_Library/link_update_notice.php" >
+			<form role="form" name="form1" method="post" action="Link_Library/link_update_notice.php" onsubmit="return check();" >
 			<input style="color:#2d2a3b;" type="hidden" name = "flag" value="2">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="form-group">
@@ -89,7 +101,7 @@ function check()
 	</script>   <!--- this is for ckeditor   ----->
 			   
    <div class="form-group col-sm-12">
-<input style="color:#2d2a3b;"type="submit" name="update_notice" class="btn btn-md btn-info publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Update Notice"/>
+<input style="color:#2d2a3b;"type="submit" name="update_notice" class="btn btn-md btn-info publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Update Notice" onclick="return ValidateNotice();"/>
   </div>	
 			     </div>
 				</form>

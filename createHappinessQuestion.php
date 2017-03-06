@@ -1,10 +1,11 @@
-<?php include 'navigationbar.php'; ?>
+<?php  include 'navigationbar.php'; ?>
 <?php include 'leftSideSlide.php'; ?>
 <?php
-
+error_reporting(E_ALL); ini_set('display_errors', 1);
+require_once('Class_Library/class_HappinesQuestion.php');
+$survey_obj1 = new HappinessQuestion();
 ?>
 <!-------------------------------SCRIPT START FROM HERE   --------->	
-
 <script src="angularjs/poll_option.js"></script>
 
 <link rel="stylesheet" href="css/thought.css" />
@@ -53,10 +54,7 @@
     });</script>
 
 <div id="poll_div" >
-
-
-
-
+    
     <div class="row">
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
@@ -107,16 +105,26 @@
 
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
-                    <h3><strong>Create New Happiness Survey</strong></h3><hr>
+                    <h3><strong>Create Survey</strong></h3><hr>
                 </div>
 
             </div>
-            <br>
-
-
+      <?php   
+      $client = $_SESSION['client_id'];;
+      date_default_timezone_set('Asia/Calcutta');
+          $post_date = date("Y-m-d");
+      $countsurvey = $survey_obj1->checkSurveyAvailablity($client,$post_date);
+    
+    $value1 = json_decode($countsurvey,true);
+    if($value1['success'] == 1)
+    {
+        echo '<h4 style="Color:red"> One Survey already Live Please Expire this before creating New</h4>';
+    }
+   
+?>
             <div class="row">
 
-                <form role="form" action="Link_Library/link_create_happinessquestion.php" method="post" enctype="multipart/form-data">
+ <form role="form" action="Link_Library/link_create_happinessquestion.php" method="post" enctype="multipart/form-data">
 
                     <input style="color:#2d2a3b;" type="hidden" name = "flag" value="4">
                     <input style="color:#2d2a3b;" type="hidden" name = "device" value="d2">
@@ -124,12 +132,18 @@
                     <input style="color:#2d2a3b;" type="hidden" name = "googleapi" value="<?php echo $_SESSION['gpk']; ?>">
                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
 
-                        <!----------------------------------- form picture post staryt here ------------------------------------------>		
+ <!--------------- form picture post start here ------------------------------------------>		
                         <div class="row">
                             <div class="col-md-12">
                                 <br/>
 
                                 <div class="col-md-12">
+                                    
+                                      <div class="form-group">
+                                            <label for="Articlecontent">Survey Title</label>
+                        <input style="color:#2d2a3b;" type="text" class="form-control" name="surveytitle" id="surveytitle" required /> 
+                                        </div>
+                                    
                                   <div class="form-group">
                                     <label for="select ans"> Comment (Enable/Disable) </label>
                                     <div>
@@ -151,7 +165,7 @@
                                     <div ng-controller="ctrl">
                                         <div class="form-group">
                                             <label for="Articlecontent">Please Enter no. of Question (required only numbers)</label>
-                                            <input min="0" max="3" style="color:#2d2a3b;" ng-model="totalNumberOfOptions" type="number" ng-change="makeArray()" class="form-control" name="option" id="option" /> 
+                                            <input min="0" max="5" style="color:#2d2a3b;" ng-model="totalNumberOfOptions" type="number" ng-change="makeArray()" class="form-control" name="option" id="option" /> 
                                         </div>
                                         <br>  
                                         <br>
@@ -167,9 +181,6 @@
                                             <br/>
                                         </div>
 
-
-
-
                                     </div>   
                                 </div>
 
@@ -178,7 +189,7 @@
 
 
 
-                                <!------------Abobe script for show textbox on select radio button---------------------->
+           <!------------Abobe script for show textbox on select radio button---------------------->
 
                                 <div id ="everything" ng-show=" content == 'Selected'">
                                     <input style="color:#2d2a3b;" type='hidden' name="useruniqueid" id="userid" value="<?php echo $_SESSION['user_unique_id']; ?>">
@@ -206,7 +217,7 @@
                             </div>
                         </div>
                     </div>
-                    <!----------------------------------- form picture post end here ------------------------------------------>		
+ <!----------------------------------- form picture post end here ------------------------------------------>		
 
 
                     <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
@@ -219,7 +230,7 @@
                                 <p class="publication_subheading">PUBLISH DATE </p>
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="rightpublicationdiv6">
-                                        <p class="publication_leftcontent" data-toggle="tooltip" data-placement="left"  title="Publish Date.. Enable/Disable In Case of Enable(On) Add publish Date of respective post">Immediately ?</p>
+                                        <p class="publication_leftcontent" data-toggle="tooltip" data-placement="left"  title="Publish Date.. Enable/Disable In Case of Enable(On) Add publish Date of respective post if it is off than today's date is Publish Date ">Immediately ?</p>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
 
@@ -229,7 +240,7 @@
 
                                         </div>
 
-                                    </div>
+                                      </div>
                                 </div>
                                 <script>
                                     $(document).ready(function () {
@@ -251,7 +262,7 @@
                                 <p class="publication_subheading">EXPIRY DATE </p>
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
-                                        <p class="publication_leftcontent" data-toggle="tooltip" data-placement="left"  title="Expeiry Date.. Enable/Disable In Case of Enable(On) Add Expeiry Date of respective post">Not Scheduled ?</p>
+                                        <p class="publication_leftcontent" data-toggle="tooltip" data-placement="left"  title="Expeiry Date.. Enable/Disable In Case of Enable(On) Add Expeiry Date of respective post if it is off than expiry date is 1 month later from current date ">Not Scheduled ?</p>
                                     </div>
                                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
 
@@ -273,7 +284,7 @@
                                         });
                                     });</script>
                                 <div id="shortUnpublicationdivcontent" >
-                                    <input style="color:#2d2a3b;" type="date" class="form-control" style="width: 100% !important;" name="publish_date2" placeholder= "YYYY-MM-DD"/><br>
+                                    <input style="color:#2d2a3b;" type="date" class="form-control" style="width: 100% !important;" name="publish_date2" placeholder= "YYYY-MM-DD" /><br>
 
                                 </div>
                             </div>
@@ -288,12 +299,8 @@
 
                             <div class="row">
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 "id="rightpublicationdiv6 ">
-                                    <p class="publication_leftcontent "data-toggle="tooltip" data-placement="left" title="Push Notification.. Enable/Disable In Case of Enable(On) User Receive Notification of respective post">Push ?</p>
-
-
-
-
-                                </div>
+                                    <p class="publication_leftcontent "data-toggle="tooltip" data-placement="left" title="Publish Date.. Enable/Disable In Case of Enable(On) User Receive Notification of respective post">Push ?</p>
+                               </div>
                                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
                                     <div class="checkbox"style="margin-top:-10px;">
                                         <label><input type="checkbox" data-toggle="toggle" name="push" value="PUSH_YES" checked></label></div>

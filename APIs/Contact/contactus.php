@@ -47,15 +47,15 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
             $sub = "Thanks For Contacting Us ";
             $msg1.="Dear " . $username . ",";
             $msg1.="<br/>";
-            $msg1.="<br/>Thanks for contacting Haier Connect. We have received your message";
+            $msg1.="<br/>Thanks for contacting Vikas Live. We have received your message";
             $msg1.="<br/><br/>";
             $msg1.="For your referance, here is a copy of your message:";
             $msg1.="<br/>";
             $msg1.="<br/>Subject : " . $subject;
             $msg1.="<br/>Message : " . $message;
             $msg1.="<br/><br/><br/><br/>";
-            $msg1.="Regards, <br/> Team Haier Connect";
-            $from = "From: Haier Connect<" . $dedi . ">";
+            $msg1.="Regards, <br/> Team Vikas Live";
+            $from = "From: Vikas Live<" . $dedi . ">";
 
             if ($usermail != "") {
                 $mesg->forMail($usermail, $sub, $msg1, $from);
@@ -65,8 +65,8 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
 
             /*             * ********************************* mail to admin ********************************************* */
             $to = "info@benepik.com, benepik@gmail.com";
-//$to = "webveeru@gmail.com";
-            $subject = "Contact Us Submitted on Haier Connect ";
+//$to = "monikagupta05051994@gmail.com";
+            $subject = "Contact Us Submitted on Vikas Live ";
 
             $message = "
             <html>
@@ -74,8 +74,8 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
             <title>HTML email</title>
             </head>
             <body>
-            <p>Dear Team Haier Connect,</p>
-            <p>Mr " . $username . ", has tried to contact you.</p>
+            <p>Dear Team Vikas Live,</p>
+            <p>Mr/Ms " . $username . ", has tried to contact you.</p>
             <p>Email ID :- " . $usermail . "</p>
             <p>Contact Number :- " . $contactno . "</p>
             <br/>
@@ -84,7 +84,7 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
             <br/>
             <br/>
             <p>Regards,</p>
-            <p>Team Haier Connect</p>
+            <p>Team Vikas Live</p>
             </body>
             </html>
             ";
@@ -95,7 +95,7 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
 
 // More headers
 
-            $headers .= 'From: Haier Connect<' . $dedi . '>' . "\r\n";
+            $headers .= 'From: Vikas Live<' . $dedi . '>' . "\r\n";
 //$headers .= 'Cc: myboss@example.com' . "\r\n";
 
             if (!mail($to, $subject, $message, $headers)) {

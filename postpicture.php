@@ -307,7 +307,7 @@ $obj = new GetGroup();
 
 
                                     <script type="text/javascript">
-                                        function showimagepreview(input) {
+                                        /*function showimagepreview(input) {
                                             if (input.files && input.files[0]) {
                                                 var filerdr = new FileReader();
                                                 filerdr.onload = function (e) {
@@ -316,11 +316,55 @@ $obj = new GetGroup();
                                                 }
                                                 filerdr.readAsDataURL(input.files[0]);
                                             }
-                                        }
+                                        }*/
+										function showimagepreview(input) 
+										{
+										if (input.files && input.files[0]) {
+										var filerdr = new FileReader();
+										filerdr.onload = function(e) {
+											//alert("hello");
+											var image = new Image();
+												//Set the Base64 string return from FileReader as source.
+													   image.src = e.target.result;
+															
+													   //Validate the File Height and Width.
+													   image.onload = function () {
+														   var height = this.height;
+														   var width = this.width;
+														   var size = parseFloat($("#filUpload")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#filUpload').val("");
+                                                    return false;
+                                                }
+												  else if (height > 1000 || width > 1000) {
+													   alert("Height and Width must not exceed 1000 X 1000 px.");
+														$('#imgprvw1').attr('src', "");
+														$('.post_img').attr('src', "");
+														 $('#filUpload').val("");
+													   return false;
+												   }
+												   else
+												   {
+													   //alert ("image gud");
+														$('#imgprvw1').attr('src', e.target.result);
+														$('.post_img').attr('src', e.target.result);
+												   }
+											}
+													
+												/*$('#imgprvw').attr('src', e.target.result);
+												$('.post_img').attr('src', e.target.result);*/
+												}
+												filerdr.readAsDataURL(input.files[0]);
+												}
+}
                                     </script>
                                     <img id="imgprvw1" alt="uploaded image preview"style="margin-bottom:5px;"/>
                                     <div>
-                                        <input type="file" name="uploadimage" id="filUpload" accept="image/*" onchange="showimagepreview(this)" multiple="true" />
+                                        <input type="file" name="uploadimage" id="filUpload" accept="image/*" onchange="showimagepreview(this)" multiple="true" /><span>(max upload size: 2 MB)</span>
                                     </div>
 
                                 </div>

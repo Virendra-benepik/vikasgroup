@@ -484,6 +484,41 @@ class Reading {
             echo $e;
         }
     }
+	
+/************************* thought sent to group *************************/
+
+ function thoughtSentToGroup($clientId, $PostId, $GroupId, $flag) {
+        $this->client = $clientId;
+        $this->postid = $PostId;
+        $this->groupid = $GroupId;
+
+        date_default_timezone_set('Asia/Calcutta');
+        $today = date("Y-m-d H:i:s");
+        try {
+            $query = "insert into Tbl_Analytic_ThoughtSentToGroup(clientId,thoughtId,groupId,sentDate)values(:cid,:pid,:gid,:today)";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);
+            $stmt->bindParam(':pid', $this->postid, PDO::PARAM_STR);
+            $stmt->bindParam(':gid', $this->groupid, PDO::PARAM_STR);
+            //$stmt->bindParam(':flag', $flag, PDO::PARAM_STR);
+            $stmt->bindParam(':today', $today, PDO::PARAM_STR);
+            $response = array();
+
+            if ($stmt->execute()) {
+                $response["success"] = 1;
+                $response["message"] = "successfully inserted data";
+                return json_encode($response);
+            } else {
+                $response["success"] = 0;
+                $response["message"] = "no inserted data";
+                return json_encode($response);
+            }
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+/***************************** end thought sent to group *****************/
 
 }
 

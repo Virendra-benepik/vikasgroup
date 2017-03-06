@@ -1,5 +1,7 @@
 <?php
-error_reporting(E_ALL); ini_set('display_errors', 1);
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (file_exists("../../Class_Library/Api_Class/class_contact_directory.php") && include_once("../../Class_Library/Api_Class/class_contact_directory.php")) {
 
 
@@ -23,13 +25,13 @@ if (file_exists("../../Class_Library/Api_Class/class_contact_directory.php") && 
     }
 
     $jsonArr = json_decode(file_get_contents("php://input"), true);
-	/*{
-		"clientid":""
-		"locationid":"",
-		"departmentid":""
-	}*/
+    /* {
+      "clientid":""
+      "locationid":"",
+      "departmentid":""
+      } */
     if (!empty($jsonArr['clientid'])) {
-		
+
         extract($jsonArr);
         $location_obj = new ContactLocation();  // create object of class cl_module.php
         $response = $location_obj->viewContactDetails($clientid, $locationid, $departmentid);

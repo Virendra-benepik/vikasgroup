@@ -334,7 +334,7 @@ $(document).ready(function(){
 <br/>
 <center><div class="form-group col-md-12">    
 <input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Preview" />
-<input type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish Now" onclick= "return check();"/>
+<input type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish" onclick= "return check();"/>
 <!---<a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info" style="text-shadow:none;font-weight:normal;" value="Priview" /></a>--->
 <!--<div class="col-xs-4 col-sm-4 col-md-2 col-lg-2" style="margin-bottom:8px;"><center>
 <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none;

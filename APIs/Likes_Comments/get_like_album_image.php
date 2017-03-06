@@ -26,9 +26,9 @@ $jsonArr = json_decode(file_get_contents("php://input"), true);
 if (!empty($jsonArr['clientid'])) {
 
     $obj = new Like();
-
+	$imagepath = site_url;
     extract($jsonArr);
-    $response = $obj->getTotalLikeANDcomment($clientid,$albumid,$imageid);
+    $response = $obj->getTotalLikeANDcomment($clientid,$albumid,$imageid,$imagepath);
 } else {
     $response['success'] = 0;
     $response['result'] = "Invalid json";

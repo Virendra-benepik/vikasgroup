@@ -26,10 +26,37 @@ function getSurveyQuestion($clientid,$uuid,$date)
                     $nstmt->bindParam(':dte', $date, PDO::PARAM_STR);
                     $nstmt->execute();
                     $welrows = $nstmt->fetchAll(PDO::FETCH_ASSOC);
-                    
-                    $response['success'] = 1;
-                    $response['msg'] = "Successfully Display data";
+                  
+                   if(count($welrows)>0)
+                   {
+                    $query1 = "select * from Tbl_Analytic_EmployeeHappiness where clientId=:cid1 and surveyId=:sid1 and useruniqueId=:uid1";
+                    $nstmt1 = $this->DB->prepare($query1);
+                    $nstmt1->bindParam(':cid1',$clientid, PDO::PARAM_STR);
+                    $nstmt1->bindParam(':sid1',$welrows[0]['surveyId'], PDO::PARAM_STR);
+                    $nstmt1->bindParam(':uid1',$uuid, PDO::PARAM_STR);
+                    $nstmt1->execute();
+                    $welrows1 = $nstmt1->fetchAll(PDO::FETCH_ASSOC); 
+                    //echo count($welrows1);
+                    if(count($welrows1)>0)
+                    {
+                        $response['surveysubmit'] = 1;
+                        $response['msg'] = "No survey available";
+                    }
+                    else{ 
+                        $response['surveysubmit'] = 0;  
+                        $response['msg'] = "Successfully Display data";
+                    }
+                 
+                    $response['success'] = 1;   
+                   
                     $response['posts'] = $welrows;
+                   }
+                   else
+                   {
+                        $response['success'] = 0;
+                    $response['msg'] = "No survey available";
+                   }
+                   
              }
              else 
                  {
@@ -41,11 +68,12 @@ function getSurveyQuestion($clientid,$uuid,$date)
        catch (PDOException $es)
        {
            $response['success'] = 0;
-                    $response['msg'] = "there is some error".$es;
+                    $response['msg'] = "there is some error please contact info@benepik.com".$es;
        }
     
     return $response;
 }
+
  function addSurveyAnswer($clientid, $employeeid, $surveyId,$noofquestion,$comment,$device,$ans)
  {
       date_default_timezone_set('Asia/Calcutta');
@@ -78,13 +106,18 @@ function getSurveyQuestion($clientid,$uuid,$date)
          
          if($ans[$i]['feedback_id'] == 's1')
              { 
-             $value = -10;
+             $value = -5;
              }
              elseif($value == 'a1')
              {
                  $value = 0;
              }
-           else {$value = 10;
+             elseif($value == 'es1')
+             {
+                 $value = 10;
+             }
+           else {
+               $value = 5;
                   }
       //   echo "this is quesid-".$key;
        //  echo "this is value - ".$value."\n";

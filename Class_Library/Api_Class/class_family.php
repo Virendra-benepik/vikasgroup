@@ -239,7 +239,7 @@ class Family {
         $site_url = site_url;
         $this->eId = $eId;
         try {
-            $query = "select department,contact,designation,location,branch,grade,firstName,middleName,lastName,userCompanyName from Tbl_EmployeeDetails_Master as edm join Tbl_EmployeePersonalDetails as epd on epd.employeeId = edm.employeeId where edm.employeeId =:eid";
+            $query = "select edm.department,edm.contact,edm.designation,edm.location,edm.branch,edm.grade,edm.firstName,edm.middleName,edm.lastName,edm.companyName from Tbl_EmployeeDetails_Master as edm join Tbl_EmployeePersonalDetails as epd on edm.employeeId = epd.employeeId where edm.employeeId =:eid";
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':eid', $this->eId, PDO::PARAM_STR);
             $stmt->execute();
@@ -273,7 +273,7 @@ class Family {
         $site_url = site_url;
         $this->emailId = $mailId;
         try {
-            $query = "select CONCAT('$site_url',userImage) as userImage,userFatherName,userMotherName,userSpouseName,childrenName,userDOB,emailId from Tbl_EmployeePersonalDetails where employeeId =:mail";
+            $query = "select if(userImage = '' or userImage is NULL, '',CONCAT('$site_url',userImage)) as userImage,userFatherName,userMotherName,userSpouseName,childrenName,userDOB,emailId from Tbl_EmployeePersonalDetails where employeeId =:mail";
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':mail', $this->emailId, PDO::PARAM_STR);
             $stmt->execute();

@@ -60,9 +60,8 @@ class ClientLogin
                 @session_start();
                 $_SESSION['user_session'] = $userRow['userId'];
                 $_SESSION['user_unique_id'] = $userRow['employeeId'];
-                 $_SESSION['user_name'] = $userRow['firstName'];
+                $_SESSION['user_name'] = $userRow['firstName'];
                 $_SESSION['user_email'] = $useremail;
-              //  $_SESSION['user_access'] = $subadmin;
                 $_SESSION['user_type'] = $access;
                 $_SESSION['client_name'] = $clientname;
                 $_SESSION['client_id'] = $clientid;
@@ -73,6 +72,7 @@ class ClientLogin
                 $_SESSION['dedicated_mail'] = $userRow['dedicated_mail'];
                 $_SESSION['gpk'] = $googleapi;
 		$_SESSION['iosPemfile'] = $userRow['iosPemfile'];
+                $_SESSION['usercompany'] = $userRow['companyName'];
                
                $res = 'True';
               $result['success'] = $res;
@@ -122,8 +122,8 @@ class ClientLogin
    {
         session_destroy();
         unset($_SESSION['user_session']);
-        setcookie ("user_email", '', time() - (2*60));
-        setcookie ("password", '', time() - (2*60));
+        //setcookie ("user_email", '', time() - (2*60));
+        //setcookie ("password", '', time() - (2*60));
         return true;
    }
  /******************************************* forfet password ****************************/  

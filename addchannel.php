@@ -34,7 +34,7 @@
 			<input type="hidden"  name = "id_author" ng-model="clientid" ng-init="clientid='<?php echo $_SESSION['client_id']; ?>'" value="<?php echo $_SESSION['client_id']; ?>">
 			 <input type="hidden" name = "device" value="d2">	
 				
-				<!--	<div class="col-md-12">
+				<!---	<div class="col-md-12">
                      <label for="exampleInputPassword1"> Group Admin Id</label>
 
                        <div >
@@ -53,7 +53,7 @@
 				   <button type="button" class="btn btn-success btn-midium" ng-click="addNewChoice()">Create Group Admin</button>
 				       
 				</div>
-                 </div> --->
+                 </div> ---->
                                        
 					         <div class="form-group col-sm-6">
                                <label for="exampleInputPassword1">Group Name</label>
@@ -90,15 +90,36 @@
                             </div>
                                         </div>
       <!---------------------this script for show text box on select radio button---------------------->                        
-			
+			<div class="col-md-12">
+                     <label for="exampleInputPassword1"> Group Admin Id (Company Admin Employee Id)</label>
+
+                       <div >
+                       <input type="text" style="display:none;"  name="countadmin" ng-model = choices.length />
+				   <div data-ng-repeat="choice in choices">
+				 <div class="form-group col-sm-10">  
+          <input type="text" required class="form-control" name="admin{{$index}}" ng-model = "choice.name"  placeholder="Enter Group Admin Employee Id">
+ </div>
+  <div class="form-group col-sm-2">
+              <button type="button" class="btn btn-danger btn-small" ng-show="$last" ng-click="removeChoice()"> - </button>
+                            {{$length}}
+                     </div>       
+                   
+				   </div>
+				   
+				   <button type="button" class="btn btn-success btn-xs" ng-click="addNewChoice()">Create Group Admin</button>
+				       
+				</div>
+                 </div>
 	  <!------------Adobe script for show text box on select radio button---------------------->
 	                              
 					<div class="form-group col-sm-12">
-						<input type="submit" name ="news_post" class="btn btn-md btn-info" style="text-shadow:none;font-weight:normal;" value="Create Group" id="getData" />
+                                            <center><input type="submit" name ="news_post" class="btn btn-md btn-info" style="text-shadow:none;font-weight:normal;" value="Create Group" id="getData" /></center>
 					</div>
 					
-				</div>
-				</form>
+				
+            </form>
+            </div>
+				
 			</div>
 		<!-----------------------------------message form end from here---------------------------------->		
 			
@@ -110,5 +131,5 @@
 		
 </div>
                    
-            </div> </div></div>
+            </div> </div>
 <?php include 'footer.php';?>

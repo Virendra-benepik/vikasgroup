@@ -79,14 +79,14 @@ if (!empty($_POST)) {
             } else {
                 $comment_val = 'Yes';
             }
-
+//echo $comment;
             $push_noti = $_POST['push'];
             if (!isset($push_noti) && $push_noti != 'PUSH_YES') {
                 $PUSH_NOTIFICATION = 'PUSH_NO';
             } else {
                 $PUSH_NOTIFICATION = 'PUSH_YES';
             }
-
+//echo $PUSH_NOTIFICATION;
             /*             * ************************************ LIKE COMMENT PUSH END *********************** */
 
             $POST_ID = $maxid;
@@ -149,19 +149,24 @@ if (!empty($_POST)) {
               echo "</pre>"; */
 
 
-            /*             * *************************get group admin uuid  form group admin table if user type not= all *************************** */
-            if ($User_Type != 'All') {
-                $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+            /*******get group admin uuid  form group admin table if user type not= all *************************** */
+   
+           
+     if ($User_Type != 'All') {
+   
+    
+               // $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
 
 
-                $adminuuid = json_decode($groupadminuuid, true);
+               // $adminuuid = json_decode($groupadminuuid, true);
                 /* echo "hello groupm admin id";
                   echo "<pre>";
                   print_r($adminuuid)."<br/>";
                   echo "</pre>"; */
                 /*                 * ****** "--------------all employee id---------"** */
 
-                $allempid = array_merge($token, $adminuuid);
+               // $allempid = array_merge($token, $adminuuid);
+                $allempid = array_merge($token);
                 /* echo "<pre>";
                   print_r($allempid);
                   echo "<pre>"; */
@@ -175,7 +180,7 @@ if (!empty($_POST)) {
             } else {
                 $allempid1 = $token;
             }
-
+ 
             /*             * ******* insert into post sent to table for analytic sstart************ */
 
             $total = count($allempid1);
@@ -183,7 +188,7 @@ if (!empty($_POST)) {
                 $uuid = $allempid1[$i];
 //echo "post sent to empid:--".$uuid."<br/>";
                 if (!empty($uuid)) {
-                    $read->postSentTo($clientid, $maxid, $uuid);
+                    $read->postSentTo($clientid, $maxid, $uuid,$FLAG);
                 }
             }
             /*             * ******* insert into post sent to table for analytic sstart************ */
@@ -191,10 +196,10 @@ if (!empty($_POST)) {
             /*             * *** get all registration token  for sending push **************** */
             $reg_token = $push->getGCMDetails($allempid1, $clientid);
             $token1 = json_decode($reg_token, true);
-            /* echo "----regtoken------";
+              /*echo "----regtoken------";
               echo "<pre>";
               print_r($token1);
-              echo "<pre>"; */
+              echo "<pre>";*/
             /*             * *******************Create file of user which this post send  start******************** */
             $val[] = array();
             foreach ($token1 as $row) {
@@ -231,10 +236,15 @@ if (!empty($_POST)) {
                 $data = array('Id' => $maxid, 'Title' => $POST_CONTENT, 'Content' => $POST_CONTENT, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $post_date, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf,
                     'like' => $like_val, 'comment' => $comment_val);
 
+					//print_r($data);
+					
                 $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
                 $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
                 $rt = json_decode($revert, true);
-                //print_r($rt);
+                
+				/*echo "<pre>";
+				print_r($IOSrevert);
+				print_r($rt);*/
                 if ($rt) {
                     if ($dev == 'd2') {
                         echo "<script>alert('Post Successfully Send');</script>";

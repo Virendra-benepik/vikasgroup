@@ -74,7 +74,7 @@ $utime1 = date('Y-m-d', strtotime('+1 year'));
 //echo "unpublish time1: - ".$utime1."<br/>";
 
 
-$gt = $_POST["push"];
+//$gt = $_POST["push"];
 //echo "push check:-".$gt."<br/>";
 
 if(file_put_contents($target.$maxid.".html",$content))
@@ -86,14 +86,13 @@ else
   //  echo "<script>alert('file not created')</script>";
    } 
  
-    if(isset($gt)) 
-    {   
+$push_noti = (empty($_POST['push'])?"":$_POST['push']);
+   // if (!isset($push_noti)) {
+	if ($push_noti=="") {
+        $PUSH_NOTIFICATION = 'PUSH_NO';
+    } else {
         $PUSH_NOTIFICATION = 'PUSH_YES';
-        }
-        else
-        {
-       $PUSH_NOTIFICATION = 'PUSH_NO';
-        }
+    }
     
   //echo $PUSH_NOTIFICATION; 
    /** ******************************* Get GoogleAPIKey and IOSPEM file ********************************* */
@@ -122,7 +121,7 @@ echo "<pre>";
 print_r($token);
 echo "</pre>";*/
 
-
+/********************************* to send to admin ******************************/    
 if($User_Type != 'All')
 {
 
@@ -131,12 +130,13 @@ if($User_Type != 'All')
 $groupadminuuid = $push_obj->getGroupAdminUUId($myArray,$client);
 $adminuuid = json_decode($groupadminuuid, true);
 /*echo "hello groupm admin id";
-echo "<pre>";
+echo "<pre>";   
 print_r($adminuuid)."<br/>";
 echo "</pre>";
 echo "--------------all employee id---------";*/
 
-$allempid = array_merge($token,$adminuuid);
+//$allempid = array_merge($token,$adminuuid);
+$allempid = array_merge($token);
 /*echo "<pre>";
 print_r($allempid);
 echo "<pre>";
@@ -154,6 +154,7 @@ else
 
 $allempid1 = $token;
 }
+
 
 /********* insert into post sent to table for analytic sstart*************/
 
@@ -204,20 +205,23 @@ $data = array('Id' =>$maxid,'Title' => $title,'Content' => $title, 'SendBy'=> $c
  $IOSrevert = $push_obj->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
   $revert = $push_obj->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
   $rt = json_decode($revert, true);
-            $iosrt = json_decode($IOSrevert, true);
- if($rt['success'] == 1)
- {
- 
- echo "<script>alert('Notice Successfully Created');</script>";
- echo "<script>window.location='../create_notice.php'</script>";
-//print_r($rt);
-
-
- }
+  $iosrt = json_decode($IOSrevert, true);
+  print_r($rt);
+	 if($rt['success'] == 1)
+		 {
+		 echo "<script>alert('Notice Successfully Created');</script>";
+		 echo "<script>window.location='../create_notice.php'</script>";
+		//print_r($rt);
+		 }
+	 else
+		 {
+		  echo "<script>alert('Notice Successfully Created');</script>";
+		  echo "<script>window.location='../create_notice.php'</script>";
+		 }
  }
 else
 {
-echo "<script>alert('notice  Created');</script>";
+echo "<script>alert('Notice Successfully Created');</script>";
 echo "<script>window.location = '../create_notice.php'</script>";
 }
 }

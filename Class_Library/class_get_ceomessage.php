@@ -18,7 +18,10 @@ class GetCEOMessage {
         $this->cid = $cid;
         $this->eid = $eid;
         $this->uid = $usertype;
-        $server_name = SITE;
+        $server_name = SITE_URL;
+        
+        
+        
         if ($this->uid == "SubAdmin") {
             $query = 
 "SELECT Tbl_C_PostDetails . *, Concat('".SITE_URL."', Tbl_C_PostDetails.post_img ) AS post_img , DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
@@ -31,7 +34,17 @@ WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
 SELECT COUNT(*) 
 FROM Tbl_Analytic_PostView
 WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
-) as TotalCount
+) as TotalCount,(
+
+SELECT COUNT( * ) 
+FROM Tbl_Analytic_PostComment
+WHERE Tbl_Analytic_PostComment.postId = Tbl_C_PostDetails.post_id
+) as commentCount, (
+
+SELECT COUNT( * ) 
+FROM Tbl_Analytic_PostLike
+WHERE Tbl_Analytic_PostLike.postId = Tbl_C_PostDetails.post_id
+) as likeCount 
 
 FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetails.clientId = :cli and Tbl_C_PostDetails.userUniqueId =:cb order by Tbl_C_PostDetails.auto_id desc";
 
@@ -60,7 +73,17 @@ WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
 SELECT COUNT(*) 
 FROM Tbl_Analytic_PostView
 WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
-) as TotalCount
+) as TotalCount, (
+
+SELECT COUNT( * ) 
+FROM Tbl_Analytic_PostComment
+WHERE Tbl_Analytic_PostComment.postId = Tbl_C_PostDetails.post_id
+) as commentCount, (
+
+SELECT COUNT( * ) 
+FROM Tbl_Analytic_PostLike
+WHERE Tbl_Analytic_PostLike.postId = Tbl_C_PostDetails.post_id
+) as likeCount 
 
 FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetails.clientId = :cli and Tbl_C_PostDetails.userUniqueId =:eid1 order by Tbl_C_PostDetails.auto_id desc";
 
@@ -121,7 +144,9 @@ FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetai
 //$path = "http://admin.benepik.com/employee/virendra/benepik_client/";
         try {
             $server_name = dirname(SITE_URL)."/";
-            $query = "select *,if(thumb_post_img IS NULL or thumb_post_img = '',Concat('" . $server_name . "', post_img), Concat('" . $server_name . "', thumb_post_img)) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 order by auto_id desc limit " . $this->value . " , 5";
+          //  $query = "select *,if(thumb_post_img IS NULL or thumb_post_img = '',Concat('" . $server_name . "', post_img), Concat('" . $server_name . "', thumb_post_img)) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 order by auto_id desc limit " . $this->value . " , 5";
+            
+             $query = "select *,if(post_img IS NULL or post_img = '', '',Concat('" . $server_name . "', post_img)) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 and status = 'Publish' order by auto_id desc limit " . $this->value . " , 5";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
             $stmt->execute();
@@ -131,7 +156,7 @@ FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetai
 
             if (count($rows) > 0) {
 
-                $query1 = "select count(post_id) as totals from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9";
+                $query1 = "select count(post_id) as totals from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 and status = 'Publish'";
                 $stmt1 = $this->DB->prepare($query1);
                 $stmt1->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
                 $stmt1->execute();
@@ -161,7 +186,7 @@ FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetai
                 return json_encode($response);
             } else {
                 $response["success"] = 0;
-                $response["message"] = "No More Posts Available";
+                $response["message"] = "No more post available";
                 return json_encode($response);
             }
         } catch (PDOException $e) {

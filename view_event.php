@@ -6,8 +6,9 @@
 $object = new Event();
 
 $clientid = $_SESSION['client_id'];
-
-$result = $object->getAlleventslist($clientid);
+$user_uniqueid = $_SESSION['user_unique_id'];
+$user_type = $_SESSION['user_type'];
+$result = $object->getAlleventslist($clientid,$user_uniqueid,$user_type);
 $val = json_decode($result,true);
 //echo "<pre>";
 //print_r($val);
@@ -29,6 +30,11 @@ $count  = count($val['Data']);
 
                                     <div class="card-title">
                                     <div class="title"><strong>All Event Details</strong></div>
+									<?php
+									//echo $clientid = $_SESSION['client_id'];
+									//echo $user_uniqueid = $_SESSION['user_unique_id'];
+									//echo $user_type = $_SESSION['user_type'];
+									?>
                                     </div>
                                  <!--   <div style="float:left; margin-top:13px; font-size:20px;"> 
                                     <a href="create_event.php">
@@ -79,7 +85,7 @@ $count  = count($val['Data']);
                                      for($i=0; $i<$count; $i++)
                                               {
                                                $k = $val['Data'][$i]['status'];
-                                              
+                                                                                           
 												if($k == 'Unpublish')
 												{
 												$action = 'Publish';
@@ -88,6 +94,16 @@ $count  = count($val['Data']);
 												{
 												$action = 'Unpublish';
 												}
+												
+												
+											   if($k == 'Active')
+											   {
+													$act = 'Inactive';
+											   }
+                                               else
+											   {
+													$act = 'Active';
+											   }
                                               
                                      ?>       	   	
 					      <tr>
@@ -145,6 +161,15 @@ Registration report
 <a href="Full_view_event.php?eventid=<?php echo $val['Data'][$i]['eventId']; ?>&clientid=<?php echo $val['Data'][$i]['clientId']; ?>" style="color:#00a4fd;margin-left:30px !important">
 View
 </a>
+
+<a href="event_update.php?eventid=<?php echo $val['Data'][$i]['eventId']; ?>&clientid=<?php echo $val['Data'][$i]['clientId']; ?>&page=event" style="color:#00a4fd;margin-left:30px !important">
+Edit
+</a>
+
+<a href="Link_Library/event_status.php?eventid=<?php echo $val['Data'][$i]['eventId']; ?>&status=<?php echo $val['Data'][$i]['status']; ?>" style="color:#00a4fd;margin-left:30px !important">
+<?php echo $act; ?>
+</a>
+
 <!--<a href="view_queriesreport.php?eventid=<?php echo $val['Data'][$i]['eventId']; ?>&clientid=<?php echo $val['Data'][$i]['clientId']; ?>" style="color:#00a4fd;margin-left:30px !important">
 <button type="button" class="btn btn-sm btn-danger unpublishBtn">
 Queries Report

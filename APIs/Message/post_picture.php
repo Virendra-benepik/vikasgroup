@@ -1,4 +1,5 @@
 <?php
+
 @session_start();
 require_once('../../Class_Library/class_reading.php');
 require_once('../../Class_Library/Api_Class/class_app_post.php');
@@ -37,21 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 /* * ********************************************************************************************** */
+$jsonArr = json_decode(file_get_contents("php://input"), true);
+//$postdata = file_get_contents("php://input");
+//json_decode($postdata, true);
 
-$postdata = file_get_contents("php://input");
+/* {
+  "uploadimage":"",
+  "content":"",
+  "author":"",
+  "auth":"veeru",
+  "client_id":"CO-25",
+  "selected_user":"Group1,"
 
-/*{
-    "uploadimage":"",
-            "content":"",
-            "author":"",
-            "auth":"veeru",
-            "client_id":"CO-25",
-            "selected_user":"Group1,"
-            
-            
-}*/
 
-if (!empty($postdata)) {
+  } */
+
+if (!empty($jsonArr['client_id'])) {
     $POST_TITLE = "";
     $POST_TEASER = "";
     $POST_ID = $maxid;
@@ -80,14 +82,14 @@ if (!empty($postdata)) {
 
 //echo "this is post data ".$postdata;
 
-    $request = json_decode($postdata, true);
-   // echo "<pre>";      print_r($request); 
+    $request = $jsonArr;
+    // echo "<pre>";      print_r($request); 
     $POST_IMG = $request['uploadimage'];
     $POST_CONTENT = $request['content'];
     $USERID = $request['author'];
     $BY = $request['auth'];
     $clientid = $request['client_id'];
-     $device = $request['device'];
+    $device = $request['device'];
     $groupid = $request['selected_user'];
     $flag_name = "Picture : ";
     if ($User_Type == 'Selected') {
@@ -98,6 +100,7 @@ if (!empty($postdata)) {
 //print_r($myArray)."<br/>";
     }
     /*     * *********************************** Get User Image ******************************************** */
+    // $devname = "dev";
     $userimage = $push->getImage($USERID);
     $image = $userimage[0]['userImage'];
     /* echo "hr image: ".$image."<br/>";
@@ -120,24 +123,24 @@ if (!empty($postdata)) {
 //   echo $imgname;die;
     $target = '../images/post_img/';
     $thumbimgname = explode('/', $imgname);
-    $path_name =  $thumbimgname[2];
+    $path_name = $thumbimgname[2];
     $imagepath = $target . $path_name;
-    
+
     $thumb_image = $push->makeThumbnails($target, $path_name, 20);
     $thumb_img = str_replace('../', '', $thumb_image);
-    
+
     $POST_IMG_THUMB = $thumb_img;
-    
-    $result = $obj->create_Post($clientid, $POST_ID, $POST_TITLE, $imgname,$POST_IMG_THUMB, $POST_TEASER, $POST_CONTENT, $DATE, $USERID, $BY, $FLAG, $comment, $like,$device);
+
+    $result = $obj->create_Post($clientid, $POST_ID, $POST_TITLE, $imgname, $POST_IMG_THUMB, $POST_TEASER, $POST_CONTENT, $DATE, $USERID, $BY, $FLAG, $comment, $like, $device);
 //echo "result".$result;
     $type = "Picture";
-    $result1 = $welcome_obj->createWelcomeData($clientid, $POST_ID, $type, $POST_CONTENT, $imgname, $DATE, $USERID,$FLAG);
+    $result1 = $welcome_obj->createWelcomeData($clientid, $POST_ID, $type, $POST_CONTENT, $imgname, $DATE, $USERID, $FLAG);
 
 
     $groupcount = count($myArray);
     for ($k = 0; $k < $groupcount; $k++) {
 //echo "group id".$myArray[$k];
-        $result2 = $read->postSentToGroup($clientid, $POST_ID, $myArray[$k],$FLAG);
+        $result2 = $read->postSentToGroup($clientid, $POST_ID, $myArray[$k], $FLAG);
 //echo $result2;
     }
 
@@ -151,24 +154,27 @@ if (!empty($postdata)) {
 
 
     /*     * *************************get group admin uuid  form group admin table if user type not= all *************************** */
+    
+    
     if ($User_Type != 'All') {
-        $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+       // $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
 
 
-        $adminuuid = json_decode($groupadminuuid, true);
+       // $adminuuid = json_decode($groupadminuuid, true);
         /* echo "hello groupm admin id";
           echo "<pre>";
           print_r($adminuuid)."<br/>";
           echo "</pre>"; */
-        /*         * ****** "--------------all employee id---------"** */
+        /** ****** "--------------all employee id---------"**/
 
-        $allempid = array_merge($token, $adminuuid);
+        //$allempid = array_merge($token, $adminuuid);
+        $allempid = array_merge($token);
         /* echo "mearg both array"."<br>";
           echo "<pre>";
           print_r($allempid);
           echo "<pre>";
          */
-        /*         * ** "--------------all unique employee id---------"********** */
+        /** ** "--------------all unique employee id---------"**********/ 
 
         $allempid1 = array_values(array_unique($allempid));
     } else {
@@ -177,14 +183,14 @@ if (!empty($postdata)) {
     /* echo "<pre>";
       print_r($allempid1);
       echo "<pre>"; */
-    /*     * ******* insert into post sent to table for analytic sstart************ */
+    /********* insert into post sent to table for analytic sstart************ */
 
     $total = count($allempid1);
 //echo   "total user:-".$total."<br>";
     for ($i = 0; $i < $total; $i++) {
         $uuid = $allempid1[$i];
 //echo "post sent to :--".$uuid."<br>";
-        $read->postSentTo($clientid, $maxid, $uuid,$FLAG);
+        $read->postSentTo($clientid, $maxid, $uuid, $FLAG);
     }
     /*     * ******* insert into post sent to table for analytic sstart************ */
 
@@ -194,8 +200,8 @@ if (!empty($postdata)) {
     /* echo "----regtoken------";
       echo "<pre>";
       print_r($token1);
-      echo "<pre>"; */
-
+      echo "<pre>";
+     */
 
     /*     * *******************Create file of user which this post send  start******************** */
     $val[] = array();
@@ -210,7 +216,7 @@ if (!empty($postdata)) {
     }
     fclose($file);
     /*     * *******************Create file of user which this post send End******************** */
-    $hrimg = SITE_URL . $image;
+    $hrimg = ($image == "") ? "" : dirname(SITE_URL) . "/" . $image;
 //echo "this si hr img:=".$hrimg;
     $sf = "successfully send";
     $ids = array();
@@ -225,28 +231,42 @@ if (!empty($postdata)) {
 //array_push($ids,$row["registrationToken"]);
     }
 
-    $path = dirname(SITE_URL)."/". $imgname;
+    $path = dirname(SITE_URL) . "/" . $imgname;
 //echo $path; die;
     $data = array('Id' => $maxid, 'Content' => $POST_CONTENT, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $path, 'Date' => $post_date, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'comment' => $comment1, 'like' => $like1);
 
-   $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'],$device);
+    //print_r($data);
+
+    $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'], $device);
     $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
 
-
+    //print_r($revert);
+    //  print_r($IOSrevert);
     $rt = json_decode($revert, true);
 
-    if ($revert) {
+    /* if ($revert) {
 
-//echo "<script>alert('Post Successfully Send');</script>";
-// echo $path;
-        echo $revert;
-        /* echo "<pre>";
-          print_r($rt);
-          echo "</pre>"; */
+      //echo "<script>alert('Post Successfully Send');</script>";
+      // echo $path;
+      $response = $revert;
+      /* echo "<pre>";
+      print_r($rt);
+      echo "</pre>"; */
+
+
+    if ($rt['success'] == 1) {
+        $response['success'] = 1;
+        $response['msg'] = "Post send";
+        $response = json_encode($response);
+    } else {
+        $response['success'] = 0;
+        $response['msg'] = "There is some Error , please contact info@benepik.com";
+        $response = json_encode($response);
     }
 } else {
     $response['success'] = 0;
-    $response['result'] = "Invalid json";
+    $response['msg'] = "Invalid json";
+    $response = json_encode($response);
 }
 header('Content-type: application/json');
 echo $response;

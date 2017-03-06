@@ -191,7 +191,7 @@ class GetNotice {
                     //echo "group array : ".$in."<br/>";
 
                     /************************************************************************************************** */
-                    $query21 = "select count(distinct(noticeId)) as total_notices from Tbl_Analytic_NoticeSentToGroup where clientId=:cli and groupId IN ('" . $in . "')";
+                    $query21 = "select count(distinct(noticeId)) as total_notices from Tbl_Analytic_NoticeSentToGroup where clientId=:cli and status = 1 and groupId IN ('" . $in . "')";
                     $stmt21 = $this->DB->prepare($query21);
                     $stmt21->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
                     // $stmt2->bindParam(':uid',$uuids, PDO::PARAM_STR);
@@ -199,11 +199,9 @@ class GetNotice {
                     $rows2 = $stmt21->fetch(PDO::FETCH_ASSOC);
 
                     if ($module == 1) {
-                        $noticequery = "select distinct(noticeId) as noticeid from Tbl_Analytic_NoticeSentToGroup where groupId IN('" . $in . "') 
-							 and clientId =:cid order by autoId desc limit 5";
+                        $noticequery = "select distinct(noticeId) as noticeid from Tbl_Analytic_NoticeSentToGroup where groupId IN('" . $in . "') and clientId =:cid and status = 1 order by autoId desc limit 5";
                     } else {
-                        $noticequery = "select distinct(noticeId) as noticeid from Tbl_Analytic_NoticeSentToGroup where groupId IN('" . $in . "') 
-							 and clientId =:cid order by autoId desc limit " . $this->value . ",5";
+                        $noticequery = "select distinct(noticeId) as noticeid from Tbl_Analytic_NoticeSentToGroup where groupId IN('" . $in . "') and clientId =:cid and status = 1 order by autoId desc limit " . $this->value . ",20";
                     }
 
                     $nstmt = $this->DB->prepare($noticequery);
@@ -225,7 +223,7 @@ class GetNotice {
                             $noticeid = $noticerows['noticeid'];
                             $query2 = "select *, DATE_FORMAT(createdDate,'%d %b %Y') as createdDate,DATE_FORMAT(publishingTime,'%d %b %Y %h:%i %p') as publishingTime, 
                             DATE_FORMAT(unpublishingTime,'%d %b %Y %h:%i %p') as unpublishingTime  
-                            from Tbl_C_NoticeDetails where noticeId=:nid and clientId=:cli";
+                            from Tbl_C_NoticeDetails where noticeId=:nid and clientId=:cli and status = 'Live'";
                             
                             $stmt2 = $this->DB->prepare($query2);
                             $stmt2->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
@@ -248,12 +246,12 @@ class GetNotice {
                         }
                     } else {
                         $response['success'] = 0;
-                        $response['msg'] = "currently No more Notice Available";
+                        $response['msg'] = "No more post available";
                     }
                 }
             } else {
                 $response['success'] = 0;
-                $response['msg'] = "You are not authorized user please check youe employee code";
+                $response['msg'] = "You are not authorized user please check your employee code";
             }
         } catch (PDOException $e) {
             $response['success'] = 0;
@@ -332,6 +330,12 @@ class GetNotice {
             $stmt->bindParam(':pid', $this->noticeid, PDO::PARAM_STR);
             $stmt->bindParam(':sta', $this->status, PDO::PARAM_STR);
 
+			$gquery = "update Tbl_Analytic_NoticeSentToGroup set status = :sta2 where noticeId = :comm2 ";
+            $stmtg = $this->DB->prepare($gquery);
+            $stmtg->bindParam(':comm2', $this->noticeid, PDO::PARAM_STR);
+            $stmtg->bindParam(':sta2', $welstatus, PDO::PARAM_STR);
+            $stmtg->execute();
+			
             $wquery = "update Tbl_C_WelcomeDetails set status = :sta1 where id = :comm1 ";
             $stmtw = $this->DB->prepare($wquery);
             $stmtw->bindParam(':comm1', $this->noticeid, PDO::PARAM_STR);

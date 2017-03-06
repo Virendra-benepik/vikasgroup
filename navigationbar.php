@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_session']) && $_SESSION['user_session'] == "") {
                                 <i class="fa fa-bars icon"></i>
                             </button>
                             <ol class="breadcrumb navbar-breadcrumb">
-                                <li class="active"> <?php echo $_SESSION['client_name']; ?></li>
+                                <li class="active"> <?php echo $_SESSION['client_name']."(".$_SESSION['usercompany'].")"; ?></li>
                                 <li><span class="text-warning"> <?php
                                         date_default_timezone_set('Asia/Kolkata');
                                         echo date('d M Y, h:i A');

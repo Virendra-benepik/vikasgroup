@@ -108,7 +108,7 @@ class Like {
                     $rows = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     $post["name"] = $rows["firstName"];
-                    $post["userImage"] = $path . $rows["userImage"];
+                    $post["userImage"] = ($rows["userImage"] == "")?"":$path . $rows["userImage"];
                     $post["likeDate"] = $row["likeDate"];
                     $post["clientId"] = $row["clientId"];
                     array_push($response["Posts"], $post);

@@ -24,6 +24,7 @@ if (file_exists("../../Class_Library/class_get_ceomessage.php") && include("../.
     $jsonArr = json_decode(file_get_contents("php://input"), true);
 /*{
 "clientid":"CO-25",
+ "uuid":""
 "value":"0"
 }*/
 

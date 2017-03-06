@@ -125,7 +125,7 @@ $username = $_SESSION['user_name'];
 
                                 <div class="row" style="padding-left:10px;padding-right:10px;">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                                        <p class="contentPost previewContent"></p>
+                                        <p class="contentPost previewContent"style="white-space:pre-wrap !important;"></p>
                                     </div>
                                 </div>
 

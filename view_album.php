@@ -16,7 +16,6 @@ $val = json_decode($result, true);
 //print_r($val);
 
 $count = count($val['posts']);
-
 ?>
 
 
@@ -34,11 +33,11 @@ $count = count($val['posts']);
                             <div class="card-title">
                                 <div class="title"><strong>All Galleries</strong></div>
                             </div>
-                          <!--  <div style="float:left; margin-top:13px; font-size:20px;"> 
-                                <a href="multipleImageUpload.php">
-                                    <button type="button" class="btn btn-primary btn-sm">Create New Album</button>
-                                </a>
-                            </div>--->
+                            <!--  <div style="float:left; margin-top:13px; font-size:20px;"> 
+                                  <a href="multipleImageUpload.php">
+                                      <button type="button" class="btn btn-primary btn-sm">Create New Album</button>
+                                  </a>
+                              </div>--->
                         </div>
 
                         <div class="card-body">
@@ -47,7 +46,9 @@ $count = count($val['posts']);
                                     <tr>
                                         <th>Image</th>
                                         <th>Title</th>
-										<th>Last Updates</th>
+                                        <th> Total Images</th>
+                                        <th>Last Updates</th>
+										<th>Status</th>
                                         <th>Action</th>
 
                                     </tr>
@@ -57,13 +58,18 @@ $count = count($val['posts']);
                                 <form name="form1" id="form1" method="post">
                                     <?php
                                     for ($i = 0; $i < $count; $i++) {
-                                        $k = $val[$i]['status'];
+									$k = $val['posts'][$i]['status'];
                                         //  echo $k;
-
-                                        if ($k == 'Unpublish') {
-                                            $action = 'Publish';
-                                        } else {
+										if ($k == 0) {
                                             $action = 'Unpublish';
+                                        } else {
+                                            $action = 'Publish';
+                                        }
+										
+										if ($k == 0) {
+                                            $act = 'Publish';
+                                        } else {
+                                            $act = 'Unpublish';
                                         }
 
                                         // echo $path.$val[$i]['post_img']."<br/>";
@@ -74,14 +80,15 @@ $count = count($val['posts']);
                                                 <img src="<?php echo $val['posts'][$i]['image']; ?>"class="img img-rounded"id="news_images" onerror='this.src="images/u.png"'/> </td>
 
                                             <td class="padding_right_px"><?php
-                                                $cont = $val['posts'][$i]['title'];
-                                                $words = explode(" ", $cont);
-                                                $word = implode(" ", array_splice($words, 0, 10));
-                                                echo $word;
-                                                ?>
+                                    $cont = $val['posts'][$i]['title'];
+                                    $words = explode(" ", $cont);
+                                    $word = implode(" ", array_splice($words, 0, 10));
+                                    echo $word;
+                                        ?>
                                             </td>
-                                            
+                                            <td><?php echo $val['posts'][$i]['totalimage'];     ?></td>
                                             <td class="padding_right_px"><?php echo $val['posts'][$i]['createdDate']; ?></td>
+											<td class="padding_right_px"><?php echo $action; ?></td>
 
                                             <td  style="width:16% !important;">
     <!--<a onClick="javascript:if(confirm('Are you sure want to Delete Post ?')){return true;} else{return false}" href="Link_Library/delete_post.php?idpost=<?php echo $val[$i]['post_id']; ?>">
@@ -91,12 +98,10 @@ $count = count($val['posts']);
 
                                                 <a target="_blank" href="full_view_album.php?albumid=<?php echo $val['posts'][$i]['albumId'] ?>" style="color:#00a4fd;margin-left:10px !important;">View</a>
 
-        <!---<a href="Link_Library/post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>">
-        <button type="button"class="btn btn-sm btn-danger unpublishBtn">
-                                                <?php echo $action; ?>
-        </button>
-        </a>-->
-
+												<a 
+												href="Link_Library/album_status.php?postid=<?php echo $val['posts'][$i]['albumId']; ?>&poststatus=<?php echo $val['posts'][$i]['status']; ?>" style="color:#CE3030;margin-left:30px !important">
+												<?php echo $act; ?>
+												</a>
                                             </td>
 
                                         </tr>

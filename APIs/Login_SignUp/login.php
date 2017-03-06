@@ -1,7 +1,8 @@
 <?php
+
 error_reporting(E_ALL ^ E_NOTICE);
-if (!class_exists('LoginUser') && include("../../Class_Library/Api_Class/class_employee_app_login.php")) 
-{
+ini_set("display_errors", "1");
+if (!class_exists('LoginUser') && include("../../Class_Library/Api_Class/class_employee_app_login.php")) {
 
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -23,27 +24,26 @@ if (!class_exists('LoginUser') && include("../../Class_Library/Api_Class/class_e
     }
 
     $jsonArr = json_decode(file_get_contents("php://input"), true);
-   /*{
-		"packageName":"",
-		"empcode":"",
-		"password":"",
-                     "device":""
-	}*/
-	
+    /* {
+      "packageName":"",
+      "empcode":"",
+      "password":"",
+      "device":""
+      } */
+
     if ($jsonArr) {
         $obj = new LoginUser();
         
         $packageName = $jsonArr['packageName'];
-		$empcode = $jsonArr['empcode'];
-		$password = $jsonArr['password'];
-		$device = $jsonArr['device'];
-        $response = $obj->detectValidUser($packageName, $empcode, $password);
-        if ($response['success'] == 1){
+        $username = $jsonArr['empcode'];
+        $password = $jsonArr['password'];
+        $device   = $jsonArr['device'];
+        $usertype = $jsonArr['usertype'];
+        $response = $obj->detectValidUser($packageName, $username, $password, $usertype);
+        if ($response['success'] == 1) {
             $obj->entryUserLogin($packageName, $response['posts']['employeeId'], $device);
         }
-       
-    }
-    else {
+    } else {
         $response['success'] = 0;
         $response['result'] = "Invalid json";
     }

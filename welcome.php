@@ -114,12 +114,13 @@ $user_type = $_SESSION['user_type'];
                 <div class="row"  style="border:1px solid #dcdcdc;padding:5px;">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                        <div id="latest_activity">
+					    <div id="latest_activity">
                             <h5 class="LatestActivitiesHeading"><b>LATEST GROUPS</b></h5>
                             <hr>
                             <?php
+							
                             $obj = new WelcomeAnalytic();
-                            $result = $obj->latestChannel($cid);
+                            $result = $obj->latestChannel($cid,$user_type,$user_uniqueid);
                             $res = json_decode($result, true);
                             for ($i = 0; $i < count($res); $i++)
                             /* {

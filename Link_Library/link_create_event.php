@@ -52,38 +52,42 @@ if (!empty($_POST)) {
     $push->compress_image($pathtemp, $imagepath, 20);
 
     /*     * **************************************** check like & comment start ********************** */
-    /*     * *** no need this time
+     
 
-      $like = $_POST['like'];
-      if(!isset($like) && $like != 'LIKE_YES')
-      {
-      $like = 'LIKE_NO';
-      $like_val = 'No';
-      }
-      else
-      {
-      $like_val = 'Yes';
-      }
+    $like = (empty($_POST['like'])?"":$_POST['like']);
+	   // $like ="";
+      // if (!isset($like)) {
+		 if ($like =="") {
+            $like = 'LIKE_NO';
+            $like_val = 'like_no';
+        } else {
+            $like_val = 'like_yes';
+			$like = 'LIKE_YES';
+        }
 
-      $comment =  $_POST['comment'];
-      if(!isset($comment) && $comment != 'COMMENT_YES')
-      {
-      $comment = 'COMMENT_NO';
-      $comment_val = 'No';
-      }
-      else
-      {
-      $comment_val = 'Yes';
-      }
-     */
+        $comment = (empty($_POST['comment'])?"":$_POST['comment']);
+		//$comment = "";
+        //if (!isset($comment)) {
+			if ($comment=="") {
+            $comment = 'COMMENT_NO';
+            $comment_val = 'comment_no';
+        } else {
+            $comment_val = 'comment_yes';
+			$comment = 'COMMENT_YES';
+        }
+     
+	 //echo $comment;
+	 //echo $like;
 //$push_noti =  "PUSH_YES";
-    $push_noti = "";
-    if (!isset($push_noti)) {
+    //$push_noti = "";
+    //if (!isset($push_noti)) {
+    $push_noti = (empty($_POST['push'])?"":$_POST['push']);
+	if ($push_noti=="") {
         $PUSH_NOTIFICATION = 'PUSH_NO';
     } else {
         $PUSH_NOTIFICATION = 'PUSH_YES';
     }
-	
+	//echo $PUSH_NOTIFICATION;
 	$popup_NOTIFICATION = "";
 		  if (!isset($_POST['popup'])) 
 		{
@@ -138,7 +142,7 @@ if (!empty($_POST)) {
 
     /** ********************* insert into database ************************************************ */
 //createNewEvent($clientid,$eventid,$title,$imgname,$venue,$eventdate,$desc,$regis);
-    $result = $obj->createNewEvent($clientid, $EVENT_ID, $EVENT_TITLE, $EVENT_IMG, $EVENT_VENUE, $EVENT_FULL_TIME, $EVENT_CONTENT, $REGISTRATION, $DATE, $USERID, $FLAG,$COST);
+    $result = $obj->createNewEvent($clientid, $EVENT_ID, $EVENT_TITLE, $EVENT_IMG, $EVENT_VENUE, $EVENT_FULL_TIME, $EVENT_CONTENT, $REGISTRATION, $DATE, $USERID, $FLAG,$COST,$like, $comment);
 
     $type = "Event";
     $img = "";
@@ -167,18 +171,20 @@ if (!empty($_POST)) {
 
 
     /*     * *************************get group admin uuid  form group admin table if user type not= all *************************** */
+   
     if ($User_Type != 'All') {
-        $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+        //$groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
 
 
-        $adminuuid = json_decode($groupadminuuid, true);
+        //$adminuuid = json_decode($groupadminuuid, true);
         /* echo "hello groupm admin id";
           echo "<pre>";
           print_r($adminuuid)."<br/>";
           echo "</pre>";
           echo "--------------all employee id---------"; */
 
-        $allempid = array_merge($token, $adminuuid);
+       // $allempid = array_merge($token, $adminuuid);
+        $allempid = array_merge($token);
         /* echo "<pre>";
           print_r($allempid);
           echo "<pre>";
@@ -210,10 +216,10 @@ if (!empty($_POST)) {
     /*     * *** get all registration token  for sending push **************** */
     $reg_token = $push->getGCMDetails($allempid1, $clientid);
     $token1 = json_decode($reg_token, true);
-    /* echo "----regtoken------";
+    /*echo "----regtoken------";
       echo "<pre>";
       print_r($token1);
-      echo "<pre>"; */
+      echo "<pre>";*/
 //echo "Push notification :".$PUSH_NOTIFICATION."<br/>";
     /*     * *******************check push notificaticon enabale or disable******************** */
     if ($PUSH_NOTIFICATION == 'PUSH_YES') {
@@ -237,10 +243,15 @@ if (!empty($_POST)) {
                $content = str_replace("\r\n","",strip_tags($EVENT_CONTENT));
         $data = array('Id' => $maxeventid, 'Title' => $EVENT_TITLE, 'Content' => $content, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $DATE, 'flag' => $FLAG,'flagValue' => $flag_name, 'success' => $sf);
           
+		  //print_r($data);
+		  
 		   $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
         $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapi);
         $rt = json_decode($revert, true);
 
+		//print_r($IOSrevert);
+		//print_r($rt);
+		
         if ($rt) {
             if ($dev == 'd1') {
                 echo "<script>alert('Event Successfully Send');</script>";

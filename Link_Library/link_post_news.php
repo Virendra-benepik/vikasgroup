@@ -20,7 +20,7 @@ $maxid = $obj->maxID();  //---------get latest post_id
 $target = '../images/post_img/';   // folder name for storing data
 $folder = 'images/post_img/';      //folder name for add with image insert into table
 
-/* * ******************************START HERE************************************************ */
+/********************************START HERE************************************************ */
 //echo "this is base path-".BASE_PATH;
 //echo "this is site url-".SITE_URL;
 if (!empty($_POST)) {
@@ -29,7 +29,8 @@ if (!empty($_POST)) {
     $flag_name = $_POST['flagvalue'];
     //echo "flag name-".$flag_name;
     $dev = $_POST['device'];
-    if (isset($_POST['news_post'])) {
+    if (isset($_POST['news_post'])) 
+        {
 
         if ($dev == 'd1') {
             $USERID = $_POST['author'];
@@ -58,30 +59,42 @@ if (!empty($_POST)) {
         $thumb_image = $push->makeThumbnails($target, $path_name, 20);
         $thumb_img = str_replace('../', '', $thumb_image);
         /*         * **************************************** check like & comment start ********************** */
-        $like = $_POST['like'];
-        if (!isset($like) && $like != 'LIKE_YES') {
+      //echo $like = $_POST['like'];
+	   //if (!isset($like) && $like != 'LIKE_YES') {
+		   $like = (empty($_POST['like'])?"":$_POST['like']);
+			if ($like =="") {
             $like = 'LIKE_NO';
             $like_val = 'like_no';
         } else {
             $like_val = 'like_yes';
+			$like = 'LIKE_YES';
         }
 
-        $comment = $_POST['comment'];
-        if (!isset($comment) && $comment != 'COMMENT_YES') {
+       //echo $comment = $_POST['comment'];
+       // if (!isset($comment) && $comment != 'COMMENT_YES') {
+		   $comment = (empty($_POST['comment'])?"":$_POST['comment']);
+		   if ($comment=="") {
             $comment = 'COMMENT_NO';
             $comment_val = 'comment_no';
         } else {
             $comment_val = 'comment_yes';
+			$comment = 'COMMENT_YES';
         }
 
 
-        $push_noti = $_POST['push'];
-        if (!isset($push_noti) || $push_noti != 'PUSH_YES') {
+      // echo $push_noti = $_POST['push'];
+       // if (!isset($push_noti) || $push_noti != 'PUSH_YES') {
+		   $push_noti = (empty($_POST['push'])?"":$_POST['push']);
+		   if ($push_noti=="") {
             $PUSH_NOTIFICATION = 'PUSH_NO';
         } else {
             $PUSH_NOTIFICATION = 'PUSH_YES';
         }
 
+		//echo $comment;
+	//	echo $like;
+		//echo $PUSH_NOTIFICATION;
+		
         $popup_NOTIFICATION = "";
         if (!isset($_POST['popup'])) {
             $popup_NOTIFICATION = 'POPUP_NO';
@@ -108,7 +121,8 @@ if (!empty($_POST)) {
               echo "<pre>";
               print_r($myArray)."<br/>";
               echo "</pre>"; */
-        } else {
+        } 
+        else {
             // echo "all user"."<br/>";
             $User_Type = "Selected";
             //  echo "user type:-".$User_Type;
@@ -126,7 +140,10 @@ if (!empty($_POST)) {
         }
 
 
-
+		$userimage = $push->getImage($USERID);
+        $image = $userimage[0]['userImage'];
+		
+		
         /** ******************************* Get GoogleAPIKey and IOSPEM file ********************************* */
         $googleapiIOSPem = $push->getKeysPem($clientid);
        // print_r($googleapiIOSPem);
@@ -157,52 +174,46 @@ $devcie = 1;
           echo "</pre>"; */
 
 
-        /*         * *************************get group admin uuid  form group admin table if user type not= all *************************** */
-        if ($User_Type != 'All') {
+        /********get group admin uuid  form group admin table if user type not= all *************************** */
+
+        if ($User_Type != 'All') 
+            {
 //echo "within not all user type".$User_Type."<br/>";
-            $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
-            $adminuuid = json_decode($groupadminuuid, true);
-            /*  echo "hello groupm admin id";
-              echo "<pre>";
-              print_r($adminuuid)."<br/>";
-              echo "</pre>";
-              echo "--------------all employee id---------"; */
+      //      $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+     //       $adminuuid = json_decode($groupadminuuid, true);
+        
 
-            $allempid = array_merge($token, $adminuuid);
-            /* echo "<pre>";
-              print_r($allempid);
-              echo "<pre>";
-
-              echo "--------------all unique employee id---------"; */
-
+          // $allempid = array_merge($token, $adminuuid);
+             $allempid = array_merge($token);
             $allempid1 = array_values(array_unique($allempid));
-            /*  echo "user unique id";
+             /* echo "user unique id";
               echo "<pre>";
               print_r($allempid1);
               echo "<pre>"; */
         } else {
-//echo "within all user type".$User_Type."<br/>";
+     //echo "within all user type".$User_Type."<br/>";
             $allempid1 = $token;
-        }
+        } 
 
-        /*         * ******* insert into post sent to table for analytic sstart************ */
+        /********* insert into post sent to table for analytic sstart************ */
 
         $total = count($allempid1);
         for ($i = 0; $i < $total; $i++) {
             $uuid = $allempid1[$i];
-//echo "count no.:-".$i."->".$uuid."<br/>";
+        //echo "post count no.:-".$i."->".$uuid."<br/>";
             if (!empty($uuid)) {
                 $read->postSentTo($clientid, $maxid, $uuid, $FLAG);
             } else {
                 continue;
             }
         }
+       
         /*         * ******* insert into post sent to table for analytic sstart************ */
 
         /*         * *** get all registration token  for sending push **************** */
         $reg_token = $push->getGCMDetails($allempid1, $clientid);
         $token1 = json_decode($reg_token, true);
-       /*  echo "----regtoken------";
+        /* echo "----regtoken------";
           echo "<pre>";
           print_r($token1);
           echo "<pre>";*/
@@ -218,16 +229,17 @@ $devcie = 1;
             @fputcsv($file, @explode(',', $line));
         }
         @fclose($file);
-
+ 
         /*         * *******************Create file of user which this post send End******************** */
 
         /*         * *******************check push notificaticon enabale or disable******************** */
-        if ($PUSH_NOTIFICATION == 'PUSH_YES') {
+        if ($PUSH_NOTIFICATION == 'PUSH_YES') 
+            {
 
-            /*             * ******************* send push by  push notification******************** */
+            /******************** send push by  push notification******************** */
 
-            $hrimg = SITE_URL . $_SESSION['image_name'];
-
+            //$hrimg = SITE_URL . $_SESSION['image_name'];
+			$hrimg = $image;
             $sf = "successfully send";
             $ids = array();
             $idsIOS = array();
@@ -242,7 +254,9 @@ $devcie = 1;
             }
             $content = str_replace("\r\n", "", strip_tags($POST_CONTENT));
             $data = array('Id' => $POST_ID, 'Title' => $POST_TITLE, 'Content' => $content, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $DATE, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
-
+			
+			//print_r($data);
+			
            $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
             $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
 
@@ -262,7 +276,7 @@ $devcie = 1;
             }
         } else {
             echo "<script>alert('Post Successfully Send');</script>";
-           // echo "<script>window.location='../postnews.php'</script>";
+            echo "<script>window.location='../postnews.php'</script>";
         }
 
 

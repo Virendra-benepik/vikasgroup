@@ -28,6 +28,7 @@ function addUserValidation()
 	var dob = document.adduserform.dob;
 	var empid = document.adduserform.emp_code;
 	//var department = document.adduserform.department
+	var companyname = document.adduserform.companyname;
 	if(first_name.value == "")
 	{
 		alert("Please Enter First Name");
@@ -40,18 +41,25 @@ function addUserValidation()
 		last_name.focus();
 		return false;
 	}
+	if(companyname.value == "")
+	{
+		alert("Please Enter Company Name");
+		companyname.focus();
+		return false;
+	}
+	if(empid.value == "")
+	{
+		alert("Please Enter Employee code");
+		empid.focus();
+		return false;
+	}
 	if(dob.value == "")
 	{
 		alert("Please Enter Date Of Birth");
 		dob.focus();
 		return false;
 	}
-	if(empid.value == "")
-	{
-		alert("Please Enter Employee Id");
-		empid.focus();
-		return false;
-	}
+	
 	/*if(department.value == "")
 	{
 		alert("Please Enter Course");
@@ -149,11 +157,15 @@ function addUserValidation()
                                             <input style="color:#2d2a3b;" type="text" name="last_name" class="form-control" id="exampleInputEmail1" placeholder="Enter Last Name">
                                         </div></div>
                                     <div class="row">
-                                        <div class="form-group col-sm-6">
-                                       <label for="exampleInputPassword1">Employee Id<span style="color:red">*</span></label>
+									 <div class="form-group col-sm-4">
+                                       <label for="exampleInputPassword1">Company Name<span style="color:red">*</span></label>
+                                       <input  style="color:#2d2a3b;" type="text" name="companyname" class="form-control" id="exampleInputPassword1" placeholder="Enter Employee Id">
+                                        </div>
+                                        <div class="form-group col-sm-4">
+                                       <label for="exampleInputPassword1">Employee code<span style="color:red">*</span></label>
                                        <input  style="color:#2d2a3b;" type="text" name="emp_code" class="form-control" id="exampleInputPassword1" placeholder="Enter Employee Id">
                                         </div>
-                                        <div class="form-group col-sm-6">
+                                        <div class="form-group col-sm-4">
                                             <label for="exampleInputEmail1">Date of Birth<span style="color:red">*</span></label>
                                           <!--  <input type="date" name="dob" required class="form-control" id="exampleInputEmail1" placeholder="Enter Email id">-->
                                             <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>
