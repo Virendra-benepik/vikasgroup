@@ -16,7 +16,11 @@ $obj = new Auth();
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style type="text/css">
             html, body{overflow-x:hidden;}
-            body{background-color:#cde7c0 ;}
+            body{background-color:#cde7c0 ;
+                 background-image:    url(img/cms.jpg);
+                 background-size:     cover;                      /* <------ */
+                 background-repeat:   no-repeat;
+            }
             .bg {
                 width: 100%;
 
@@ -40,7 +44,9 @@ $obj = new Auth();
         }
         ?>
 
-        <div align="center"><img src="img/vikasbg.jpg" class="bg img img-responsive"></div>
+        <div align="center">
+            <!--<img src="img/cms.jpg" class="bg img img-responsive">-->
+        </div>
         <div class="container-fluid">
             <div class="loginDiv">
                 <div class="row">
@@ -54,9 +60,10 @@ $obj = new Auth();
                                 <input type="password"  name="password" class="form-control" placeholder="Password" required>
                             </div><br>
                             <div class="row">
+                                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><input type="submit" class="btn btn-default loginText" name="client_login" value ="LOGIN"></div>
                                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"><a href="#"data-toggle="modal" data-target="#myModalRegistration"><p class="btn btn-default" style="font-size:11px; color: #203f7c;"><b>FORGOT PASSWORD ?</b></p></a></div>
-								<!--style="color:#fff;font-weight:500;"-->
-                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><input type="submit" class="btn btn-default loginText" name="client_login" value ="LOGIN"></button></div>
+                               
+                               
                             </div>
                         </form>
                     </div>
@@ -64,7 +71,7 @@ $obj = new Auth();
                 <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9s"></div>
 
             </div>
-            <p style="color:#fff;font-weight:500;position:absolute;z-index:10;bottom:0px;">&copy; All Rights Reserved @ Benepik Pvt. Ltd. Gurgaon, India  </p>
+            <p style="color:#fff;font-weight:500;position:absolute;z-index:10;bottom:0px;">&copy; All Rights Reserved @ Benepik Technology Pvt. Ltd. Gurgaon, India  </p>
 
         </div>
         <!-- Modal registration -->

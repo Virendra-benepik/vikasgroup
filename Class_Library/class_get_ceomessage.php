@@ -1,5 +1,11 @@
 <?php
-include_once('class_connect_db_Communication.php');
+
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+if (!class_exists("Connection_Communication")) {
+    require_once('class_connect_db_Communication.php');
+}
+include_once('Api_Class/class_find_groupid.php');
 
 class GetCEOMessage {
 
@@ -18,13 +24,12 @@ class GetCEOMessage {
         $this->cid = $cid;
         $this->eid = $eid;
         $this->uid = $usertype;
-        $server_name = SITE_URL;
-        
-        
-        
+        //$server_name = SITE_URL;
+		$server_name = SITE;
+
+
         if ($this->uid == "SubAdmin") {
-            $query = 
-"SELECT Tbl_C_PostDetails . *, Concat('".SITE_URL."', Tbl_C_PostDetails.post_img ) AS post_img , DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
+            $query = "SELECT Tbl_C_PostDetails . *, if(Tbl_C_PostDetails.post_img IS NULL or Tbl_C_PostDetails.post_img = '', '', Concat('" . SITE . "', Tbl_C_PostDetails.post_img )) AS post_img , DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
 
 SELECT COUNT(distinct userUniqueId) 
 FROM Tbl_Analytic_PostView
@@ -61,9 +66,8 @@ FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetai
             $response["success"] = 1;
             $response["message"] = "data fetched successfully";
             $response["posts"] = $rows;
-        } 
-		else {
-            $query = "SELECT Tbl_C_PostDetails . *, Concat('".SITE_URL."', Tbl_C_PostDetails.post_img ) AS post_img , DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
+        } else {
+            $query = "SELECT Tbl_C_PostDetails . *,if(Tbl_C_PostDetails.post_img IS NULL or Tbl_C_PostDetails.post_img = '', '', Concat('" . SITE . "', Tbl_C_PostDetails.post_img )) AS post_img , DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
 
 SELECT COUNT(distinct userUniqueId) 
 FROM Tbl_Analytic_PostView
@@ -85,11 +89,11 @@ FROM Tbl_Analytic_PostLike
 WHERE Tbl_Analytic_PostLike.postId = Tbl_C_PostDetails.post_id
 ) as likeCount 
 
-FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetails.clientId = :cli and Tbl_C_PostDetails.userUniqueId =:eid1 order by Tbl_C_PostDetails.auto_id desc";
+FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetails.clientId = :cli order by Tbl_C_PostDetails.auto_id desc";
 
             try {
                 $stmt = $this->DB->prepare($query);
-                $stmt->execute(array('cli' => $this->cid,'eid1'=>$this->eid));
+                $stmt->execute(array('cli' => $this->cid));
             } catch (PDOException $e) {
                 echo $e;
             }
@@ -138,73 +142,103 @@ FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetai
 
     /*     * ********************************Get Data for android **************************************************** */
 
-    function getAllCEOMessageFORandroid($clientid, $val) {
+    function getAllCEOMessageFORandroid($clientid, $uid, $val) {
         $this->idclient = $clientid;
         $this->value = $val;
-//$path = "http://admin.benepik.com/employee/virendra/benepik_client/";
-        try {
-            $server_name = dirname(SITE_URL)."/";
-          //  $query = "select *,if(thumb_post_img IS NULL or thumb_post_img = '',Concat('" . $server_name . "', post_img), Concat('" . $server_name . "', thumb_post_img)) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 order by auto_id desc limit " . $this->value . " , 5";
-            
-             $query = "select *,if(post_img IS NULL or post_img = '', '',Concat('" . $server_name . "', post_img)) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 and status = 'Publish' order by auto_id desc limit " . $this->value . " , 5";
-            $stmt = $this->DB->prepare($query);
-            $stmt->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
-            $stmt->execute();
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $response = array();
+        $query = "select * from Tbl_EmployeeDetails_Master where clientId=:cli and employeeId=:empid and status = 'Active'";
+        $stmt = $this->DB->prepare($query);
+        $stmt->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
+        $stmt->bindParam(':empid', $uid, PDO::PARAM_STR);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (count($rows) > 0) {
+        if (count($rows) > 0) {
 
-                $query1 = "select count(post_id) as totals from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 and status = 'Publish'";
-                $stmt1 = $this->DB->prepare($query1);
-                $stmt1->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
-                $stmt1->execute();
-                $rows1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+            $uuids = $rows[0]['employeeId'];
 
-                $response["success"] = 1;
-                $response["message"] = "You successfully fetched";
-                $response["totals"] = $rows1[0]["totals"];
-                $response["posts"] = $rows;
-                /*
-                  foreach($rows as $row)
-                  {
-                  $post["autoId"] = $row["autoId"];
-                  $post["clientId"] = $row["clientId"];
-                  $post["post_id"] = $row["post_id"];
-                  $post["noticeTitle"] = $row["noticeTitle"];
-                  $post["fileName"] = $path.$row["fileName"];
-                  $post["location"] = $row["location"];
-                  $post["createdBy"] = $row["createdBy"];
-                  $post["createdDate"] = $row["createdDate"];
-                  $post["status"] = $row["status"];
-                  $post["publishingTime"] = $row["publishingTime"];
-                  $post["unpublishingTime"] = $row["unpublishingTime"];
-                  array_push($response["posts"],$post);
-                  } */
+            $group_object = new FindGroup();    // this is object to find group id of given unique id 
+            $getgroup = $group_object->groupBaseofUid($clientid, $uuids);
+            $value = json_decode($getgroup, true);
+            if (count($value['groups']) > 0) {
+                $in = implode("', '", array_unique($value['groups']));
+                try {
+                    
+                    $query2 = "select count(distinct(postId)) as total_posts from Tbl_Analytic_PostSentToGroup where clientId=:cli and status = 1 and flagType = 9 and groupId IN('" . $in . "')";
 
-                return json_encode($response);
-            } else {
-                $response["success"] = 0;
-                $response["message"] = "No more post available";
-                return json_encode($response);
+                    $stmt2 = $this->DB->prepare($query2);
+                    $stmt2->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
+                    // $stmt2->bindParam(':uid',$uuids, PDO::PARAM_STR);
+                    $stmt2->execute();
+                    $rows2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+                    
+                   
+                    $query1 = "select distinct(postId) from Tbl_Analytic_PostSentToGroup where clientId=:cli and status = 1 and groupId IN('" . $in . "') and flagType = 9 order by autoId desc limit " . $this->value . ",5";
+                    $stmt1 = $this->DB->prepare($query1);
+                    $stmt1->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
+                    //  $stmt1->bindParam(':uid',$uuids, PDO::PARAM_STR);
+                    $stmt1->execute();
+                    $rows1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+if(count($rows1)>0)
+{
+                    $response = array();
+                    $response["success"] = 1;
+                    $response["message"] = "Leadership message available for you";
+
+                    
+
+                    $response["total_posts"] = $rows2["total_posts"];
+                    $response["posts"] = array();
+
+                    if ($rows1) {
+                        foreach ($rows1 as $row) {
+                            $post["postId"] = $row["postId"];
+                            $postid = $row["postId"];
+
+                            try {
+                                $server_name = dirname(SITE_URL) . "/";
+                                $query = "select *,if(post_img IS NULL or post_img = '', '',Concat('" . $server_name . "', post_img)) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 9 and status = 'Publish' and post_id=:postId";
+                                $stmt = $this->DB->prepare($query);
+                                $stmt->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
+                                $stmt->bindParam(':postId', $postid, PDO::PARAM_STR);
+                                $stmt->execute();
+                                $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                array_push($response["posts"], $rows);
+                            } catch (PDOException $e) {
+                                $response["success"] = 0;
+                                $response["message"] = "client id or initial value is incorrect" . $e;
+                            }
+                        }
+                        return json_encode($response);
+                    }
+                }
+                else
+                {
+                               $response["success"] = 0;
+                                $response["message"] = "No More Post Available";
+                                 $response["total_posts"] = $rows2["total_posts"];
+                                 $response["posts"] = array();
+                                
+                }
+                } catch (PDOException $e) {
+                    echo $e;
+                }
             }
-        } catch (PDOException $e) {
-            //  echo $e;
-            $response["success"] = 0;
-            $response["message"] = "client id or initial value is incorrect".$e;
-            return json_encode($response);
+        }
+ else {
+             $response["success"] = 0;
+                                $response["message"] = "client id or initial value is incorrect";
         }
 
-        //$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        //	 return json_encode($rows);
+ return json_encode($response);
     }
 
     function getSinglePost($postid, $clientid) {
         $this->id = $postid;
         $this->cli = $clientid;
         $server_name = SITE;
-        $query = "select *, DATE_FORMAT(created_date,'%d %b %Y') as created_date , Concat('" . $server_name . "',post_img) as post_img  from Tbl_C_PostDetails where post_id =:pid and clientId=:cli";
+        $query = "select *, DATE_FORMAT(created_date,'%d %b %Y') as created_date , if(post_img IS NULL or post_img = '', '',Concat('" . $server_name . "',post_img)) as post_img from Tbl_C_PostDetails where post_id =:pid and clientId=:cli";
         try {
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':pid', $this->id, PDO::PARAM_STR);
@@ -216,43 +250,6 @@ FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 9 and Tbl_C_PostDetai
             echo $e;
         }
     }
-
-    function updateNoticeStatus($pid, $sta) {
-        $this->noticeid = $pid;
-        $this->status = $sta;
-
-        $query = "update NoticeDetails set status=:sta where noticeId =:pid";
-        try {
-            $stmt = $this->DB->prepare($query);
-            $stmt->bindParam(':pid', $this->noticeid, PDO::PARAM_STR);
-            $stmt->bindParam(':sta', $this->status, PDO::PARAM_STR);
-            if ($stmt->execute()) {
-                $response[success] = 1;
-                $response[message] = "Successfully notice status changed";
-                return json_encode($response);
-            }
-        } catch (PDOException $e) {
-            echo $e;
-        }
-    }
-
-    function deleteNotice($nid) {
-        $this->noticeid = $nid;
-
-        $query = "delete from NoticeDetails where noticeId =:nid";
-        try {
-            $stmt = $this->DB->prepare($query);
-            $stmt->bindParam(':nid', $this->noticeid, PDO::PARAM_STR);
-            if ($stmt->execute()) {
-                $response[success] = 1;
-                $response[message] = "Successfully notice deleted";
-                return json_encode($response);
-            }
-        } catch (PDOException $e) {
-            echo $e;
-        }
-    }
-
 }
 
 ?>

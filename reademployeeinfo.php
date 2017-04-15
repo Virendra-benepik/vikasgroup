@@ -1,55 +1,32 @@
 <?php
-session_start();
 require_once('Class_Library/class_training.php');
+if(!empty($_REQUEST['searchid']))
+{ 
 $obj = new Training();
-$clientid = $_SESSION['client_id'];
-if(!empty($_POST["keyword"])) {
-$keyword = $_POST["keyword"];
-$empinfo = $obj->employeeinfo($clientid,$keyword);
-$result = json_decode($empinfo , true);
+
+$clientid = "CO-27";
+$keyword = $_REQUEST['searchid'];
+$result = $obj->employeeinfo($clientid,$keyword);
+//echo $result;
+echo $_GET['callback'].'('.$result.')';
+//$result1 = json_decode($result);
 //echo "<pre>";
-//print_r($result);
-if(!empty($result)) {
-?>
-
-<table border="1">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Employee Code</th>
-        <th>Email ID</th>
-		<th>Department</th>
-        <th>Location</th>
-      </tr>
-    </thead>
-	 <tbody>
-      <tr>
-<?php 
-	$co = count($result);
-	for($i=0; $i<$co; $i++)
-	{
-		$autoId =$result[$i]['autoId'];
-		$firstName =$result[$i]['firstName'];
-		$employeeCode =$result[$i]['employeeCode'];
-		$emailId =$result[$i]['emailId'];
-		$department =$result[$i]['department'];
-		$location =$result[$i]['location'];
-?>
-
-<tr onClick="selectemployeeinfo('<?php echo $autoId; ?>','<?php echo $firstName; ?>');">
-
-<td><?php echo $firstName; ?></td>
-<td><?php echo $employeeCode; ?></td>
-<td><?php echo $emailId; ?></td>
-<td><?php echo $department; ?></td>
-<td><?php echo $location; ?></td>
-
-</tr>
-</tbody>
-<?php } ?>
-</table>
-
-<?php 
+//print_r($result1);
+//echo "</pre>";
 }
-} 
+else
+{
+?>
+<form name="form1" method="post" action="">
+  
+  <p>search id:
+    <label for="textfield"></label>
+  <input type="text" name="searchid" id="searchid">
+  </p>
+  <p>
+  <input type="submit" name="submit" id="button" value="Publish">
+  </p>
+</form>
+<?php
+}
 ?>

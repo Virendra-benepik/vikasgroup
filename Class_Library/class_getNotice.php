@@ -342,8 +342,8 @@ class GetNotice {
             $stmtw->bindParam(':sta1', $welstatus, PDO::PARAM_STR);
             $stmtw->execute();
             if ($stmt->execute()) {
-                $response[success] = 1;
-                $response[message] = "Successfully notice status changed";
+                $response["success"] = 1;
+                $response["message"] = "Successfully notice status changed";
                 return json_encode($response);
             }
         } catch (PDOException $e) {
@@ -361,8 +361,8 @@ class GetNotice {
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':nid', $this->noticeid, PDO::PARAM_STR);
             if ($stmt->execute()) {
-                $response[success] = 1;
-                $response[message] = "Successfully notice deleted";
+                $response["success"] = 1;
+                $response["message"] = "Successfully notice deleted";
                 return json_encode($response);
             }
         } catch (PDOException $e) {

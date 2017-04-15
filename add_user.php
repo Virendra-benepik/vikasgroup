@@ -29,6 +29,9 @@ function addUserValidation()
 	var empid = document.adduserform.emp_code;
 	//var department = document.adduserform.department
 	var companyname = document.adduserform.companyname;
+	var companycode = document.adduserform.companycode;
+	//alert(companyname);
+	//alert(companycode);
 	if(first_name.value == "")
 	{
 		alert("Please Enter First Name");
@@ -41,10 +44,16 @@ function addUserValidation()
 		last_name.focus();
 		return false;
 	}
-	if(companyname.value == "")
+	if(companyname.value == 0)
 	{
-		alert("Please Enter Company Name");
+		alert("Please Select Company Name");
 		companyname.focus();
+		return false;
+	}
+	if(companycode.value == 0)
+	{
+		alert("Please Select Company Code");
+		companycode.focus();
 		return false;
 	}
 	if(empid.value == "")
@@ -85,7 +94,7 @@ function addUserValidation()
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="title"><strong>User Details</strong></div>
+                        <div class="title"><strong>Add User</strong></div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -95,8 +104,8 @@ function addUserValidation()
                                 <a href="#step1" id="step1-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
                                     <div class="icon fa fa-users"></div>
                                     <div class="step-title">
-                                        <div class="title">Upload CSV</div>
-                                        <div class="description">If Multiple User then Upload CSV File </div>
+                                        <div class="title">Multiple User(Upload CSV)</div>
+                                        <!--<div class="description">Multiple User</div>-->
                                     </div>
                                 </a>
                             </li>
@@ -104,8 +113,8 @@ function addUserValidation()
                                 <a href="#step2" role="tab" id="step2-tab" data-toggle="tab" aria-controls="profile">
                                     <div class="icon fa fa-user"></div>
                                     <div class="step-title">
-                                        <div class="title">Fill Form</div>
-                                        <div class="description">If Single User Then Fill Form</div>
+                                        <div class="title">Single User(Fill Form)</div>
+                                        <!--<div class="description">If Single User Then Fill Form</div>-->
                                     </div>
                                 </a>
                             </li>
@@ -114,15 +123,15 @@ function addUserValidation()
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="step1" aria-labelledby="home-tab">
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-6 col-sm-offset-2">
+                                    <div class="col-sm-12" style="margin-left:-15px;">
+                                        <div class="col-sm-6">
                                             <div class="panel panel-success">
-                                                <div class="panel-heading">Upload User Details</div>
+                                                <div class="panel-heading">Upload CSV File</div>
                                                 <div class="panel-body">
-                                                    <div class="text-center" style="border:1px solid #e6e6e6; box-shadow:0 1px 5px rgba(0, 0, 0, 0.1); padding:10px;">
+                                                    <div class="text-center" style="padding:10px;">
                                                         <form role="form" name="csvform" method="post" enctype="multipart/form-data" action="Link_Library/link_client_user.php" onsubmit="return check()">
                                                             <div class="form-group text-center">
-                                                                <label for="exampleInputFile">Upload CSV File</label>
+                                                                <label for="exampleInputFile"></label>
                                                                 <center>  <input style="color:#2d2a3b;" class="text-center" accept=".csv" name="user_csv_file" type="file" id="exampleInputFile"></center>
 
                                                             </div>
@@ -132,13 +141,15 @@ function addUserValidation()
                                                 </div>
                                             </div>
                                         </div>
-                                        <span style="    position: absolute;
-                                              font-size: 16px;
-                                              right: 9%;
-                                              bottom: 15%;
-                                              text-decoration: underline;"><a href="demoCSVfile/demoCSVformat.csv"> Download CSV file format</a></span>
+                                        
                                     </div>
                                 </div>
+								<div class="row">
+								<div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+								<br/>
+								<span style="position: absolute;font-size: 16px;bottom: 15%;text-decoration: underline;"><a href="demoCSVfile/demoCSVformat.csv"> Download CSV file format</a></span>
+								</div>	  
+								</div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="step2" aria-labelledby="profile-tab">
 
@@ -159,64 +170,104 @@ function addUserValidation()
                                     <div class="row">
 									 <div class="form-group col-sm-4">
                                        <label for="exampleInputPassword1">Company Name<span style="color:red">*</span></label>
-                                       <input  style="color:#2d2a3b;" type="text" name="companyname" class="form-control" id="exampleInputPassword1" placeholder="Enter Employee Id">
+                                       <!--<input  style="color:#2d2a3b;" type="text" name="companyname" class="form-control" id="exampleInputPassword1" placeholder="Enter Employee Id">
+									   -->
+									   <select name="companyname" id="exampleInputPassword1" style="width:100%;" class="form-control">
+									   <option value="0">Select Company Name</option>
+									   <option value="Sanden Vikas India Pvt Ltd">Sanden Vikas India Pvt Ltd</option>
+									    <option value="Pranav Vikas India Pvt Ltd">Pranav Vikas India Pvt Ltd</option>
+									    <option value="Ecocat India Pvt Ltd">Ecocat India Pvt Ltd</option>
+									    <option value="Sata Vikas India Pvt Ltd">Sata Vikas India Pvt Ltd</option>
+									    <option value="Kenmore Vikas India Pvt Ltd">Kenmore Vikas India Pvt Ltd</option>
+									    <option value="Sanden Vikas Precision Parts Pvt Ltd">Sanden Vikas Precision Parts Pvt Ltd</option>
+									    <option value="Vikas Altech Pvt Ltd">Vikas Altech Pvt Ltd</option>
+										<option value="Vikas Group/Corporate">Vikas Group/Corporate</option>
+									   </select>
+                                    </div>
+										
+										 <div class="form-group col-sm-4">
+                                       <label for="exampleInputPassword1">Company Code<span style="color:red">*</span></label>
+                                       <!--<input  style="color:#2d2a3b;" type="text" name="companyname" class="form-control" id="exampleInputPassword1" placeholder="Enter Employee Id">-->
+									   
+									   <select name="companycode" id="exampleInputPassword1" style="width:100%;" class="form-control">
+									   <option value="0">Select Company Code</option>
+									   <option value="SVL">SVL</option>
+									    <option value="PVL">PVL</option>
+										<option value="ECOCAT">ECOCAT</option>
+										<option value="SATA">SATA</option>
+									    <option value="KVL">KVL</option>
+									    <option value="SVP">SVP</option>
+									    <option value="VAPL">VAPL</option>
+										<option value="CORP">CORP</option>
+									   </select>
                                         </div>
+										
                                         <div class="form-group col-sm-4">
                                        <label for="exampleInputPassword1">Employee code<span style="color:red">*</span></label>
                                        <input  style="color:#2d2a3b;" type="text" name="emp_code" class="form-control" id="exampleInputPassword1" placeholder="Enter Employee Id">
                                         </div>
-                                        <div class="form-group col-sm-4">
+                                       </div>
+                                    <div class="row">
+									     <div class="form-group col-sm-4">
                                             <label for="exampleInputEmail1">Date of Birth<span style="color:red">*</span></label>
-                                          <!--  <input type="date" name="dob" required class="form-control" id="exampleInputEmail1" placeholder="Enter Email id">-->
+                                         
                                             <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>
 
 
                                             <input  style="color:#2d2a3b;" type="date" name="dob" class="form-control"  id="exampleInputEmail1" placeholder="YYYY-MM-DD"  />
 
-                                        </div></div>
-                                    <div class="row">
-                                        <div class="form-group col-sm-6">
-                                            <label for="exampleInputEmail1">Father's Name</label>
-                                        <!--    <input type="date" name="doj" required class="form-control" id="exampleInputEmail1" placeholder="Enter Email id">-->
-                                            <input style="color:#2d2a3b;" type="text" name="fathername" class="form-control" id="exampleInputEmail1" placeholder="Father Name" />
                                         </div>
-                                        <div class="form-group col-sm-6">
+										
+                                        <div class="form-group col-sm-4">
+                                            <label for="exampleInputEmail1">Date of Joining</label>
+                                         
+                                            <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>
+
+
+                                            <input  style="color:#2d2a3b;" type="date" name="doj" class="form-control"  id="exampleInputEmail1" placeholder="YYYY-MM-DD"  />
+
+                                        </div>
+										
+                                        <div class="form-group col-sm-4">
                                             <label for="exampleInputEmail1">Email Id</label>
                                             <input style="color:#2d2a3b;" type="email" name="email_id" class="form-control" id="exampleInputEmail1" placeholder="Enter Email id">
                                         </div>
-                                    </div> <div class="row">
-                                        <div class="form-group col-sm-6">
+                                    </div>
+									<div class="row">
+                                        <div class="form-group col-sm-4">
                                             <label for="exampleInputPassword1">Designation</label>
                                             <input style="color:#2d2a3b;" type="text" name="designation" class="form-control" id="designation" placeholder="Enter Designation">
                                         </div>
-                                        <div class="form-group col-sm-6">
+                                        <div class="form-group col-sm-4">
                                        <label for="exampleInputPassword1">Department</label>
                                             <input  style="color:#2d2a3b;" type="text" name="department" class="form-control" id="department" placeholder="Enter Department">
                                         </div>
-                                    </div> <div class="row">                
-                                        <div class="form-group col-sm-6">
+										<div class="form-group col-sm-4">
                                             <label for="exampleInputPassword1">Mobile number</label>
                                             <input style="color:#2d2a3b;" type="text" class="form-control" name="contact" placeholder="Enter Contact number"></textarea>
 
                                         </div>
-                                        <div class="form-group col-sm-6">
+                                    </div> 
+									<div class="row">                
+                                        
+                                        <div class="form-group col-sm-4">
                                             <label for="exampleInputPassword1">Location</label>
                                             <input style="color:#2d2a3b;"type="text" class="form-control" name="location" placeholder="Enter Location"></textarea>
 
                                         </div>
-                                    </div> <div class="row">
-                                        <div class="form-group col-sm-6">
+										<div class="form-group col-sm-4">
                                             <label for="exampleInputPassword1">Branch</label>
                                             <input style="color:#2d2a3b;" type="text" class="form-control" name="branch" placeholder="Enter Branch"></textarea>
 
                                         </div>
-                                        <div class="form-group col-sm-6">
+                                        <div class="form-group col-sm-4">
                                             <label for="exampleInputPassword1">Grade</label>
                                             <input style="color:#2d2a3b;" type="text" class="form-control" name="grade" placeholder="Enter Grade"></textarea>
 
                                         </div>
 
-                                    </div>    <div class="row">              
+                                    </div> 
+									<div class="row">              
                                         <div class="form-group col-sm-12">
                                             <label for="exampleInputPassword1">Gender</label>
                                             <div>

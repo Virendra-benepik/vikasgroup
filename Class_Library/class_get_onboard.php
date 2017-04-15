@@ -30,7 +30,7 @@ class GetWelcomeOnboard {
         if ($this->uid == "SubAdmin") {
             // $query = "select *, Concat('$site_url', post_img) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 12 and created_by = :cb order by auto_id desc";
 
-            $query = "select TCPD.*,Concat('$site_url', TCPD.post_img) as post_img, DATE_FORMAT(TCPD.created_date,'%d %b %Y') as created_date,
+            $query = "select TCPD.*,if(TCPD.post_img IS NULL or TCPD.post_img = '','',Concat('$site_url', TCPD.post_img)) as post_img, DATE_FORMAT(TCPD.created_date,'%d %b %Y') as created_date,
                            (SELECT COUNT(distinct userUniqueId) 
                             FROM Tbl_Analytic_PostView
                             WHERE Tbl_Analytic_PostView.post_id = TCPD.post_id
@@ -40,7 +40,7 @@ class GetWelcomeOnboard {
                             WHERE Tbl_Analytic_PostView.post_id = TCPD.post_id
                             ) as Total_View
                             from Tbl_C_PostDetails as TCPD
-                            where TCPD.clientId=:cli and TCPD.flagCheck = 12 and TCPD.created_by =:cb order by TCPD.auto_id desc";
+                            where TCPD.clientId=:cli and TCPD.flagCheck = 12 and TCPD.userUniqueId =:cb order by TCPD.auto_id desc";
 
             try {
                 $stmt = $this->DB->prepare($query);
@@ -51,14 +51,14 @@ class GetWelcomeOnboard {
 
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            //$response=array();
+            $response = array();
             $response["success"] = 1;
             $response["message"] = "data fetched successfully";
             $response["posts"] = $rows;
         } else {
             //$query = "select *,Concat('$site_url', post_img) as post_img, DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date from Tbl_C_PostDetails where clientId=:cli and flagCheck = 12 order by auto_id desc";
 
-            $query = "select TCPD.*,Concat('$site_url', TCPD.post_img) as post_img, DATE_FORMAT(TCPD.created_date,'%d %b %Y') as created_date,
+            $query = "select TCPD.*,if(TCPD.post_img IS NULL or TCPD.post_img = '','',Concat('$site_url', TCPD.post_img))  as post_img, DATE_FORMAT(TCPD.created_date,'%d %b %Y') as created_date,
                            (SELECT COUNT(distinct userUniqueId) 
                            FROM Tbl_Analytic_PostView
                            WHERE Tbl_Analytic_PostView.post_id = TCPD.post_id
@@ -146,7 +146,7 @@ class GetWelcomeOnboard {
                     $stmt3->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
                     $stmt3->execute();
                     $rows3 = $stmt3->fetchAll(PDO::FETCH_ASSOC);
-                  
+
                     $post = array();
                     if (count($rows3) > 0) {
                         foreach ($rows3 as $row) {
@@ -163,7 +163,7 @@ class GetWelcomeOnboard {
 
                             array_push($response["posts"], $rows);
                         }
-                       
+
                         return json_encode($response);
                     } else {
                         $response["success"] = 0;
@@ -199,7 +199,7 @@ class GetWelcomeOnboard {
 
         $site_url = ($imagepath == '') ? SITE : site_url;
         //  echo "this iss site url".$site_url;
-        $query = "select post.*, DATE_FORMAT(post.created_date,'%d %b %Y') as created_date , if(post.thumb_post_img IS NULL or post.thumb_post_img='' , CONCAT('" . $site_url . "',post.post_img), CONCAT('" . $site_url . "',post.thumb_post_img)) as post_img, if(user.userImage IS NULL or user.userImage='','',CONCAT('" . $site_url . "',user.userImage)) as userImage from Tbl_C_PostDetails as post join Tbl_EmployeePersonalDetails as user on post.userUniqueId = user.employeeId where post.post_id =:pid and post.clientId=:cli";
+        $query = "select post.*, DATE_FORMAT(post.created_date,'%d %b %Y') as created_date , if(post.post_img IS NULL or post.post_img='' , '', CONCAT('" . $site_url . "',post.post_img)) as post_img, if(user.userImage IS NULL or user.userImage='','',CONCAT('" . $site_url . "',user.userImage)) as userImage from Tbl_C_PostDetails as post join Tbl_EmployeePersonalDetails as user on post.userUniqueId = user.employeeId where post.post_id =:pid and post.clientId=:cli";
         try {
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':pid', $this->id, PDO::PARAM_STR);

@@ -62,7 +62,7 @@ class Group
   public $cb;
   public $status;
   
-  function createGroup($clientid,$groupid,$groupname,$groupdescription,$createdby,$createddate,$status)
+  function createGroup($clientid,$groupid,$groupname,$groupdescription,$createdby,$createddate,$status,$grouptype)
   {
      $this->clientid = $clientid;
      $this->groupid  = $groupid;
@@ -73,8 +73,8 @@ class Group
      $this->status = $status;
      
      try{
-     $query = "insert into Tbl_ClientGroupDetails(clientId,groupId,groupName,groupDescription,createdBy,createdDate,status)
-            values(:cid,:gid,:gname,:gd,:cb,:cd,:st)";
+     $query = "insert into Tbl_ClientGroupDetails(clientId,groupId,groupName,groupDescription,createdBy,createdDate,status,groupType)
+            values(:cid,:gid,:gname,:gd,:cb,:cd,:st,:gt)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cid', $this->clientid, PDO::PARAM_STR);
             $stmt->bindParam(':gid',$this->groupid, PDO::PARAM_STR);
@@ -83,6 +83,7 @@ class Group
             $stmt->bindParam(':cb',$this->cb, PDO::PARAM_STR);
             $stmt->bindParam(':cd',$this->cd, PDO::PARAM_STR);
              $stmt->bindParam(':st',$this->status, PDO::PARAM_STR);
+               $stmt->bindParam(':gt',$grouptype, PDO::PARAM_STR);
            if($stmt->execute())
            {
            $result['success'] = 1;
@@ -165,13 +166,13 @@ function createSubAdmin($adminid,$clientid,$uuid,$createdDate,$createdby)
       $this->adminuniqueid = $uuid;
      $this->cd  = $createdDate; 
      $this->cb = $createdby;
-     $status = "Active";
+     $status = 1;
      $access = "SubAdmin";
     // $this->AdminEmail = $adminemail;
      
      try{
      $query = "insert into Tbl_ClientAdminDetails(adminId,clientId,userUniqueId,accessibility,createdDate,createdBy,status)
-            values(:aid,:cid,:uid,:access,:cd,:cb,:sta) ON DUPLICATE KEY UPDATE clientId =:cid,accessibility=:access,createdBy=:cb, createdDate=:cd ";
+            values(:aid,:cid,:uid,:access,:cd,:cb,:sta) ON DUPLICATE KEY UPDATE clientId =:cid,accessibility=:access,updatedBy=:cb, updatedDate=:cd , status =:sta";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':aid', $this->adminmaxid, PDO::PARAM_STR);
             $stmt->bindParam(':cid', $this->clientid, PDO::PARAM_STR);

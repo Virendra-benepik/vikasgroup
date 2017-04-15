@@ -25,10 +25,10 @@ function ValidatePostEvent()
     var event_date = document.form1.event_date;
 	var todatdate = document.form1.today;
 	var event_time = document.form1.event_time;
-	var cost = document.form1.cost;
+	//var cost = document.form1.cost;
 	var uploadimage = document.form1.uploadimage;
 	var event_content = document.form1.event_content;
-	
+	var gr = document.getElementById('selectedids').value;
     if (title.value == "")
     {
         window.alert("Please Enter Title.");
@@ -59,12 +59,12 @@ function ValidatePostEvent()
         event_time.focus();
         return false;
     }
-	if (cost.value == "")
+	/*if (cost.value == "")
     {
         window.alert("Please Enter Cost.");
         cost.focus();
         return false;
-    }
+    }*/
 	if (uploadimage.value == "")
     {
         window.alert("Please Upload Image.");
@@ -77,7 +77,11 @@ function ValidatePostEvent()
         event_content.focus();
         return false;
     }
-
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
+        return false;
+    }
     return true;
 }
 </script>
@@ -99,7 +103,7 @@ function ValidatePostEvent()
 			var venuename = $("#venue").val();
 			var edate = $("#event_date").val();
 			var etime = $("#event_time").val();
-			var etime = $("#event_time").val();
+			//var cost = $("#cost").val();
            // var content = CKEDITOR.instances.editor1.getData();
             var description = $("#comment").val();
 			
@@ -110,6 +114,7 @@ function ValidatePostEvent()
 			$(".venPost").html(venuename);
 			$(".datePost").html(edate);
 			$(".timePost").html(etime);
+			//$(".costPost").html(cost);
 			$(".desPost").html(description);
            // $(".contentPost").html(content);
 
@@ -150,48 +155,59 @@ function ValidatePostEvent()
                 <div class="row mobile_articals"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;"></i><font class="white_color">Article</font></div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                            <p class="titlePost NewsPriviewtitle" style="margin-top:-13px ! important;"></p> 
-                            <p class="author previewAuthor"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
+                            <p class="previewAuth"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
 
                         </div>
                     </div>
                  
 				
+				<div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+					<p class="titlePost"></p>
+					</div>
+                </div>
+				
 					
                 </div>
                    <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <img class="post_img img img-responsive imagePost previewImage" /></div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <img class="post_img" /></div>
                 </div>
 				
 				 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="venPost" style="margin-top:-10px;"></p>
+					 <p class="venPost CommanNamePost"></p>
 					 </div>
 				</div>
 				
 				
 				 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="datePost" style="margin-top:-30px;"></p>
+					 <p class="datePost CommanNamePost"></p>
 					 </div>
 				</div>
 				
 				 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="timePost" style="margin-top:-30px;"></p>
+					 <p class="timePost CommanNamePost"></p>
 					 </div>
 				</div>
+				
+				<!--<div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
+					 <p class="costPost CommanNamePost"></p>
+					 </div>
+				</div>-->
 				
 				<div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="desPost" style="margin-top:-30px;"></p>
+					 <p class="desPost CommanNamePost" style="white-space:pre-wrap !important;"></p>
 					 </div>
 				</div>
 				
                
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                        <p class="date" style="margin-top:-30px;" >Date: <?php echo date("d/m/Y"); ?></p>
+                        <p class="date" style="margin-top:0px;" >Date: <?php echo date("d/m/Y"); ?></p>
                     </div>
                 </div>
 
@@ -218,7 +234,7 @@ function ValidatePostEvent()
 
             <div class="row " >
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h3><strong>Create New Event</strong></h3><hr>
+                    <h3><strong>Save The Date</strong></h3><hr>
                 </div>
             </div>
 
@@ -247,61 +263,10 @@ function ValidatePostEvent()
                             </div>
                         </div>
 						
-						
-						 <div class="row">
-    
-						  <div class="form-group col-md-6">
-							<label for="VENUE">Venue</label>
-							<input  style="color:#2d2a3b;" type="text" name="venue" id="venue" class="form-control" placeholder=" Choose a venue" />
-						  </div>
-						   <div class="form-group col-md-3">
-							<label for="DATE">Date</label>
-							<input style="color:#2d2a3b;"  type="date" name="event_date" id="event_date" class="form-control" placeholder="Choose a date"  />
-							<input type="hidden" name="today" value="<?php echo date("Y-m-d"); ?>">
-						  </div>
-						   <div class="form-group col-md-3">
-							<label for="TIME">Time</label>
-							<input style="color:#2d2a3b;" type="time" name="event_time" id="event_time" class="form-control" placeholder=" Choose a time" />
-							
-						  </div>
-					   
-					     </div>
-						 
-						 
-						 <div class="row">
-						  <div class="form-group col-md-6">
-                                     
-                                  
-									<label for="exampleInputPassword1">Registration</label>
-                                      <div>
-                                         <div class="col-md-4">
-                                        <input type="radio" id="user2" name="reg"  value="Yes">
-                                        <label for="radio5">
-                                          Yes
-                                        </label>
-                                      </div>
-                                      <div class="col-md-4">
-                                        <input type="radio" id="user2"   name="reg" value="No" checked>
-                                        <label for="radio6">
-                                         No
-                                        </label>
-                                      </div>
-                                    </div>
-									
-									<!--<input type="hidden" id="user2" name="reg"  value="No">-->
-                          </div>
-						   <div class="form-group col-md-6">
-						   <label for="TIME">Cost</label>
-							<input style="color:#2d2a3b;" type="text" name="cost" id="cost" class="form-control" placeholder="Enter Cost"/>
-							</div>
-							</div>
-						
-						
+						<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-
-                                <label for="Article image">UPLOAD IMAGE</label>
+                                <label for="Article image">UPLOAD IMAGE (Max Image Upload Size: 2MB, Image Resolution: 640X362)</label><br/>
 
                                 <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
 
@@ -348,14 +313,35 @@ function ValidatePostEvent()
                                 </script>
                                 <img id="imgprvw" alt="uploaded image preview"/>
                                 <div>
-                                    <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" /><span>(max upload size: 2 MB)</span>
+                                    <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />
                                 </div>
 
 
                             </div>
-
-
-                            <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+						</div>
+						
+						 <div class="row">
+    
+						  <div class="form-group col-md-6">
+							<label for="VENUE">Venue</label>
+							<input  style="color:#2d2a3b;" type="text" name="venue" id="venue" class="form-control" placeholder=" Choose a venue" />
+						  </div>
+						   <div class="form-group col-md-3">
+							<label for="DATE">Date</label>
+							<input style="color:#2d2a3b;"  type="date" name="event_date" id="event_date" class="form-control" placeholder="Choose a date"  />
+							<input type="hidden" name="today" value="<?php echo date("Y-m-d"); ?>">
+						  </div>
+						   <div class="form-group col-md-3">
+							<label for="TIME">Time</label>
+							<input style="color:#2d2a3b;" type="time" name="event_time" id="event_time" class="form-control" placeholder=" Choose a time" />
+							
+						  </div>
+					   
+					     </div>
+						 
+						 
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                  <div class="form-group">
 									<label for="comment">Description</label>
 									<textarea style="color:#2d2a3b;" class="form-control" rows="4" id="comment" cols="8" name="event_content" placeholder="Event Description" ></textarea>
@@ -363,26 +349,56 @@ function ValidatePostEvent()
                             </div>
                         </div>
 
-                        
+                        <div class="row">
+						  <div class="form-group col-md-6">
+                                     
+                                  
+									<label for="exampleInputPassword1">Allow Registration</label>
+                                      <div>
+                                         <div class="col-md-4">
+                                        <input type="radio" id="user2" name="reg"  value="Yes">
+                                        <label for="radio5">
+                                          Yes
+                                        </label>
+                                      </div>
+                                      <div class="col-md-4">
+                                        <input type="radio" id="user2"   name="reg" value="No" checked>
+                                        <label for="radio6">
+                                         No
+                                        </label>
+                                      </div>
+                                    </div>
+									
+									<!--<input type="hidden" id="user2" name="reg"  value="No">-->
+                          </div>
+						   <div class="form-group col-md-6">
+						   <!--<label for="TIME">Cost</label>
+							<input style="color:#2d2a3b;" type="text" name="cost" value="free" id="cost" class="form-control" placeholder="Enter Cost"/>-->
+							
+							<input style="color:#2d2a3b;" type="hidden" name="cost" value="" id="cost" class="form-control" placeholder="Enter Cost"/>
+							
+							</div>
+							</div>
 						
 						
                         <div class="form-group col-sm-12">
 
 
-                            <label for="exampleInputPassword1">Select User</label>
+                            <label for="exampleInputPassword1">Select Group</label>
                             <div>
-                                <div class="col-md-6">
-                                    <input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
-                                    <label for="radio5">
-                                        Send Post to All Groups
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
+								<div class="col-md-6">
                                     <input type="radio" id="user" ng-model="content"  name="user3" value="Selected">
                                     <label for="radio6">
-                                        Send Post to Selected Groups
+                                        Select Groups
                                     </label>
                                 </div>
+                                <div class="col-md-6">
+                                    <!--<input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
+                                    <label for="radio5">
+                                        Send Post to All Groups
+                                    </label>-->
+                                </div>
+                                
                             </div>
 
                         </div>
@@ -418,7 +434,7 @@ function ValidatePostEvent()
                     <!---------------------------------long news from End here--------------------------------->	
 
                     <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
-                        <div class="publication">
+                        <div class="publication" style="margin-top:20px;">
                             <!---------------------------------------------------------------------->
                            
 						   <!------------------ like comment ----------------------->
@@ -488,8 +504,8 @@ function ValidatePostEvent()
                     <br/>
                     <center><div class="form-group col-md-12">	
                             <input type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish" required onclick ="return ValidatePostEvent();"/>
-                            <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 53.5%" value="Preview" />
-                                    </a>
+<!--                            <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 53.5%" value="Preview" />
+                                    </a>-->
 
                         </div>
                     </center>

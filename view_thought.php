@@ -12,6 +12,9 @@ $result = $thought_obj->thoughtDetails($clientid,$user_uniqueid,$user_type);
 $getcat = json_decode($result,true);
 //print_r($result);
 $value = $getcat['posts'];
+//echo "<pre>";
+//print_r($value);
+//echo "</pre>";
 $count = count($value);
 
 ?>
@@ -28,12 +31,12 @@ $count = count($value);
                                 <div class="card-header">
 
                                     <div class="card-title">
-                                    <div class="title"><strong>Previous Thought Details</strong></div>
+                                    <div class="title"><strong>All Thought Details</strong></div>
                                     </div>
                                     <div style="float:left; margin-top:13px; font-size:20px;"> 
-                                    <a href="todays_thought.php">
+                                    <!--<a href="todays_thought.php">
                  <button type="button" class="btn btn-primary btn-sm">Create New Thought</button>
-                                    </a>
+                                    </a>-->
                                      </div>
                                 </div>
                                 
@@ -47,7 +50,7 @@ $count = count($value);
                                                 <th>Thought Quote</th>
                                                 <th>Created by</th>
                                                 <th>Status</th>
-												<th>Created Date</th>
+												<th>Publish Date</th>
 												<th>Action</th>
                                                  <!--<th>Salary</th>-->
                                             </tr>
@@ -59,7 +62,7 @@ $count = count($value);
                                                 <th>Thought Quote</th>
                                                 <th>Created by</th>
 												<th>Status</th>
-                                                <th>Created Date</th>
+                                                <th>Publish Date</th>
                                                 <th>Action</th>
                                                 <!--<th>Salary</th>-->
                                             </tr>
@@ -120,7 +123,9 @@ echo $value[$i]['message'];
                                                 
                                                 ?></td>
 								<td class="padding_right_px"><?php echo $act; ?></td>
-                                   <td class="padding_right_px"><?php echo $value[$i]['publishingTime']; ?></td>         
+                                  <!-- <td class="padding_right_px"><?php echo $value[$i]['publishingTime']; ?></td> -->
+
+									<td class="padding_right_px"><?php echo $value[$i]['createdDate']; ?></td>								  
 								   <!--<td  style="width:16% !important;">-->
 								   <td>
 								   

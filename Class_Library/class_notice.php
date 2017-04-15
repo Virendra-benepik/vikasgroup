@@ -39,12 +39,16 @@ class Notice {
     public $loc;
 
     function addNotice($client, $maxid, $title, $noticename, $createdby, $ptime, $utime, $post_date, $flag, $device) {
+        $now = time();
+        $publishtime = strtotime($ptime);
+        $timediff = $publishtime - $now;
+        
         $this->id = $maxid;
         $this->title = $title;
         $this->noticename = $noticename;
         $this->created_by = $createdby;
         $this->client = $client;
-        $status = "Live";
+        $status = ($timediff>0)?"Pending":"Live";
         $this->pubtym = $ptime;
         $this->unpubtym = $utime;
         $this->post_dat = $post_date;

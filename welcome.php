@@ -207,14 +207,14 @@ $user_type = $_SESSION['user_type'];
 
 
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><br><br><br>
+       <!--     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><br><br><br>
                 <iframe src="MobileView/welcome.html" 
                         style="width:320px; height:568px ;border:1 px solid #000000;position:absolute;">
 
                 </iframe>
                 <img src="img/iphone.png"style="width:355px;height:680px;margin-top:-64px;margin-left:-14px;"/>
 
-            </div>
+            </div> -->
 
         </div>
 

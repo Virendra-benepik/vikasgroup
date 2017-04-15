@@ -332,7 +332,7 @@ function likeView($postid,$clientid,$flag) {
             $response["total_like"] = $count;
 //            print_r($rows);die;
             if ($rows) {
-//                $forimage = "http://admin.benepik.com/employee/virendra/benepik_admin/";
+
                 $forimage = SITE;
 
                 $response["success"] = 1;

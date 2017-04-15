@@ -17,7 +17,7 @@ class Post {
         $imagevalue = filesize($source_url);
         $valueimage = $imagevalue / 1024;
 
-        if ($valueimage > 40) {
+        if ($valueimage > 200) {
             $info = getimagesize($source_url);
 
             if ($info['mime'] == 'image/jpeg')

@@ -44,7 +44,7 @@ $message = $output['message'];
 
 if($value == 1)
 {
-echo "<script>alert('$message')</script>";
+echo "<script>alert('Announcement status updated successfully')</script>";
 echo "<script>window.location='view_Notice.php'</script>";
 }
 
@@ -70,7 +70,7 @@ $path = "http://admin.benepik.com/employee/virendra/benepik_client/";
                                 <div class="card-header">
 
                                     <div class="card-title">
-                                    <div class="title"><strong>All Notices</strong></div>
+                                    <div class="title"><strong>All Announcement Details</strong></div>
                                     </div>
                                    
                                 </div>
@@ -80,10 +80,10 @@ $path = "http://admin.benepik.com/employee/virendra/benepik_client/";
                                     <table class="datatable table table-responsive" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Notice Name</th>
+                                                <th>Announcement Title</th>
                                               
                                                 <th>Created by</th>
-                                                <th>Publishing Date</th>
+                                                <th>Publish Date</th>
                                                <!-- <th>UnPublishing Date</th> -->
                                                 <th>Status</th>
                                                 <th><center>Action</center></th>
@@ -92,10 +92,10 @@ $path = "http://admin.benepik.com/employee/virendra/benepik_client/";
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                               <th>Notice Name</th>
+                                               <th>Announcement title</th>
                                               
                                                 <th>Created by</th>
-                                                <th>Publishing Date</th>
+                                                <th>Publish Date</th>
                                               <!--  <th>UnPublishing Date</th>  -->
                                                 <th>Status</th>
                                                 <th>Action<th>

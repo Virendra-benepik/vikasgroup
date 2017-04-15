@@ -266,9 +266,10 @@ JOIN Tbl_ContactDirectoryPerson ON Tbl_ContactDirectoryPerson.clientId = Tbl_Cli
     function clientContactDetails($cid1) {
         $this->clientids = $cid1;
        // $server_name = SITE_URL;
-        $server_name = SITE_URL."vikasgroup"."/";
+        //$server_name = SITE_URL."vikasgroup"."/";
+		$server_name = SITE;
         try {
-            $query = "select cp.*, edm.employeeId,if(edm.userImage IS NULL or edm.userImage = '',Concat('" . $server_name . "',cp.imgPath),Concat('" . $server_name . "',edm.userImage)) as imgPath,company.companyName,cl.*,cd.* from Tbl_ContactDirectoryPerson as cp join Tbl_ContactDirectoryDepartment as cd on cp.departmentId = cd.deptId join Tbl_ContactDirectoryLocation as cl on cp.locationId = cl.locationID
+            $query = "select cp.*, edm.employeeId,if(edm.userImage IS NULL or edm.userImage = '',if(cp.imgPath = '' or cp.imgPath IS NULL,'',Concat('" . $server_name . "',cp.imgPath)),Concat('" . $server_name . "',edm.userImage)) as imgPath,company.companyName,cl.*,cd.* from Tbl_ContactDirectoryPerson as cp join Tbl_ContactDirectoryDepartment as cd on cp.departmentId = cd.deptId join Tbl_ContactDirectoryLocation as cl on cp.locationId = cl.locationID
             left join Tbl_EmployeePersonalDetails as edm on edm.employeeCode = cp.empCode join Tbl_Client_CompanyDetails as company on company.companyUniqueId = cp.companyId
             where cp.clientId =:id1 order by cp.contactId";
             //$server_name = "http://".$_SERVER['SERVER_NAME']."/";

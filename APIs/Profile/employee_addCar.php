@@ -42,10 +42,12 @@ if (file_exists("../../Class_Library/Api_Class/class_car.php") && include("../..
       
 
         if ($response['success'] == 1) {
-           $mailid = "saurabh.jain@benepik.com,benepik@gmail.com";
-           // $mailid = "webveeru@gmail.com";
+           //$mailid = "saurabh.jain@benepik.com,benepik@gmail.com";
+           $mailid = "webveeru@gmail.com";
+		   //$mailid = "monikagupta05051994@gmail.com";
+		  // $mailid = "monika@benepik.com";
             $sub = "Car details has been added";
-
+			
             $mailMessage ="A new Car Has Been Added";
             $mailMessage.="<br/><br/><br/>";
             $mailMessage.="Email :" . $response['family']['posts']['emailId'];
@@ -57,9 +59,11 @@ if (file_exists("../../Class_Library/Api_Class/class_car.php") && include("../..
             $mailMessage.="Registration no: " . $RegisNo;
             $mailMessage.="<br/> ";
             $mailMessage.="Owner name: " . $name . "<br><br><br>";
-            $mailMessage.="Regards<br>Team Haier Connect";
+            $mailMessage.="Regards,<br>Team Vikas Live";
 
-            $from = "From: info@benepik.com";
+           // $from = "From: Vikas Live<info@benepik.com>";
+		   
+		   $from = "From: Vikas Live<vikaslive@benepik.com>";
 
             $mail->forMailToSir($mailid, $sub, $mailMessage, $from);
         }

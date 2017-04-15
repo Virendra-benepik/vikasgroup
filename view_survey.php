@@ -1,6 +1,7 @@
 <?php
 include 'navigationbar.php';
 include 'leftSideSlide.php';
+
 require_once('Class_Library/class_HappinesQuestion.php');
 require_once('Class_Library/class_get_useruniqueid.php');
 
@@ -12,9 +13,7 @@ $user_type = $_SESSION['user_type'];
 
 $result = $poll_obj->SurveyDetails($clientid, $user_uniqueid, $user_type);
 $getcat = json_decode($result, true);
-//echo "<pre>";
-//print_r($getcat);
-//echo "</pre>";
+
 $value = "";
 $count = "";
 if ($getcat['success'] == 1) {
@@ -30,9 +29,7 @@ if (isset($_GET['sid']) && isset($_GET['status'])) {
     }
     $result = $poll_obj->updateSurveyStatus($idpoll, $status1);
     $output = json_decode($result, true);
-    echo "<pr>";
-    print_r($output);
-    echo "</pre>";
+//    echo "<pr>";print_r($output);echo "</pre>";
     $value = $output['success'];
     $message = $output['message'];
 
@@ -55,7 +52,7 @@ if (isset($_GET['sid']) && isset($_GET['status'])) {
                         <div class="card-header">
 
                             <div class="card-title">
-                                <div class="title">Survey Details</div>
+                                <div class="title">All Survey Details</div>
                             </div>
                             <!-- <div style="float:top; margin-top:13px; font-size:20px;"> 
                              <a href="create_poll.php">
@@ -73,11 +70,11 @@ if (isset($_GET['sid']) && isset($_GET['status'])) {
                                         <th>Survey Title</th>
                                         <th>No. of Question</th>
                                         <th>Created by</th>
-                                        <th>Created Date</th>
+                                        <th>Publish Date</th>
                                         <th>Expiry Date</th>
                                         <th>Status</th>
+                                        <th>Response Count</th>
                                         <th><center>Action</center></th>
-                                         <!--<th>Salary</th>-->
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -86,49 +83,52 @@ if (isset($_GET['sid']) && isset($_GET['status'])) {
                                         <th>Survey Title</th>
                                         <th>No. of Question</th>
                                         <th>Created by</th>
-                                        <th>Created Date</th>
+                                        <th>Publish Date</th>
                                         <th>Expiry Date</th>
                                         <th>Status</th>
-                                        <th>Action</th>
-                                         <!--<th>Salary</th>-->
-                                    </tr>
+                                        <th>Response Count</th>
+                                        <th><center>Action</center></th>
+                                </tr>
                                 </tfoot>
                                 <tbody>
-<?php
-for ($i = 0; $i < $count; $i++) {
-    if ($value[$i]['status'] == 1) {
-        $sta = "Expire";
-        $gly = "glyphicon glyphicon-eye-close";
-        $dis = "";
-        $status = "Live";
-    } else {
-        $sta = "Expire";
-        $gly = "glyphicon glyphicon-eye-open";
-        $dis = "disabled";
-        $status = "Expired";
-    }
+                                    <?php
+                                    for ($i = 0; $i < $count; $i++) {
+                                        if ($value[$i]['status'] == 1) {
+                                            $sta = "Close";
+                                            $gly = "glyphicon glyphicon-eye-close";
+                                            $dis = "";
+                                            $status = "Live";
+                                        } else {
+                                            $sta = "";
+                                            $gly = "glyphicon glyphicon-eye-open";
+                                            $dis = "disabled";
+                                            $status = "Expired";
+                                        }
 
 
-    $surveyid = $value[$i]['surveyId'];
+                                        $surveyid = $value[$i]['surveyId'];
 
-    /* if($imagevalue!="")
-      {$valueimage = $imagevalue; }
-      else
-      {$valueimage = "Poll/poll_img/dummy.png";} */
-    ?>       	
+                                        /* if($imagevalue!="")
+                                          {$valueimage = $imagevalue; }
+                                          else
+                                          {$valueimage = "Poll/poll_img/dummy.png";} */
+                                        ?>       	
                                         <tr>
                                             <td>
 
-                                        <?php echo $surveyid; ?>
+                                                <?php echo $surveyid; ?>
                                             </td>
                                             <td class="padding_right_px"><?php
-                                        if (strlen($value[$i]['surveyTitle']) > 50) {
-                                            echo substr($value[$i]['surveyTitle'], 0, 50) . "<b>...</b>";
-                                        } else {
-                                            echo $value[$i]['surveyTitle'];
-                                        }
-                                        ?></td>
-                                            <td class="padding_right_px"><?php echo $value[$i]['quesno']; ?></td> 
+                                                if (strlen($value[$i]['surveyTitle']) > 50) {
+                                                    echo substr($value[$i]['surveyTitle'], 0, 50) . "<b>...</b>";
+                                                } else {
+                                                    echo $value[$i]['surveyTitle'];
+                                                }
+                                                ?>
+                                            </td>
+                                            <td class="padding_right_px">
+                                                <?php echo $value[$i]['quesno']; ?>
+                                            </td> 
                                             <td class="padding_right_px"><?php
                                                 $uid = $value[$i]['createdby'];
                                                 //   echo $uid;
@@ -136,32 +136,45 @@ for ($i = 0; $i < $count; $i++) {
                                                 //  echo $na;
                                                 $name = json_decode($na, true);
                                                 echo $name[0]['firstName'] . " " . $name[0]['lastName'];
-                                                ?></td>
-                                            <td class="padding_right_px"><?php echo $value[$i]['startDate']; ?></td> 
-                                            <td class="padding_right_px"><?php echo $value[$i]['expiryDate']; ?></td>
-                                            <td class="padding_right_px"><?php echo $status; ?></td>
+                                                ?>
+                                            </td>
+                                            <td class="padding_right_px">
+                                                <?php echo $value[$i]['startDate']; ?>
+                                            </td> 
+                                            <td class="padding_right_px">
+                                                <?php echo $value[$i]['expiryDate']; ?>
+                                            </td>
+                                            <td class="padding_right_px">
+                                                <?php echo $status; ?>
+                                            </td>
+                                            <td class="padding_right_px">
+                                                <?php echo $getcat['responseCount'][$i]['responseCount']; ?>
+                                            </td> 
                                             <td>
 
                                                 <a href="view_survey.php?sid=<?php echo $value[$i]['surveyId']; ?>&status=<?php echo $status; ?>">
                                                     <button style="background-color:#fff;color:red" type="button" onclick="return confirm('Are you sure you want to unpublish this Survey Question?');" class="btn btn-sm" <?php echo $dis . ">" . $sta; ?></span></button></a>
 
-    <!--<a href="view_survey_result.php?qid=<?php echo $value[$i]['surveyId']; ?>&clientid=<?php echo $value[$i]['clientId']; ?>&sid=<?php echo $surveyid; ?>" style="color:#00a4fd;margin-left:29px !important;">Result</a>-->
+                                                    <!--<a href="view_survey_result.php?qid=<?php echo $value[$i]['surveyId']; ?>&clientid=<?php echo $value[$i]['clientId']; ?>&sid=<?php echo $surveyid; ?>" style="color:#00a4fd;margin-left:29px !important;">Result</a>-->
 
-                                                <a href="view_survey_question.php?cid=<?php echo $value[$i]['clientId']; ?>&sid=<?php echo $surveyid; ?>" style="color:#00a4fd;margin-left:29px !important;" target="_blank">Question</a> 
+                                                <a href="view_survey_question.php?cid=<?php echo $value[$i]['clientId']; ?>&sid=<?php echo $surveyid; ?>" style="color:#00a4fd;margin-left:29px !important;" target="_blank"> View </a> 
 
- <a onClick="javascript:if(confirm('Are you sure want to Send Reminder?')){return true;} else{return false}" href="Link_Library/linkSendReminder.php?idpost=<?php echo $surveyid; ?>">
-<button type="button"class="btn btn-xs  btn-success"><span class="glyphicon glyphicon-send"></span> Send Reminder
-</button>
-</a> 
-                                                
+                                                <a onClick="javascript:if (confirm('Are you sure want to Send Reminder?')) {
+                                                            return true;
+                                                        } else {
+                                                            return false
+                                                        }" href="Link_Library/linkSendReminder.php?idpost=<?php echo $surveyid; ?>">
+                                                    <button type="button"class="btn btn-xs  btn-success" <?php echo $dis; ?>><span class="glyphicon glyphicon-send"></span> Send Reminder
+                                                    </button>
+                                                </a> 
+
 
                                             </td>
-                                            
                                         </tr>
 
-    <?php
-}
-?>
+                                        <?php
+                                    }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -171,4 +184,4 @@ for ($i = 0; $i < $count; $i++) {
         </div>
     </div>
 </div>
-                                    <?php include 'footer.php'; ?>
+<?php include 'footer.php'; ?>

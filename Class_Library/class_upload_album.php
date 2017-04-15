@@ -4,6 +4,8 @@ if (!class_exists('Connection_Communication')) {
     include_once('class_connect_db_Communication.php');
 }
 
+include_once('Api_Class/class_find_groupid.php');
+
 class Album {
 
     public $DB;
@@ -18,7 +20,7 @@ class Album {
         $imagevalue = filesize($source_url);
         $valueimage = $imagevalue / 1024;
 
-        if ($valueimage > 40) {
+        if ($valueimage > 200) {
             $info = getimagesize($source_url);
 
             if ($info['mime'] == 'image/jpeg')
@@ -128,21 +130,42 @@ class Album {
 
     /*     * ************************ get album Details ******************* */
 
-    function getAlbum($cid, $uuid, $device = '') {
+    function getAlbum($cid, $uuid,$user_type, $device = '') {
 
         $this->client = $cid;
         $this->author = $uuid;
-        try {
-            $server_name = ($device == '') ? dirname(SITE_URL) . '/' : SITE;
+		$server_name = ($device == '') ? dirname(SITE_URL) . '/' : SITE;
+		
+		if($user_type == 'SubAdmin')
+		{
+		try {
+           	$query = "select ad.*,DATE_FORMAT(ad.createdDate,'%d %b %Y %h:%i %p') as createdDate,if(ai.imgName IS NULL or ai.imgName = '','',concat('" . $server_name . "',ai.imgName)) as image , concat(count(ai.albumId),' Photos') as totalimage from Tbl_C_AlbumDetails as ad join Tbl_C_AlbumImage as ai on ad.albumId = ai.albumId where ad.clientId =:cid and ad.createdby = :uid group by ad.albumId order by autoId desc";
 			
-			if($device=="panel")
-			{
-            $query = "select ad.*,DATE_FORMAT(ad.createdDate,'%d %b %Y %h:%i %p') as createdDate,concat('" . $server_name . "',ai.imgName) as image , concat(count(ai.albumId),' Photos') as totalimage from Tbl_C_AlbumDetails as ad join Tbl_C_AlbumImage as ai on ad.albumId = ai.albumId where ad.clientId =:cid group by ad.albumId order by autoId desc";
-			}
-			else
-			{
-			 $query = "select ad.*,DATE_FORMAT(ad.createdDate,'%d %b %Y %h:%i %p') as createdDate,concat('" . $server_name . "',ai.imgName) as image , concat(count(ai.albumId),' Photos') as totalimage from Tbl_C_AlbumDetails as ad join Tbl_C_AlbumImage as ai on ad.albumId = ai.albumId where ad.clientId =:cid AND ad.status = 1 And ai.status = 1 group by ad.albumId order by autoId desc";
-			}
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);
+			$stmt->bindParam(':uid', $uuid, PDO::PARAM_STR);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (count($rows) > 0) {
+                $response["success"] = 1;
+                $response["message"] = "Displaying post details";
+                $response["posts"] = $rows;
+                return json_encode($response);
+            } else {
+                $response["success"] = 0;
+                $response["message"] = "No more post available";
+                return json_encode($response);
+            }
+        } catch (PDOException $e) {
+            echo $e;
+        }	
+		}
+		else
+		{
+        try {
+            	
+            $query = "select ad.*,DATE_FORMAT(ad.createdDate,'%d %b %Y %h:%i %p') as createdDate,if(ai.imgName IS NULL or ai.imgName = '','',concat('" . $server_name . "',ai.imgName)) as image , concat(count(ai.albumId),' Photos') as totalimage from Tbl_C_AlbumDetails as ad join Tbl_C_AlbumImage as ai on ad.albumId = ai.albumId where ad.clientId =:cid group by ad.albumId order by autoId desc";
+			
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);
 
@@ -161,8 +184,9 @@ class Album {
         } catch (PDOException $e) {
             echo $e;
         }
+		}
     }
-
+/*************************************************************************************************/
     function getAlbumImage($albumid, $device = '') {
         $this->albumid = $albumid;
         try {
@@ -170,11 +194,11 @@ class Album {
 			
 			if($device == 'panel')
 			{
-            $query = "select *, if(thumbImgName IS NULL or thumbImgName ='', concat('" . $server_name . "',imgName), concat('" . $server_name . "',thumbImgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid order by autoId desc";
+            $query = "select *, if(imgName IS NULL or imgName ='', '', concat('" . $server_name . "',imgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid order by autoId desc";
 			}
 			else
 			{
-			$query = "select *, if(thumbImgName IS NULL or thumbImgName ='', concat('" . $server_name . "',imgName), concat('" . $server_name . "',thumbImgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid AND status = 1 order by autoId desc";
+			$query = "select *, if(imgName IS NULL or imgName ='', '',concat('" . $server_name . "',imgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid AND status = 1 order by autoId desc";
 			}
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':aid', $this->albumid, PDO::PARAM_STR);
@@ -264,7 +288,7 @@ class Album {
             $server_name = ($device == '') ? dirname(SITE_URL) . '/' : SITE;
 
 
-            $query = "select *, if(thumbImgName IS NULL or thumbImgName='',concat('" . $server_name . "',imgName),concat('" . $server_name . "',thumbImgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid AND status = 1 order by autoId desc";
+            $query = "select *, if(imgName IS NULL or imgName='', '',concat('" . $server_name . "',imgName)) as imgName  from Tbl_C_AlbumImage where albumId =:aid AND status = 1 order by autoId desc";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':aid', $this->albumid, PDO::PARAM_STR);
 
@@ -729,6 +753,108 @@ function status_albumImage($albumid, $status,$imgid) {
 
 
 /****************************************** end album image status ******************************/
+
+/************************** get all album Details for api ******************* */
+
+    function getAllAlbum($cid, $uuid, $device = '') {
+
+        $this->client = $cid;
+        $this->author = $uuid;
+        
+        $server_name = ($device == '') ? dirname(SITE_URL) . '/' : SITE;
+		
+        /****************************** check user detail *******************************************/
+        $query2 = "select * from Tbl_EmployeeDetails_Master where clientId=:cli and employeeId=:empid and status = 'Active'";
+        $stmt2 = $this->DB->prepare($query2);
+        $stmt2->bindParam(':cli', $cid, PDO::PARAM_STR);
+        $stmt2->bindParam(':empid', $uuid, PDO::PARAM_STR);
+        $stmt2->execute();
+        $rows2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+        //print_r($rows2);
+		
+    /**************************** end check user detail *******************************************/
+		
+		if (count($rows2) > 0) 
+		{
+		/************************ find user group ********************************/
+            $uuids = $rows2[0]['employeeId'];
+            //echo "employee id -".$uuids;
+            $group_object = new FindGroup();    // this is object to find group id of given unique id 
+            $getgroup = $group_object->groupBaseofUid($cid, $uuids);
+            $value = json_decode($getgroup, true);
+              //echo'<pre>';
+              //print_r($value);
+        /*********************** end find user group*******************************/
+		
+		if (count($value['groups']) > 0) 
+		{
+        $in = implode("', '", array_unique($value['groups']));
+		//echo $in;
+		
+			try {
+			
+			/****************************** fetch album id *****************************/
+			$query3 = "select distinct(albumId) from Tbl_Analytic_AlbumSentToGroup where clientId=:cli and status = 1 and flagType = 11 and groupId IN('" . $in . "') order by autoId desc";
+
+                    $stmt3 = $this->DB->prepare($query3);
+                    $stmt3->bindParam(':cli', $cid, PDO::PARAM_STR);
+                    $stmt3->execute();
+                    $rows3 = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+                    //print_r($rows3);
+                    $post = array();
+					
+		/************************* end fetch album id *******************************/		
+		   if (count($rows3) > 0) 
+		   {
+			    $response["success"] = 1;
+				$response["message"] = "Displaying post details";
+				$response["posts"] = array();
+			 foreach ($rows3 as $row) 
+			 {
+              $postid = $row["albumId"];
+			 
+			 $query = "select ad.*,DATE_FORMAT(ad.createdDate,'%d %b %Y %h:%i %p') as createdDate,if(ai.imgName IS NULL or ai.imgName = '','',concat('" . $server_name . "',ai.imgName)) as image , concat(count(ai.albumId),' Photos') as totalimage from Tbl_C_AlbumDetails as ad join Tbl_C_AlbumImage as ai on ad.albumId = ai.albumId where ad.clientId =:cid AND ad.status = 1 And ai.status = 1 and ad.albumId = :aid group by ad.albumId order by autoId desc";
+			
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);
+			$stmt->bindParam(':aid', $postid, PDO::PARAM_STR);
+
+            $stmt->execute();
+            $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+			
+			array_push($response["posts"], $rows);
+            
+			 }
+			 return json_encode($response);
+			}
+			else
+			{
+				$response["success"] = 0;
+                $response["message"] = "No more post available";
+                return json_encode($response);
+			}
+        }    // try closing 
+		catch (PDOException $e) 
+		{
+            echo $e;
+        }
+		}
+		else
+		{
+			$response["success"] = 0;
+            $response["message"] = "You are not selected in any group";
+            return json_encode($response);
+		}
+	}
+	else
+	{
+		 $response["success"] = 0;
+         $response["message"] = "Sorry! You are Not Authorized User";
+         return json_encode($response);
+	}
+    }   //	function closing
+	
+/********************************** end get all album detail for api ******************************/
 	
 }
 

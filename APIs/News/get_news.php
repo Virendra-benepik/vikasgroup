@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
+require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
 if (file_exists("../../Class_Library/Api_Class/class_dispaly_post_data.php") && include("../../Class_Library/Api_Class/class_dispaly_post_data.php")) {
 
     if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -25,17 +26,21 @@ if (file_exists("../../Class_Library/Api_Class/class_dispaly_post_data.php") && 
 
     $jsonArr = json_decode(file_get_contents("php://input"), true);
 /*{
-    "clientid":"CO-27",
-        "uid":"HGLF3M0DfwFdqWP3AbWPUWA0cD03O61",
-        "value":0
-}*/
+        "clientid":"CO-27",
+        "uid":"1NtwiCYbQ7IxpjQb30cfzTzenjKCmC",
+        "value":0,
+         "device":2,
+    "deviceId":""
+    }*/
 
     if (!empty($jsonArr['clientid'])) 
         {
         $obj = new PostDisplay();
+         $analytic_obj = new AppAnalytic();
+        $flagtype = 1;
 
         extract($jsonArr);
-
+         $analytic_obj->listAppview($clientid, $uid, $device, $deviceId, $flagtype);
         $response = $obj->PostDisplay($clientid,$uid,$value,$module);
     } else {
         $response['success'] = 0;

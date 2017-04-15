@@ -5,6 +5,7 @@
 
 $object = new Event();
 
+
 $clientid = $_SESSION['client_id'];
 $user_uniqueid = $_SESSION['user_unique_id'];
 $user_type = $_SESSION['user_type'];
@@ -13,7 +14,8 @@ $val = json_decode($result,true);
 //echo "<pre>";
 //print_r($val);
 $count  = count($val['Data']);
-
+date_default_timezone_set('Asia/Calcutta');
+$currentdate = date('Y-m-d');
 
 ?>
 	
@@ -29,7 +31,7 @@ $count  = count($val['Data']);
                                 <div class="card-header">
 
                                     <div class="card-title">
-                                    <div class="title"><strong>All Event Details</strong></div>
+                                    <div class="title"><strong>All Save The Date Details</strong></div>
 									<?php
 									//echo $clientid = $_SESSION['client_id'];
 									//echo $user_uniqueid = $_SESSION['user_unique_id'];
@@ -58,7 +60,8 @@ $count  = count($val['Data']);
 												 <th>Registration</th>
                                                 <th>Created By</th>
                                                 <th>Status</th>
-                                               <th>Created Date </th>
+												<th>Live/Expire</th>
+                                               <th>Publish Date</th>
 											   <th>Action</th>
                                             </tr>
                                         </thead>
@@ -74,7 +77,8 @@ $count  = count($val['Data']);
 												 <th>Registration</th>
                                                 <th>Created By</th>
                                                 <th>Status</th>
-                                               <th>Created Date </th>
+												<th>Live/Expire</th>
+                                               <th>Publish Date</th>
 											   <th>Action</th>
                                             </tr>
                                         </tfoot>
@@ -84,8 +88,20 @@ $count  = count($val['Data']);
 									$gt = new UserUniqueId(); 
                                      for($i=0; $i<$count; $i++)
                                               {
+											   
+												  
                                                $k = $val['Data'][$i]['status'];
-                                                                                           
+                                              $eventtime = $val['Data'][$i]['eventTime'];
+											
+											 if($currentdate <= $eventtime)
+											 {
+												 $liveexpire = "Live";
+											 }
+											 else
+											 {
+												 $liveexpire = "Expire";
+											 }
+
 												if($k == 'Unpublish')
 												{
 												$action = 'Publish';
@@ -98,11 +114,20 @@ $count  = count($val['Data']);
 												
 											   if($k == 'Active')
 											   {
-													$act = 'Inactive';
+													$act = 'Unpublish';
 											   }
                                                else
 											   {
-													$act = 'Active';
+													$act = 'Publish';
+											   }
+											   
+											   if($k == 'Active')
+											   {
+													$actstatus = 'Publish';
+											   }
+                                               else
+											   {
+													$actstatus = 'Unpublish';
 											   }
                                               
                                      ?>       	   	
@@ -131,7 +156,8 @@ $count  = count($val['Data']);
                                               echo  $name[0]['firstName']." ".$name[0]['lastName'];
                                               ?></td>
 
-                               <td><?php echo $val['Data'][$i]['status']; ?></td>
+                               <td><?php echo $actstatus; ?></td>
+							   <td><?php echo $liveexpire; ?></td>
                                          <td><?php echo $val['Data'][$i]['createdDate'];  ?></td>
                                               
                                      <td  style="width:16% !important;">

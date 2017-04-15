@@ -72,6 +72,7 @@ $("body").delegate('.edit_data','click',function(){
 $("#dataforupdate").css({"display":"block"});
 
 var firstName = $(this).attr("emp_name");
+var middleName = $(this).attr("emp_middle");
 var lastName = $(this).attr("emp_name2");
 var empid = $(this).attr("emp_uui");
 var mobile = $(this).attr("emp_mob");
@@ -80,10 +81,11 @@ var designation = $(this).attr("emp_desig");
 var location = $(this).attr("emp_loc");
 var branch = $(this).attr("emp_bra");
 var grade = $(this).attr("emp_gra");
-
+var emailid = $(this).attr("emp_emailid");
 
 document.getElementById("emp_id").value = empid;
 document.getElementById("emp_name").value = firstName;
+document.getElementById("emp_middle").value = middleName;
 document.getElementById("emp_last").value = lastName;
 
 /*document.getElementById("emp_mail").value = mailid;
@@ -94,6 +96,7 @@ document.getElementById("emp_desig").value = designation;
 document.getElementById("emp_loc").value = location;
 document.getElementById("emp_bra").value = branch;
 document.getElementById("emp_gra").value = grade;
+document.getElementById("emp_emailid").value = emailid;
 
 });
 
@@ -138,12 +141,24 @@ alert("hello ");
 <label for="First_Name">First Name :<span style="color:red">*</span></label><input style="color:#2d2a3b;"type="text"class="form-control" name="emp_name" id="emp_name"/></div>
 
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-<label for="Last_Name">Last Name :<span style="color:red">*</span></label><input style="color:#2d2a3b;" type="text" class="form-control" name="emp_last" id="emp_last"/></div>
+<label for="Last_Name">Middle :</label><input style="color:#2d2a3b;" type="text" class="form-control" name="emp_middle" id="emp_middle"/></div>
+
 </div>
 <div class="row">
+
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+<label for="Last_Name">Last Name :<span style="color:red">*</span></label><input style="color:#2d2a3b;" type="text" class="form-control" name="emp_last" id="emp_last"/></div>
+
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 <label for="Department_Name">Department:</label><input style="color:#2d2a3b;" type="text"  class="form-control"  name="temp_depar" id="temp_depar"/></div>
+
+</div>
+
+<div class="row">
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><label for="Designation">Designation :</label><input  style="color:#2d2a3b;"type="text"class="form-control"  name="emp_desig" id="emp_desig"/></div>
+
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><label for="email">EmailID :</label><input  style="color:#2d2a3b;"type="text"class="form-control"  name="emp_emailid" id="emp_emailid"/></div>
+
 </div>
 
 
@@ -157,7 +172,7 @@ alert("hello ");
 </div>
 
 <div class="row">
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><center><input style="color:#2d2a3b;" type="submit"class="btn btn-info commonColorSubmitBtn"  name="updateData" value="Update Data" onclick="return updateformvalidation();"></center></div></div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><center><input style="color:#2d2a3b;" type="submit"class="btn btn-info commonColorSubmitBtn"  name="updateData" value="Update" onclick="return updateformvalidation();"></center></div></div>
 </form>
 
 
@@ -198,14 +213,6 @@ alert("hello ");
                                         <div class="title"><strong>Update User Details</strong></div>
                                     </div>
                                 </div>
-
-
-
-
-
-
-
-
 
                                 <div class="card-body">
                                     <div class="step">
@@ -274,7 +281,7 @@ alert("hello ");
                                         </div>                                      
                                         <div class="form-group col-sm-12">
                                         <button type="submit" name="user_form" class="btn btn-success commonColorSubmitBtn">Submit</button>
-										</div>
+				        </div>
                                     </form>
                                     </div>
 									<div id="display_data">
@@ -291,10 +298,12 @@ $count = count($value);
 
 if($count>0)
 {
-echo "<table border='1' style='width: 100%;border: 1px solid #ADA4A4;font-size: 14px;'><tr><th>First Name</th><th>Last Name</th><th>Email Id</th><th>Employee Id</th><th>Department</th><th>Designation</th><th>Location</th><th>Branch</th><th>Grade</th><th>Action</th></tr>";
+/*echo "<table border='1' style='width: 100%;border: 1px solid #ADA4A4;font-size: 14px;'><tr><th>First Name</th><th>Last Name</th><th>Email Id</th><th>Employee Id</th><th>Department</th><th>Designation</th><th>Location</th><th>Branch</th><th>Grade</th><th>Action</th></tr>";*/
+echo "<table border='1' style='width: 100%;border: 1px solid #ADA4A4;font-size: 14px;'><tr><th>First Name</th><th>Middle Name</th><th>Last Name</th><th>Department</th><th>Designation</th><th>Email Id</th><th>Employee Id</th><th>Location</th><th>Branch</th><th>Grade</th><th>Action</th></tr>";
 for($i=0;$i<$count;$i++)
 {
 $name = $value[$i]['firstName'];
+$mName = $value[$i]['middleName'];
 $name2 = $value[$i]['lastName'];
 $mail = $value[$i]['emailId'];
 $uui=$value[$i]['employeeId'];
@@ -305,7 +314,7 @@ $bra = $value[$i]['branch'];
 $gra = $value[$i]['grade'];
 $emp_code =$value[$i]['employeeCode'];
 
-echo "<tr><td>".$name."</td><td>".$name2."</td><td>".$mail."</td><td>".$emp_code."</td><td>".$depart."</td><td>".$desig."</td><td>".$loc."</td><td>".$bra."</td><td>".$gra."</td><td  data-toggle='modal' data-target='#myModalee'><span class='edit_data commonColorSubmitBtn' emp_name='".$name."' emp_name2='".$name2."' emp_uui='".$uui."' emp_mob='".$name2."' emp_depart='".$depart."' emp_desig='".$desig."' emp_loc='".$loc."' emp_bra='".$bra."' emp_gra='".$gra."' >Update</span></td></tr>";
+echo "<tr><td>".$name."</td><td>".$mName."</td><td>".$name2."</td><td>".$depart."</td><td>".$desig."</td><td>".$mail."</td><td>".$emp_code."</td><td>".$loc."</td><td>".$bra."</td><td>".$gra."</td><td  data-toggle='modal' data-target='#myModalee'><span class='edit_data commonColorSubmitBtn' emp_name='".$name."' emp_middle='".$mName."' emp_name2='".$name2."' emp_uui='".$uui."' emp_mob='".$name2."' emp_depart='".$depart."' emp_desig='".$desig."' emp_emailid='".$mail."' emp_loc='".$loc."' emp_bra='".$bra."' emp_gra='".$gra."' >Update</span></td></tr>";
 }
 echo "</table>";
 }

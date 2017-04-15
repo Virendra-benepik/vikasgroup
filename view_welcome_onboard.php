@@ -30,7 +30,7 @@ $path = SITE_URL;
                     <div class="card-header">
 
                         <div class="card-title">
-                            <div class="title">Welcome Aboard</div>
+                            <div class="title">All Welcome Aboard Details</div>
                         </div>
 
                     </div>
@@ -44,7 +44,8 @@ $path = SITE_URL;
 									<th>Unique View</th>
                                     <th>Joinee's Name</th>
 									<th>Created By</th>
-                                    <th>Last Updates</th>
+									<th>Status</th>
+                                    <th>Publish Date</th>
                                     <th>Action</th>
 
                                 </tr>
@@ -54,14 +55,14 @@ $path = SITE_URL;
                             <form name="form1" id="form1" method="post">
                                 <?php
                                 for ($i = 0; $i < $count; $i++) {
-                                   /* $k = $val[$i]['status'];
+                                    $k = $val['posts'][$i]['status'];
                                     //  echo $k;
 
                                     if ($k == 'Unpublish') {
                                         $action = 'Publish';
                                     } else {
                                         $action = 'Unpublish';
-                                    }*/
+                                    }
 
                                     // echo $path.$val[$i]['post_img']."<br/>";
                                     ?>       	
@@ -81,6 +82,7 @@ $path = SITE_URL;
 										?>
                                         </td>                                       
 									   <td style="padding-left:20px;"><?php echo $val['posts'][$i]['created_by']; ?></td>
+									   <td style="padding-left:20px;"><?php echo $val['posts'][$i]['status']; ?></td>
                                         <td style="padding-left:20px;"><?php echo $val['posts'][$i]['created_date']; ?></td>
 
                                         <td  style="width:16% !important;">
@@ -89,7 +91,9 @@ $path = SITE_URL;
     </button>
     </a>-->
 
-                                            <a target="_blank" href="full_view_onboard.php?idonboard=<?php echo $val['posts'][$i]['post_id'] ?>&dev=d2" style="color:#00a4fd;margin-left:29px !important;">View</a>
+                                            <a target="_blank" href="full_view_onboard.php?idonboard=<?php echo $val['posts'][$i]['post_id']; ?>&dev=d2" style="color:#00a4fd;margin-left:29px !important;">View</a>
+											
+											<a href="Link_Library/link_post_status.php?postid=<?php echo $val['posts'][$i]['post_id']; ?>&poststatus=<?php echo $val['posts'][$i]['status']; ?>&page=onboard" style="color:#CE3030;margin-left:30px !important"><?php echo $action; ?></a>
 
     <!---<a href="Link_Library/post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>">
     <button type="button"class="btn btn-sm btn-danger unpublishBtn">

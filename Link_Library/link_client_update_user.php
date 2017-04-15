@@ -41,7 +41,11 @@ if(isset($_POST['updateData']))
 {
 extract($_POST);
 
-$result = $obj->userFormUpdate($emp_id,$emp_name,$emp_last,$temp_depar,$emp_desig,$emp_loc,$emp_bra,$emp_gra,$idclient,$user_unique_id);
+//echo $emp_middle;
+//echo $emp_emailid;
+
+
+$result = $obj->userFormUpdate($emp_id,$emp_name,$emp_middle,$emp_last,$temp_depar,$emp_desig,$emp_loc,$emp_bra,$emp_gra,$idclient,$user_unique_id,$emp_emailid);
 $result1 = json_decode($result, true);
 
 $message = $result1['message'];

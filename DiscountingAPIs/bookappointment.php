@@ -163,13 +163,14 @@ if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && inclu
                     . $merchantbookingheading . $jsonArr['dates'] . ", " . $jsonArr['times'] . '<br />'
                     . " Location: " . $merchantBranchLocation . '<br />'
                     . 'Please call the customer for confirmation' . '<br /><br/>'
-                    . 'Regards' . '<br />' . 'Team Zoom Connect');
+                    . 'Regards,' . '<br />' . 'Team Vikas Live');
 
             $sub = "Benepik " . $merchantName . " Request";
 
             /*             * ************************************* mail body to sir ***************************************** */
 //            $mailidsir="saurabh.jain@benepik.com";
             $mailidsir = "gagandeep@benepik.com";
+		  // $mailidsir = "monikagupta05051994@gmail.com";
 
             $mailMessage = stripslashes("Dear Team benepik," . "<br/><br/>" . $headingmerchant . "<br />"
                     . " Name: " . $userName . '<br />'
@@ -179,10 +180,11 @@ if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && inclu
                     . " Time: " . $jsonArr['times'] . '<br />'
                     . " Merchant Name: " . $merchantName . '<br />'
                     . " Location: " . $merchantBranchLocation . '<br/><br/>'
-                    . 'Regards' . '<br />' . 'Team Zoom Connect');
+                    . 'Regards,' . '<br />' . 'Team Vikas Live');
 
-            $sub = "Zoom Connect appointment Request";
-            $from1 = "From: <info@benepik.com>";
+            $sub = "Vikas Live appointment Request";
+            //$from1 = "From: <info@benepik.com>";
+			$from1 = "From: Vikas Live<vikaslive@benepik.com>";
             /*             * ******************************************************* */
 
             

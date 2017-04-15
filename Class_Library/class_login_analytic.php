@@ -26,9 +26,9 @@ class LoginAnalytic {
         //echo $contractDateEnd;
         try {
             if ($device == "All") {
-                $query = "SELECT edm.firstName, edm.department, edm.location, gcm.deviceName,DATE_FORMAT(gcm.date_entry_time,'%d %b %Y') as date_entry_time, gcm.appVersion FROM Tbl_EmployeeDetails_Master as edm JOIN Tbl_EmployeeGCMDetails as gcm ON edm.employeeId = gcm.userUniqueId where (DATE(gcm.date_entry_time) BETWEEN :fromdte AND :enddte)  AND edm.clientId=:client order by edm.firstName,gcm.date_entry_time desc";
+                $query = "SELECT edm.employeeCode,edm.firstName, edm.lastName, edm.department, edm.location, gcm.deviceName,DATE_FORMAT(gcm.date_entry_time,'%d %b %Y') as date_entry_time, gcm.appVersion FROM Tbl_EmployeeDetails_Master as edm JOIN Tbl_EmployeeGCMDetails as gcm ON edm.employeeId = gcm.userUniqueId where (DATE(gcm.date_entry_time) BETWEEN :fromdte AND :enddte)  AND edm.clientId=:client order by edm.firstName,gcm.date_entry_time desc";
             } else {
-                $query = "SELECT edm.firstName, edm.department, edm.location, gcm.deviceName,DATE_FORMAT(gcm.date_entry_time,'%d %b %Y') as date_entry_time, gcm.appVersion FROM Tbl_EmployeeDetails_Master as edm JOIN Tbl_EmployeeGCMDetails as gcm ON edm.employeeId = gcm.userUniqueId where (DATE(gcm.date_entry_time) BETWEEN :fromdte AND :enddte)  AND gcm.deviceName = :device and edm.clientId=:client order by edm.firstName,gcm.date_entry_time desc";
+                $query = "SELECT edm.employeeCode,edm.firstName,edm.lastName, edm.department, edm.location, gcm.deviceName,DATE_FORMAT(gcm.date_entry_time,'%d %b %Y') as date_entry_time, gcm.appVersion FROM Tbl_EmployeeDetails_Master as edm JOIN Tbl_EmployeeGCMDetails as gcm ON edm.employeeId = gcm.userUniqueId where (DATE(gcm.date_entry_time) BETWEEN :fromdte AND :enddte)  AND gcm.deviceName = :device and edm.clientId=:client order by edm.firstName,gcm.date_entry_time desc";
             }
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':client', $clientid, PDO::PARAM_STR);
@@ -397,17 +397,13 @@ class LoginAnalytic {
 	
 	/************************ end analytic graph shared post ***************************/
 	
-/*********************** analytic graph Job Details ********************************/
+/*********************** analytic get active user Details ********************************/
 	
-	function GraphJobDetail($client, $fromdt, $enddte) {
+	function graphGetActiveUser($client, $fromdt, $enddte) {
         try {
            
-			 		  
-			  $query = "SELECT count(jobId) as value FROM Tbl_C_JobPost where (DATE(createdDate) BETWEEN :fromdte AND :enddte) AND clientId = :client";
-			  
-			  
-			   
-            $stmt = $this->db_connect->prepare($query);
+	 $query = "SELECT count(userUniqueId) as totalview,count(distinct(userUniqueId)) as uniqueview,DATE_FORMAT(date_of_entry,'%d/%m/%Y') as date_of_entry FROM Tbl_Analytic_TrackUser where (DATE(date_of_entry) BETWEEN :fromdte AND :enddte) AND clientId = :client and description = 'Open Spalsh' group by DATE_FORMAT(date_of_entry,'%Y-%m-%d')";
+      $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':client', $client, PDO::PARAM_STR);
             $stmt->bindParam(':fromdte', $fromdt, PDO::PARAM_STR);
             $stmt->bindParam(':enddte', $enddte, PDO::PARAM_STR);

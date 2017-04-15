@@ -86,8 +86,10 @@ if($row1)
  }
 }
 
-$post["locations"]=array();
-$post["departments"]=array();
+$post["companyName"]=array();
+$post["location"]=array();
+$post["department"]=array();
+$post["grade"]=array();
 
      $query1 = "select * from Tbl_ClientGroupDemoParam where clientId=:cli and groupId=:gid";
             $stmt1 = $this->DB->prepare($query1);
@@ -95,21 +97,32 @@ $post["departments"]=array();
             $stmt1->bindParam(':gid', $idgroup, PDO::PARAM_STR);
             $stmt1->execute();
             $row2 = $stmt1->fetchAll();
+          
 if($row2)
 {
  foreach($row2 as $row)
  {
    $baseone = $row["columnName"];
 
-if($baseone=='location')
+if($baseone=='companyName')
 {   
 $new1["columnValue"]=$row["columnValue"];
-array_push($post["locations"],$new1);
+array_push($post["companyName"],$new1);
+}
+else if($baseone=='location')
+{   
+$new1["columnValue"]=$row["columnValue"];
+array_push($post["location"],$new1);
+}
+else if($baseone=='department')
+{   
+$new1["columnValue"]=$row["columnValue"];
+array_push($post["department"],$new1);
 }
 else
 {
 $new1["columnValue"]=$row["columnValue"];
-array_push($post["departments"],$new1);
+array_push($post["grade"],$new1);
 }
 
  }
@@ -169,6 +182,7 @@ $post["demographics"] = array();
             $stmt1->bindParam(':gid', $idgroup, PDO::PARAM_STR);
             $stmt1->execute();
             $row2 = $stmt1->fetchAll();
+          
 if($row2)
 {
 /*$count = count($row2["columnName"]);

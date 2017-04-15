@@ -32,7 +32,7 @@ class Complaint {
         $this->empCode = $res['data']['employeeCode'];
 
         $cd = date('Y-m-d H:i:s');
-        
+
         try {
             $max = "select max(autoId) from Tbl_EmployeeComplaints";
             $stmt = $this->db_connect->prepare($max);
@@ -46,7 +46,7 @@ class Complaint {
             echo $e;
             trigger_error('Error occured fetching max autoid : ' . $e->getMessage(), E_USER_ERROR);
         }
-        
+
         /*         * *************** Insert Client Data into benepik admin Database start ************************************** */
         try {
             $query = "insert into Tbl_EmployeeComplaints(complaintId, clientId, emailId, userUniqueId, content, status, anonymous, date_of_complaint, complaintBy, device)
@@ -75,9 +75,10 @@ class Complaint {
                     $email = "Anonymous";
                     $empCode = "Anonymous";
                 }
-                $to = "gsingh21509@gmail.com";
-//                $to = "manasi@vikasgroup.in";
-                
+               $to = "gagandeep509.singh@gmail.com";
+          //      $to = "manasi@vikasgroup.in";
+		  //$to = "monikagupta05051994@gmail.com";
+
                 $subject = 'Feedback Received at Vikas Live';
 
                 $bound_text = "----*%$!$%*";
@@ -110,7 +111,7 @@ class Complaint {
                                     <p>Feedback : ' . $this->content . '</p>
                         <p></p>
                         <br>
-                        <p>Regards</p>
+                        <p>Regards,</p>
                         <p>Team Vikas Live</p>
 
                         </div>
@@ -126,23 +127,27 @@ class Complaint {
                 /*                 * ****************************************************************************************** */
                 $response = array();
                 $response["success"] = 1;
-                $response["message"] = "Feedback has been sent";
-                return $response;
+                $response["message"] = "Your feedback is submitted successfully";
             }
         }      //--------------------------------------------- end of try block
         catch (PDOException $e) {
-            echo $e;
+            $response["success"] = 0;
+            $response["message"] = "Some error occured, please try again later";
         }
+        return $response;
     }
 
     /*     * ************************* Sugestion details data into database  ************************************* */
 
-    function entrySugestion($clientid, $employeeid, $suggestionarea, $suggestion, $device) {
+    function entrySugestion($clientid, $employeeid, $suggestionarea, $suggestion, $device, $suggestionimage) {
         $this->client_id = $clientid;
         $this->empid = $employeeid;
         $this->content = $suggestion;
         $this->device = $device;
         $status = 1;
+
+        $suggimg = !empty($suggestionimage) ? $suggestionimage : '';
+
         $cd = date('Y-m-d H:i:s');
 
         try {
@@ -159,9 +164,21 @@ class Complaint {
             trigger_error('Error occured fetching max autoid : ' . $e->getMessage(), E_USER_ERROR);
         }
 
+        IF ($suggimg != "") {
+            $img = imagecreatefromstring(base64_decode($suggestionimage));
+            $imgpath = base_path . '/images/suggestionimg/' . $sid . '.jpg';
+            imagejpeg($img, $imgpath);
+            $imgpath1 = "images/suggestionimg/" . $sid . '.jpg';
+            $imgName = $sid . '.jpg';
+            $fullpath = !empty($imgpath1) ? site_url . $imgpath1 : "";
+            //echo "fullpath ".$fullpath;
+        } else {
+            $imgpath1 = "";
+        }
+
         try {
-            $query = "insert into Tbl_EmployeeSuggestions(sugestionId,clientId,userUniqueId,suggestionArea,content,device,status,date_of_sugestion)
-    values(:sid,:cid,:eid,:sarea,:sugg,:device,:status,:dte)";
+            $query = "insert into Tbl_EmployeeSuggestions(sugestionId,clientId,userUniqueId,suggestionArea,content,device,status,date_of_sugestion,suggestionImage)
+    values(:sid,:cid,:eid,:sarea,:sugg,:device,:status,:dte,:suggimage)";
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':sid', $sid, PDO::PARAM_STR);
             $stmt->bindParam(':cid', $this->client_id, PDO::PARAM_STR);
@@ -172,6 +189,8 @@ class Complaint {
             $stmt->bindParam(':device', $this->device, PDO::PARAM_STR);
             $stmt->bindParam(':status', $status, PDO::PARAM_STR);
             $stmt->bindParam(':dte', $cd, PDO::PARAM_STR);
+            $stmt->bindParam(':suggimage', $imgpath1, PDO::PARAM_STR);
+
             if ($stmt->execute()) {
                 $user_obj = new Profile();
                 $res = $user_obj->getuserprofile($clientid, $employeeid);
@@ -182,8 +201,9 @@ class Complaint {
                 $empname = $res1['data']['firstName'] . " " . $res1['data']['lastName'];
 
                 /*                 * *****************************mail to Hr****************************************** */
-                $to = "webveeru@gmail.com";
-//                $to = "manasi@vikasgroup.in";
+//                $to = "gagandeep509.singh@gmail.com";
+                //$to = "manasi@vikasgroup.in";
+			   $to = "monikagupta05051994@gmail.com";
 
                 $subject = 'Suggestion Received at Vikas Live';
 
@@ -195,8 +215,7 @@ class Complaint {
                 $headers .= "MIME-Version: 1.0\r\n" .
                         "Content-Type: multipart/mixed; boundary=\"$bound_text\"" . "\r\n";
 
-                $message = "Suggestion Email Text\r\n" .
-                        $bound;
+                $message = "Suggestion Email Text\r\n" . $bound;
 
                 $message .=
 
@@ -213,32 +232,37 @@ class Complaint {
 
                         <div style="height: 420;  ">
                         <div style="width: 600; ">
-                        <p>Dear Ms. Das</p>
+                        <p>Dear Ms. Das,</p>
+                        <br>
                         <p>A suggestion has been received via Vikas Live as follows:</p> 
+                        <br>
                         <p>Name of the Employee : ' . $empname . '</p>
                             <p>Employee ID : ' . $res1['data']['employeeCode'] . '</p>
                                 <p>Company : ' . $res1['data']['companyName'] . '</p>
                                     <p>Suggestion Category : ' . $suggestionarea . '</p>
                                         <p>Suggestion : ' . $suggestion . '</p>
-
-
-                        <p></p>
+										<p>Suggestion Image :</p>';
+							
+                if(!empty($fullpath) && ($fullpath!='')) {
+                    $message .= '<p><img src="' . $fullpath . '" /></p>
+         			 <br>                   
+                                 <p><a href="'.site_url.'download.php?filename=' . $imgName . '" > Download Image </a></p>';
+                }
+                $message .= '<p></p>
 
                         <br>
-
-                        <p>Regards</p>
+                        <p>Regards,</p>
                         <p>Team Vikas Live</p>
 
-
                         </div>
                         </div>
-
 
                         </div>
                         </body>
                         </html>
                         ' . "\n\n" .
                         $bound_last;
+
                 /*                 * ************************************************************************************************************************************************************* */
                 if (mail($to, $subject, $message, $headers)) {
                     $msg = "data successfully uploaded";
@@ -249,11 +273,11 @@ class Complaint {
 
                 $response = array();
                 $response["success"] = 1;
-                $response["message"] = "Suggestion is Successfully Sent";
+                $response["message"] = "Your idea is submitted successfully";
             }
         } catch (PDOException $e) {
             $response["success"] = 0;
-            $response["message"] = "Some error please write us to info@benepik.com" . $e;
+            $response["message"] = "Some error occured, please try again later";
         }
         return $response;
     }

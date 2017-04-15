@@ -1,5 +1,5 @@
 <?php
-include_once('class_connect_db_admin.php');
+include_once('class_connect_db_Communication.php');
 
 class PushNotification1
 {
@@ -7,8 +7,8 @@ class PushNotification1
   public $DB;
   public function __construct()
   {
-    $db = new Connection();
-      $this->DB = $db->getConnection();
+    $db = new Connection_Communication();
+      $this->DB = $db->getConnection_Communication();
   }
 
   /******************************************GET GCM DETAILS FROM DATABASE ********************************************************/
@@ -53,7 +53,7 @@ $stmt = $this->DB->prepare($select);
    $count1 = count($this->value);
 
     $allrows = array();
-    echo "count value of group ".$count."<br>";
+    echo "count value of group ".$count1."<br>";
     for($t=0; $t<$count1; $t++)
     {
     
@@ -62,23 +62,23 @@ $stmt = $this->DB->prepare($select);
    /*******************************************************************/
    try 
   {
-   $query5 = "select distinct(columnName) from ClientGroupDemoParam where groupId=:gid and clientId=:cid1";
+   $query5 = "select distinct(columnName) from Tbl_ClientGroupDemoParam where groupId=:gid and clientId=:cid1";
     
-    $stmt5   = $this->DB->prepare($query5);
+    $stmt5  = $this->DB->prepare($query5);
     $stmt5->bindParam(':gid',$groupid,PDO::PARAM_STR);
      $stmt5->bindParam(':cid1',$this->client,PDO::PARAM_STR);
    if($stmt5->execute())
    {
    
     $rows = $stmt5->fetchAll(PDO::FETCH_ASSOC);
-   
+    print_r($rows);
     $count = count($rows);
      $response = array();
     for($i=0;$i<$count;$i++)
     { 
    
   echo $rows[$i]['columnName'];
-    $query = "select ColumnValue from ClientGroupDemoParam where columnName=:cname and groupId=:gid1";
+    $query = "select ColumnValue from Tbl_ClientGroupDemoParam where columnName=:cname and groupId=:gid1";
          
       $stmt  = $this->DB->prepare($query);
       $stmt->bindParam(':gid1',$groupid,PDO::PARAM_STR);
@@ -139,8 +139,8 @@ echo "final string : - ".$finalstring."<br/>";
 
 try
  {
- $qq =  "select firstName,employeeId,clientId from UserDetails where ".$finalstring;
-  $qq1 = "select firstName,emailId from UserDetails where ".$finalstring;
+ $qq =  "select firstName,employeeId,clientId from Tbl_EmployeeDetails_Master where ".$finalstring;
+  $qq1 = "select firstName,emailId from Tbl_EmployeeDetails_Master   where ".$finalstring;
   echo $qq."<br/>";
    $stmt2  = $this->DB->prepare($qq);
  // $stmt2->bindParam(':cid','',PDO::PARAM_STR);

@@ -80,7 +80,9 @@ class ContactDirectory {
                         trigger_error('Error occured fetching max autoid : ' . $e->getMessage(), E_USER_ERROR);
                     }
                     
-                    $pquery = "insert into Tbl_ContactDirectoryPerson(contactId, clientId, locationId, departmentId, companyId, empCode, imgPath, userName, contactNoPersonal, contactNoOffice, designation, emailId, status, createdDate, createdBy, updatedDate, updatedBy )values(:contactId, :clientId, :locationId, :departmentId, :companyId, :empCode, :imgPath, :userName, :contactNoPersonal, :contactNoOffice, :designation, :emailId, :status, :createdDate, :createdBy, :updatedDate, :updatedBy)";
+                    /*$pquery = "insert into Tbl_ContactDirectoryPerson(contactId, clientId, locationId, departmentId, companyId, empCode, imgPath, userName, contactNoPersonal, contactNoOffice, designation, emailId, status, createdDate, createdBy, updatedDate, updatedBy )values(:contactId, :clientId, :locationId, :departmentId, :companyId, :empCode, :imgPath, :userName, :contactNoPersonal, :contactNoOffice, :designation, :emailId, :status, :createdDate, :createdBy, :updatedDate, :updatedBy)";*/
+					
+					$pquery = "insert into Tbl_ContactDirectoryPerson(contactId, clientId, locationId, departmentId, companyId, empCode, imgPath, userName, contactNoPersonal, contactNoOffice, designation, emailId, status, createdDate, createdBy)values(:contactId, :clientId, :locationId, :departmentId, :companyId, :empCode, :imgPath, :userName, :contactNoPersonal, :contactNoOffice, :designation, :emailId, :status, :createdDate, :createdBy)";
 
                     $img = "";
                     $status = "Active";
@@ -102,8 +104,8 @@ class ContactDirectory {
                     $pstmt->bindParam(':status', $status, PDO::PARAM_STR);
                     $pstmt->bindParam(':createdDate', $c_date, PDO::PARAM_STR);
                     $pstmt->bindParam(':createdBy', $user_session, PDO::PARAM_STR);
-                    $pstmt->bindParam(':updatedDate', $c_date, PDO::PARAM_STR);
-                    $pstmt->bindParam(':updatedBy', $img, PDO::PARAM_STR);
+                    //$pstmt->bindParam(':updatedDate', $c_date, PDO::PARAM_STR);
+                    //$pstmt->bindParam(':updatedBy', $img, PDO::PARAM_STR);
 
                     $res = $pstmt->execute();
                     $response["posts"] = array();

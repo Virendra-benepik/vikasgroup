@@ -9,7 +9,7 @@
 function check() 
 {
 
-        if (confirm('Are You Sure, You want to publish this notice?')) 
+        if (confirm('Are You Sure, You want to publish this Announcement?')) 
        {
            return true;
        } else {
@@ -40,7 +40,7 @@ function ValidateNotice()
 	
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"style="margin:1px !important;">
-				<h3><strong>Update Notice</strong></h3><hr>
+				<h3><strong>Update Announcement</strong></h3><hr>
 				<?php 
 				if(isset($_SESSION['msg']))
 				{
@@ -101,7 +101,8 @@ function ValidateNotice()
 	</script>   <!--- this is for ckeditor   ----->
 			   
    <div class="form-group col-sm-12">
-<input style="color:#2d2a3b;"type="submit" name="update_notice" class="btn btn-md btn-info publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Update Notice" onclick="return ValidateNotice();"/>
+
+<center><input style="color:#2d2a3b;"type="submit" name="update_notice" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save" onclick="return ValidateNotice();"/></center>
   </div>	
 			     </div>
 				</form>

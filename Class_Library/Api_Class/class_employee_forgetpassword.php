@@ -46,7 +46,8 @@ class ForgotPassword {
                             $response["success"] = 1;
                             $response["message"] = "Your Latest Password sent to Your Email Id and Mobile no.";
                             $response["progName"] = $result["program_name"];
-                            $response["name"] = $result["firstName"] . " " . $result["middleName"] . " " . $result["lastName"];
+                           // $response["name"] = $result["firstName"] . " " . $result["middleName"] . " " . $result["lastName"];
+						   $response["name"] = $result["firstName"];
                             $response["password"] = $randompassword;
                             $response["decider"] = $result["responseDecider"];
                             $response["emailId"] = $result["emailId"];

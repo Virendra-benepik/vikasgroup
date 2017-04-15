@@ -60,7 +60,7 @@ class ClientLogin
                 @session_start();
                 $_SESSION['user_session'] = $userRow['userId'];
                 $_SESSION['user_unique_id'] = $userRow['employeeId'];
-                $_SESSION['user_name'] = $userRow['firstName'];
+                $_SESSION['user_name'] = $userRow['firstName'] . " " .$userRow['lastName'];
                 $_SESSION['user_email'] = $useremail;
                 $_SESSION['user_type'] = $access;
                 $_SESSION['client_name'] = $clientname;
@@ -73,6 +73,7 @@ class ClientLogin
                 $_SESSION['gpk'] = $googleapi;
 		$_SESSION['iosPemfile'] = $userRow['iosPemfile'];
                 $_SESSION['usercompany'] = $userRow['companyName'];
+                $_SESSION['companyUniqueId'] = $userRow['companyUniqueId'];
                
                $res = 'True';
               $result['success'] = $res;
@@ -153,18 +154,19 @@ class ClientLogin
    if( $st->execute())  {
    
    $to1 = $email;
-$subject1 = " password ";
+$subject1 = "Vikas Live Password Assistance";
 
 $message = '<html><body>';
-$message .= "<h1>Hello ".$val['firstName'].", </h1>";
-$message .= "We received a request to send the password associated with this e-mail address.";
+//$message .= "<h6>Dear ".$val['firstName'].", </h6>";
+$message .= "Dear ".$val['firstName'].",";
+$message .= "<p>We received a request to send the password associated with this e-mail address.</p>";
 $message .='<p>Your Password : '. $randompassword.'</p>';
 $message .='<p>If you did not request to have your password you can safely ignore this email. Rest assured your customer account is safe.</p>';
 $message .= "<p>Regards,</p>";
-$message .= "<p>Team Manav Rachna</p>";
+$message .= "<p>Team Vikas Live</p>";
 $message .= '</body></html>';
 
-$headers1 = "From: Support Benepik <info@benepik.com> \r\n";
+$headers1 = "From: Vikas Live <vikaslive@benepik.com> \r\n";
 $headers1 .= "MIME-Version: 1.0\r\n";
 $headers1 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                 

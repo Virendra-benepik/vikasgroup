@@ -11,7 +11,7 @@ body {
   outline: none; }
 
 .row > [class*="col-"] {
-  margin-bottom: 25px; }
+  margin-bottom: 0px; }
 
 .row.no-margin-bottom > [class*="col-"] {
   margin-bottom: 10px; }
@@ -1233,3 +1233,26 @@ padding-top:20px;  }
   .featurette-heading {
     margin-top: 100px;
     margin-bottom: 20px; } }
+.dataHere{
+    
+}
+
+.dataHere table{
+      border: 2px solid #ccc;
+text-align: left;
+width: 70%;
+}
+
+.dataHere tr {
+     border: 2px solid #ccc;
+text-align: left;
+}
+
+.dataHere td{
+   border: 2px solid #ccc;
+text-align: left;
+}
+.dataHere th{
+   border: 2px solid #ccc;
+text-align: left;
+}

@@ -60,7 +60,7 @@ if (!empty($jsonArr)) {
         $sub = "Merchant Referance Received";
         $msg.="Dear " . $name . ",";
         $msg.="<br/><br/>";
-        $msg.="<br/>Thank you for providing merchant reference to Zoom Connect. We will soon contact the merchant for potential tie up.";
+        $msg.="<br/>Thank you for providing merchant reference to Vikas Live. We will soon contact the merchant for potential tie up.";
         $msg.="<br/><br/>";
         $msg.="<br/>For your information, here is a copy of your message:";
         $msg.="<br/><br/>";
@@ -69,15 +69,15 @@ if (!empty($jsonArr)) {
         $msg.="<br/>Contact Number : " . $mob;
         $msg.="<br/>Comment : " . $message;
         $msg.="<br/><br/><br/>";
-        $msg.="Regards, <br/> Team Zoom Connect";
+        $msg.="Regards, <br/> Team Vikas Live";
 
-        $from = "From: Zoom Connect <zoomconnect@benepik.com>";
+        $from = "From: Vikas Live <vikaslive@benepik.com>";
 
         if ($mail != "") {
             $mesg->forMail($mail, $sub, $msg, $from);
         }
 
-        $sub2 = "Merchant refered on Zoom Connect ";
+        $sub2 = "Merchant refered on Vikas Live ";
         $adminMailid = "<saurabh.jain@benepik.com>,<info@benepik.com>,benepik@gmail.com";
 //        $adminMailid = "<virendra@benepik.com>";
 
@@ -93,9 +93,9 @@ if (!empty($jsonArr)) {
         $msg2.="<br/>Comments : " . $message;
 
         $msg2.="<br/><br/><br/>";
-        $msg2.="Regards, <br/> Team Zoom Connect";
+        $msg2.="Regards, <br/> Team Vikas Live";
 
-        $from = "From: Zoom Connect <zoomconnect@benepik.com>";
+        $from = "From: Vikas Live <vikaslive@benepik.com>";
 
         $mesg->forMailToSir($adminMailid, $sub2, $msg2, $from);
     }

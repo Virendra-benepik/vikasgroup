@@ -47,6 +47,8 @@ if (file_exists("../../Class_Library/Api_Class/class_car.php") && include("../..
         if (!empty($response)) {
             //$mailid = "benepik@gmail.com";
            $mailid = "webveeru@gmail.com";
+		  // $mailid = "monikagupta05051994@gmail.com";
+		   
             $sub = "Car details Updated";
 
             $mailMessage="A new Car Has Been Updated";
@@ -60,10 +62,11 @@ if (file_exists("../../Class_Library/Api_Class/class_car.php") && include("../..
             $mailMessage.="Registration no: " . $RegisNo;
             $mailMessage.="<br/> ";
             $mailMessage.="Owner name: " . $name . "<br><br><br>";
-            $mailMessage.="Regards<br>Team Haier Connect";
+            $mailMessage.="Regards,<br>Team Vikas Live";
 
-            $from = "From: info@benepik.com";
-
+           // $from = "From: info@benepik.com";
+            $from = "From: Vikas Live<vikaslive@benepik.com>";
+		   
             $mail->forMailToSir($mailid, $sub, $mailMessage, $from);
             
         }

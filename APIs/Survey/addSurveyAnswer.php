@@ -75,7 +75,7 @@ if (file_exists("../../Class_Library/Api_Class/class_survey.php")
        
         extract($jsonArr);
         $obj = new Survey();  // create object of class cl_module.php
-        $response1 = $obj-> addSurveyAnswer($clientid, $employeeid, $surveyId,$totalques,$comment,$device,$response);
+        $response1 = $obj->addSurveyAnswer($clientid, $employeeid, $surveyId,$totalques,$comment,$device,$response);
     } 
     else {
         $response1['success'] = 0;

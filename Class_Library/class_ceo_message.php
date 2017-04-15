@@ -23,7 +23,7 @@ function compress_image($source_url, $destination_url, $quality) {
         $imagevalue = filesize($source_url);
         $valueimage = $imagevalue/1024;
         
-        if($valueimage > 40)
+        if($valueimage > 200)
         {  
 	$info = getimagesize($source_url);
  

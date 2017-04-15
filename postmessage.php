@@ -110,22 +110,22 @@ $username = $_SESSION['user_name'];
 
                             <div class="iphoneSubParentDiv" style="padding-left:5px;">
                                 <div class="row">
-                                    <div class="col-xs-12 col-md-3 col-sm-3 col-lg-3" ><img src="images/usericon.png"class="img img-responsive"id="user_image_priview_news"/></div>
+                                    <div class="col-xs-12 col-md-3 col-sm-3 col-lg-3" style="padding: 4% !important; margin: 0% !important;" ><img src="images/usericon.png"class="img img-responsive"id="user_image_priview_news"/></div>
                                     <div class="col-xs-12 col-md-9 col-sm-9 col-lg-9 "><p id="HRnamenewsPriview"><?php echo $username; ?></p><p id="Date_newsPriview">Date: <?php echo date("d/m/Y"); ?></sub> </div>
 
                                 </div>
                                 <!--<div class="messageTitlePost"></div>
                                 <div class="contentPost"></div>
                                 -->
-                                <div class="row" style="padding-left:10px;padding-right:10px;">
+                                <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                                        <p class="messageTitlePost previewContent"></p>
+                                        <p class="messageTitlePost"></p>
                                     </div>
                                 </div>
 
-                                <div class="row" style="padding-left:10px;padding-right:10px;">
+                                <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                                        <p class="contentPost previewContent"style="white-space:pre-wrap !important;"></p>
+                                        <p class="contentPost"style="white-space:pre-wrap !important;"></p>
                                     </div>
                                 </div>
 
@@ -302,20 +302,21 @@ $username = $_SESSION['user_name'];
 
                             <div class="form-group col-sm-12">
 
-                                <label for="exampleInputPassword1">Select User</label>
+                                <label for="exampleInputPassword1">Select Group</label>
                                 <div>
-                                    <div class="col-md-6">
-                                        <input style="color:#2d2a3b;" type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
-                                        <label for="radio5">
-                                            Send Post to All Groups
-                                        </label>
-                                    </div>
-                                    <div class="col-md-6">
+								<div class="col-md-6">
                                         <input style="color:#2d2a3b;" type="radio" id="user" name="user3" ng-model="content" value="Selected">
                                         <label for="radio6">
-                                            Send Post to Selected Groups
+                                           Select Groups
                                         </label>
                                     </div>
+                                    <div class="col-md-6">
+                                        <!--<input style="color:#2d2a3b;" type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
+                                        <label for="radio5">
+                                            Send Post to All Groups
+                                        </label>-->
+                                    </div>
+                                    
                                 </div>
 
                             </div>
@@ -351,7 +352,7 @@ $username = $_SESSION['user_name'];
                 </div>
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
-                    <div class="publication">
+                    <div class="publication" style="margin-top: 20px;">
                         <!------------------------------------------------------------------------------------------->
                         <br>
 
@@ -402,10 +403,10 @@ $username = $_SESSION['user_name'];
 
                     </div>
                 </div>
-                <div class="form-group col-sm-6" style="margin-left:640px;">
+                <div class="form-group col-sm-12">
 
-                    <input style="color:#2d2a3b;" type="submit" name ="news_post" class="btn btn-md btn-primary publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Publish" id="getData" onclick="return ValidatePostMessage();" />
-                    <button type="button" class="btn btn-primary btn-md " id="preview_post" name="preview_post"> Preview</button>
+                    <center><input style="color:#2d2a3b;" type="submit" name ="news_post" class="btn btn-md btn-primary publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Publish" id="getData" onclick="return ValidatePostMessage();" /></center>
+<!--                    <button type="button" class="btn btn-primary btn-md " id="preview_post" name="preview_post"> Preview</button>-->
                 </div>
 
             </form>				

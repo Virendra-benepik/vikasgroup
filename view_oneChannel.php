@@ -1,4 +1,4 @@
-<?php include 'navigationbar.php';?>
+<?php   include 'navigationbar.php';?>
 <?php include 'leftSideSlide.php';?>
 <?php 
 require_once('Class_Library/class_get_group.php');
@@ -14,7 +14,8 @@ $groupid = $_GET["groupid"];
 $result = $obj->getGroupDetails($clientid,$groupid);
 
 $value = json_decode($result, TRUE);
-print_r($value);
+//echo "<pre>";
+//print_r($value);
 $getcat = $value['posts'][0];
 
 ?>
@@ -24,11 +25,11 @@ $getcat = $value['posts'][0];
 <?php echo "<h2>".ucfirst($getcat['groupName'])."</h2>"; ?>
 </div>
 <p style="margin: 25px 0px;font-weight: 600;font-size: 16px;">About Group</p>
-<div style="width: 100%;height: 150px;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;">
+<div style="width: 100%;max-height: 150px;overflow-y:auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;">
 <?php echo "<p>".$getcat['groupDescription']."</p><br>";?>
 </div>
 <p style="margin: 25px 0px;font-weight: 600;font-size: 16px;">Group Admin Name</p>
-<div style="width: 100%;height: 150px;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;margin: 10px 0px;">
+<div style="width: 100%;max-height: 150px;overflow-y:auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;margin: 10px 0px;">
 <?php
 $admindetails = $getcat['adminEmails'];
 $count = count($admindetails);
@@ -39,11 +40,11 @@ echo $admindetails[$i]['adminEmail']."<br>";
 }
 ?>
 </div>
-<div style="width: 100%;height: 150px;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;margin: 10px 0px;">
-<div style="width: 30%;height: auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;float:left">
-<h6>LOCATIONS</h6><hr>
+<div style="height: 200px;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;margin: 10px 0px;" class="row">
+<div style="max-height: 175px; overflow-y:auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;float:left" class="col-md-3">
+<h6>Company Name</h6><hr>
 <?php
-$value = $getcat['locations'];
+$value = $getcat['companyName'];
 $count = count($value);
 
 for($i=0;$i<$count;$i++)
@@ -52,10 +53,34 @@ echo $value[$i]['columnValue']."<br>";
 }
 ?>
 </div>
-<div style="width: 30%;height: auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;float:left">
-<h6>DEPARTMENTS</h6><hr>
+<div style="max-height: 175px; overflow-y:auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;float:left"class="col-md-3">
+<h6>Location</h6><hr>
 <?php
-$value = $getcat['departments'];
+$value = $getcat['location'];
+$count = count($value);
+
+for($i=0;$i<$count;$i++)
+{
+echo $value[$i]['columnValue']."<br>";
+}
+?>
+</div>
+    <div style="max-height: 175px; overflow-y:auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;float:left"class="col-md-3">
+<h6>Department</h6><hr>
+<?php
+$value = $getcat['department'];
+$count = count($value);
+
+for($i=0;$i<$count;$i++)
+{
+echo $value[$i]['columnValue']."<br>";
+}
+?>
+</div>
+    <div class="col-md-3" style="max-height: 175px; overflow-y:auto;border: 1px solid #ccc;padding: 10px 20px;font-size: 16px;float:left">
+<h6>Grade</h6><hr>
+<?php
+$value = $getcat['grade'];
 $count = count($value);
 
 for($i=0;$i<$count;$i++)

@@ -20,7 +20,7 @@ class User {
     public $client_id;
     public $createdby;
 
-    function uploadUserCsv($clientid1, $user, $file_name, $file_temp_name, $fullpath) {
+    function uploadUserCsv($clientid1, $user, $file_name, $file_temp_name, $fullpath,$adminname,$adminemail) {
 
         $this->fullcsvpath = $fullpath;
 
@@ -132,7 +132,7 @@ class User {
                 try {
                     $qu = "insert into Tbl_EmployeeDetails_Master
 (userId,clientId,employeeId,firstName,middleName,lastName,gender,emailId,password,employeeCode,contact,department,designation,
-location,branch,grade,companyName,status,accessibility,createdDate,createdBy) values(:uid,:cid,:eid,:fname,:mname,:lname,:gen,:email,:pass,:ecode,:mob,:dep,:des, :loc,:bra,:gra,:compny,:sta,:acc,:cred,:creb) ON DUPLICATE KEY UPDATE firstName =:fname,middleName=:mname, lastName=:lname,gender=:gen,emailId=:email,contact=:mob, department=:dep,designation=:des,location=:loc,branch=:bra,grade=:gra,companyName =:compny,status=:sta, accessibility=:acc,createdDate=:cred,createdBy=:creb";
+location,branch,grade,companyName,status,accessibility,createdDate,createdBy,companyUniqueId) values(:uid,:cid,:eid,:fname,:mname,:lname,:gen,:email,:pass,:ecode,:mob,:dep,:des, :loc,:bra,:gra,:compny,:sta,:acc,:cred,:creb,:comid) ON DUPLICATE KEY UPDATE firstName =:fname,middleName=:mname, lastName=:lname,gender=:gen,emailId=:email,contact=:mob, department=:dep,designation=:des,location=:loc,branch=:bra,grade=:gra,companyName =:compny,status=:sta, accessibility=:acc,createdDate=:cred,createdBy=:creb,companyUniqueId=:comid";
                     $stmt = $this->DB->prepare($qu);
 
                     $stmt->bindParam(':uid', $usid, PDO::PARAM_STR);
@@ -153,7 +153,8 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
                     $stmt->bindParam(':loc', $userdata[$row][10], PDO::PARAM_STR);
                     $stmt->bindParam(':bra', $userdata[$row][11], PDO::PARAM_STR);
                     $stmt->bindParam(':gra', $userdata[$row][9], PDO::PARAM_STR);
-                     $stmt->bindParam(':compny',$companyname, PDO::PARAM_STR);
+                    $stmt->bindParam(':compny',$companyname, PDO::PARAM_STR);
+					$stmt->bindParam(':comid',$comname, PDO::PARAM_STR);
                     $stmt->bindParam('sta', $status, PDO::PARAM_STR);
                     $stmt->bindParam(':acc', $access, PDO::PARAM_STR);
                     $stmt->bindParam(':cred', $c_date, PDO::PARAM_STR);
@@ -295,6 +296,7 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
                 $path = $this->fullcsvpath;
 
                 $to1 = "webveeru@gmail.com";
+				//$to1 = "monikagupta05051994@gmail.com";
 
                 /*                 * ************************************************************************************************************************************************************* */
                 $subject = 'Administrator has uploaded a CSV File';
@@ -330,12 +332,13 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
    <p><b>' . $number . '</b> Users are listed in CSV</p>
    <p>Users CSV can be downloaded from here <a href='.SITE_URL."/". $path . '>User Csv</a></p>
  
-   <p></p>
+   <p><b>Admin Name : </b>'.$adminname.'</p>
+   <p><b>Admin EmailID : </b>'.$adminemail.'</p>
  
    <br>
 
    <p>Regards</p>
-   <p>Team Vikas Connect</p>
+   <p>Team Vikas Live</p>
  
    
    </div>
@@ -424,11 +427,11 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
         return $response;
     }
 
-    function userForm($clientid1, $user, $fname, $mname, $lname, $emp_code, $dob, $father, $email_id, $designation, $department, $contact, $location, $branch, $grade, $gender,$companyname) {
+    function userForm($clientid1, $user, $fname, $mname, $lname, $emp_code, $dob,$doj, $email_id, $designation, $department, $contact, $location, $branch, $grade, $gender,$companyname,$companycode,$adminname,$adminemail) {
         $this->first_name = ucfirst($fname);
         $this->middle_name = $mname;
         $this->last_name = ucfirst($lname);
-        $this->empCode = $emp_code;
+        $this->empCode = $companycode.$emp_code;
         $this->dobirth = $dob;
         $this->mail1 = $email_id;
         $this->desig = $designation;
@@ -493,7 +496,7 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
 
         try {
             $qu = "insert into Tbl_EmployeeDetails_Master
-	(userId,clientId,employeeId,firstName,middleName,lastName,gender,emailId,password,employeeCode,contact,department,designation,location,branch,grade,status,accessibility,createdDate,createdBy) values(:uid,:cid,:eid,:fname,:mname,:lname,:gen,:email,:pass,:ecode,:con,:dep,:des, :loc,:bra,:gra,:sta,:acc,:cred,:creb) ON DUPLICATE KEY UPDATE firstName =:fname,middleName=:mname, lastName=:lname,gender=:gen, emailId=:email, contact=:con,department=:dep,designation=:des,location=:loc,branch=:bra,grade=:gra, accessibility=:acc,createdDate=:cred,createdBy=:creb";
+	(userId,clientId,employeeId,firstName,middleName,lastName,gender,emailId,password,employeeCode,contact,department,designation,location,branch,grade,status,accessibility,createdDate,createdBy,companyName	,companyUniqueId) values(:uid,:cid,:eid,:fname,:mname,:lname,:gen,:email,:pass,:ecode,:con,:dep,:des, :loc,:bra,:gra,:sta,:acc,:cred,:creb,:companyname,:companyid) ON DUPLICATE KEY UPDATE firstName =:fname,middleName=:mname, lastName=:lname,gender=:gen, emailId=:email, contact=:con,department=:dep,designation=:des,location=:loc,branch=:bra,grade=:gra, accessibility=:acc,createdDate=:cred,createdBy=:creb,companyName=:companyname,companyUniqueId=:companyid";
 
             $stmt = $this->DB->prepare($qu);
 
@@ -519,10 +522,13 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
             $stmt->bindParam(':acc', $access, PDO::PARAM_STR);
             $stmt->bindParam(':cred', $c_date, PDO::PARAM_STR);
             $stmt->bindParam(':creb', $this->createdby, PDO::PARAM_STR);
+			$stmt->bindParam(':companyname', $companyname, PDO::PARAM_STR);
+            $stmt->bindParam(':companyid', $comname, PDO::PARAM_STR);
+            
             if ($stmt->execute()) {
 
-                $query4 = "insert into Tbl_EmployeePersonalDetails(userid,clientId,employeeCode,employeeId,emailId,userDOB,userFatherName,userCompanyname)
-				values(:uid1,:cid1,:ecode1,:eid1,:emailid1,:dob,:father,:compname) ON DUPLICATE KEY UPDATE userDOB=:dob,userFatherName=:father,emailId=:emailid1,userCompanyname=:compname";
+                $query4 = "insert into Tbl_EmployeePersonalDetails(userid,clientId,employeeCode,employeeId,emailId,userDOB,userDOJ,Companyname)
+				values(:uid1,:cid1,:ecode1,:eid1,:emailid1,:dob,:doj,:compname) ON DUPLICATE KEY UPDATE userDOB=:dob,userDOJ=:doj,emailId=:emailid1,Companyname=:compname";
                 $stmt4 = $this->DB->prepare($query4);
                 $stmt4->bindParam(':uid1', $usid, PDO::PARAM_STR);
                 $stmt4->bindParam(':cid1', $clientid, PDO::PARAM_STR);
@@ -530,7 +536,7 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
                 $stmt4->bindParam(':eid1', $randomempid, PDO::PARAM_STR);
                 $stmt4->bindParam(':emailid1', $this->mail1, PDO::PARAM_STR);
                 $stmt4->bindParam(':dob', $this->dobirth, PDO::PARAM_STR);
-                $stmt4->bindParam(':father', $father, PDO::PARAM_STR);
+                $stmt4->bindParam(':doj', $doj, PDO::PARAM_STR);
 				$stmt4->bindParam(':compname', $companyname, PDO::PARAM_STR);
                 if ($stmt4->execute()) {
                     $user_name = $this->first_name . " " . $this->middle_name . " " . $this->last_name;
@@ -617,6 +623,7 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
 
 
                     $to = "virendra@benepik.com";
+					//$to = "monikagupta05051994@gmail.com";
 
                     /** ******************************************************************************************************************************************************************** */
 
@@ -656,13 +663,13 @@ location,branch,grade,companyName,status,accessibility,createdDate,createdBy) va
    <p>Employee Name : ' . $this->first_name . ' ' . $this->last_name . '</p>
     <p>Email Id : ' . $this->mail1 . '</p>
   
- 
-   <p></p>
- 
+ <br>
+   <p><b>Admin Name : </b>'.$adminname.'</p>
+   <p><b>Admin EmailID : </b>'.$adminemail.'</p>
    <br>
 
    <p>Regards</p>
-    <p>Team Vikas Group Connect</p>
+    <p>Team Vikas Live</p>
  
    
    </div>

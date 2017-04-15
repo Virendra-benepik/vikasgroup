@@ -99,10 +99,10 @@ if (!empty($_POST)) {
 
             $myArray = explode(',', $user2);
 			
-			/*echo "<pre>";
-			echo "selected";
-			print_r($myArray);
-			echo "</pre>";*/
+//			echo "<pre>";
+//			echo "selected";
+//			print_r($myArray);
+//			echo "</pre>";
 			
         } else {
            // echo "all user"."<br/>";
@@ -141,13 +141,13 @@ $device = 1;
 //echo $result1;
     }
 
-    /*     * ****************  fetch all user employee id from user detail start **************************** */
+    /** ****************  fetch all user employee id from user detail start **************************** */
     $gcm_value = $push->get_Employee_details($User_Type, $myArray, $clientid);
     $token = json_decode($gcm_value, true);
-   /* echo "hello user  id";
-      echo "<pre>";
-      print_r($token);
-      echo "</pre>";*/
+//    echo "hello user  id";
+//      echo "<pre>";
+//      print_r($token);
+//      echo "</pre>";
 
 
     /*     * *************************get group admin uuid  form group admin table if user type not= all *************************** */
@@ -166,18 +166,18 @@ $device = 1;
 
         //$allempid = array_merge($token, $adminuuid);
         $allempid = array_merge($token);
-        /* echo "<pre>";
-		 echo "employee and admin";
-          print_r($allempid);
-          echo "<pre>";*/
+//         echo "<pre>";
+//		 echo "employee and admin";
+//          print_r($allempid);
+//          echo "<pre>";
 
          
 
         $allempid1 = array_values(array_unique($allempid));
-         /*echo "unique id"."<br/>";
-          echo "<pre>";
-          print_r($allempid1);
-          echo "<pre>"; */
+//         echo "unique id"."<br/>";
+//          echo "<pre>";
+//          print_r($allempid1);
+//          echo "<pre>"; 
     } else {
         $allempid1 = $token;
     }
@@ -185,9 +185,9 @@ $device = 1;
     /*     * ******* insert into post sent to table for analytic sstart************ */
 
     $total = count($allempid1);
-    /* echo "<pre>";
-      print_r($allempid1);
-      echo "<pre>"; */
+//     echo "<pre>";
+//      print_r($allempid1);
+//      echo "<pre>"; 
 
     for ($i = 0; $i < $total; $i++) {
         $uuid = $allempid1[$i];
@@ -201,10 +201,10 @@ $device = 1;
     /*     * *** get all registration token  for sending push **************** */
     $reg_token = $push->getGCMDetails($allempid1, $clientid);
     $token1 = json_decode($reg_token, true);
-    /*echo "----regtoken------";
-      echo "<pre>";
-      print_r($token1);
-      echo "<pre>";*/ 
+//    echo "----regtoken------";
+//      echo "<pre>";
+//      print_r($token1);
+//      echo "<pre>";
 
     /*     * *******************Create file of user which this post send  start******************** */
     $val[] = array();

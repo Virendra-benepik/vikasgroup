@@ -254,16 +254,16 @@ if (!empty($_POST)) {
 		
         if ($rt) {
             if ($dev == 'd1') {
-                echo "<script>alert('Event Successfully Send');</script>";
+                echo "<script>alert('Post Successfully Send');</script>";
                 echo $rt;
             } else {
-                echo "<script>alert('Event Successfully Send');</script>";
+                echo "<script>alert('Post Successfully Send');</script>";
                 //print_r($rt);
                 echo "<script>window.location='../create_event.php'</script>";
             }
         }
     } else {
-        echo "<script>alert('Event Successfully Send');</script>";
+        echo "<script>alert('Post Successfully Send');</script>";
         echo "<script>window.location='../create_event.php'</script>";
     }
 

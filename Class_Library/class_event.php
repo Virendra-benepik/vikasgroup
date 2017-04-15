@@ -148,7 +148,6 @@ class Event {
 
     public function EventDisplays($clientid, $uid, $val, $module = '') {
         $path = site_url;
-//        $path = "http://admin.benepik.com/employee/virendra/benepik_client/";
         $this->idclient = $clientid;
         $this->value = $val;
 
@@ -230,7 +229,7 @@ class Event {
                             }
 
                             $post["eventTitle"] = $rows2[0]["title"];
-                            $post["imageName"] = !empty($rows2[0]["imageName"]) ? str_replace(' ', '', $path . $rows2[0]["imageName"]) : '';
+                            $post["imageName"] = !empty($rows2[0]["imageName"]) ? str_replace('', '', $path . $rows2[0]["imageName"]) : '';
                             $post["venue"] = $rows2[0]["venue"];
                             $post["eventTime"] = $rows2[0]["eventTime"];
                             $post["description"] = $rows2[0]["description"];
@@ -308,7 +307,7 @@ class Event {
 		if($user_type == 'SubAdmin')
 		{
 			 try {
-            $query = "SELECT Tbl_C_EventDetails . * ,CONCAT('" . $path . "',Tbl_C_EventDetails.imageName) as 	imageName , DATE_FORMAT(Tbl_C_EventDetails.	createdDate,'%d %b %Y %h:%i %p') as createdDate , (
+            $query = "SELECT Tbl_C_EventDetails . * ,CONCAT('" . $path . "',Tbl_C_EventDetails.imageName) as 	imageName , DATE_FORMAT(Tbl_C_EventDetails.	createdDate,'%d %b %Y %h:%i %p') as createdDate ,DATE_FORMAT(Tbl_C_EventDetails.eventTime,'%Y-%m-%d') as eventTime ,(
 
             SELECT COUNT(distinct userUniqueId) 
             FROM Tbl_Analytic_PostView
@@ -344,7 +343,7 @@ class Event {
 		else
 		{
         try {
-            $query = "SELECT Tbl_C_EventDetails . * ,CONCAT('" . $path . "',Tbl_C_EventDetails.imageName) as 	imageName , DATE_FORMAT(Tbl_C_EventDetails.	createdDate,'%d %b %Y %h:%i %p') as createdDate , (
+            $query = "SELECT Tbl_C_EventDetails . * ,CONCAT('" . $path . "',Tbl_C_EventDetails.imageName) as 	imageName , DATE_FORMAT(Tbl_C_EventDetails.	createdDate,'%d %b %Y %h:%i %p') as createdDate ,DATE_FORMAT(Tbl_C_EventDetails.eventTime,'%Y-%m-%d') as eventTime, (
 
             SELECT COUNT(distinct userUniqueId) 
             FROM Tbl_Analytic_PostView
@@ -454,10 +453,14 @@ class Event {
     /*     * ************************************ end view single event *************************************************** */
 
    public function event_details($clientid, $eventId, $empid, $flag) {
+	   
+	   date_default_timezone_set('Asia/Calcutta');
+       $currentdate = date('Y-m-d');
+	   
         try {
             $site_url = dirname(SITE_URL) . '/';
             
-            $query = "select event.*,DATE_FORMAT(event.eventTime,'%d %b %Y %h:%i %p') as eventTime,DATE_FORMAT(event.createdDate,'%d %b %Y %h:%i %p') as createdDate, if(event.imageName IS NULL or event.imageName='', '', CONCAT('" . $site_url . "', event.imageName)) as imageName,if(user.userImage IS NULL or user.userImage='','',CONCAT('" . $site_url . "',user.userImage)) as userImage, Concat(user_master.firstName, ' ', user_master.lastName) as createdBy from Tbl_C_EventDetails as event join Tbl_EmployeePersonalDetails as user on event.createdBy = user.employeeId join Tbl_EmployeeDetails_Master as user_master on user_master.employeeId=event.createdBy where event.eventId=:eventId and event.clientId=:cli and event.flagCheck=:flag";
+            $query = "select event.*,DATE_FORMAT(event.eventTime,'%d %b %Y %h:%i %p') as eventTime,DATE_FORMAT(event.eventTime,'%Y-%m-%d') as edate , DATE_FORMAT(event.createdDate,'%d %b %Y %h:%i %p') as createdDate, if(event.imageName IS NULL or event.imageName='', '', CONCAT('" . $site_url . "', event.imageName)) as imageName,if(user.userImage IS NULL or user.userImage='','',CONCAT('" . $site_url . "',user.userImage)) as userImage, Concat(user_master.firstName, ' ', user_master.lastName) as createdBy from Tbl_C_EventDetails as event join Tbl_EmployeePersonalDetails as user on event.createdBy = user.employeeId join Tbl_EmployeeDetails_Master as user_master on user_master.employeeId=event.createdBy where event.eventId=:eventId and event.clientId=:cli and event.flagCheck=:flag";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':eventId', $eventId, PDO::PARAM_STR);
@@ -465,8 +468,26 @@ class Event {
             $stmt->execute();
             $rows = $stmt->fetch(PDO::FETCH_ASSOC);
            // echo "this is copunt".$rows;
+		   
+		   //print_r($rows);
+		   //echo $rows['registration']; 
+		   
             if(!empty($rows))
             {
+			
+			if($rows['registration'] == "Yes")
+			{
+			$edate = $rows['edate'];
+			if($currentdate <= $edate)
+			{
+				$rows['registration'] = "Yes";
+			}
+			else
+			{
+				$rows['registration'] = "No";
+			}
+			}
+				
              $query1 = "select * from Tbl_Analytic_EventRegister where clientid=:cid and userUniqueId=:uid and eventId=:eid";
                $stmt1 = $this->DB->prepare($query1);
             $stmt1->bindParam(':cid', $clientid, PDO::PARAM_STR);
@@ -483,6 +504,7 @@ class Event {
             {
                 $rows['userregistration'] = 0;
             }
+			
             
              $response['success'] = 1;
             $response['message'] = "data found";

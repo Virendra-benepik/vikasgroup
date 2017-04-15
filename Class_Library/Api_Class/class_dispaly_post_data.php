@@ -147,7 +147,7 @@ class PostDisplay {
                         $rows4 = $stmt4->fetch(PDO::FETCH_ASSOC);
                         $post["total_comments"] = $rows4["total_comments"];
 
-                        $query2 = "select * , concat('" . site_url . "',post_img) as post_img , DATE_FORMAT(created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where post_id=:pstid and clientId=:cli order by auto_id";
+                        $query2 = "select * , if(post_img IS NULL or post_img = '', '',concat('" . site_url . "',post_img)) as post_img , DATE_FORMAT(created_date,'%d %b %Y') as created_date from Tbl_C_PostDetails where post_id=:pstid and clientId=:cli order by auto_id";
                         $stmt2 = $this->DB->prepare($query2);
                         $stmt2->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
                         $stmt2->bindParam(':pstid', $postid, PDO::PARAM_STR);
@@ -187,7 +187,7 @@ class PostDisplay {
                     //echo $datacount;
                     if ($datacount < 1) {
                         $result['success'] = 0;
-                        $result['message'] = "No more post available";
+                        $result['message'] = "No Post Available";
                         return $result;
                     } else {
                         return $result;

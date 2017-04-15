@@ -247,7 +247,7 @@ DATE_FORMAT(pc.commentDate,'%d %b %Y %h:%i %p') as commentDate from Tbl_Analytic
                 echo $e;
             }
         } else {
-            $query = "select * from Tbl_Analytic_PostComment where clientId = :cid order by autoId desc limit 3";
+            $query = "select *,DATE_FORMAT(commentDate,'%d %b %Y %h:%i %p') as commentDate from Tbl_Analytic_PostComment where clientId = :cid order by autoId desc limit 3";
             try {
                 $stmt = $this->DB->prepare($query);
                 $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);

@@ -88,8 +88,8 @@ if (!empty($_POST)) {
     $result1 = $welcome_obj->createWelcomeData($clientid, $albumid, $type, $title, $img, $date, $createdby, $FLAG);
 
     $countfiles = count($k);
-    for ($i = 0; $i < $countfiles; $i++) {
-        
+    for ($i = 0; $i < $countfiles; $i++) 
+    {     
         $albumThumbImg = $albumid . "-" . basename($_FILES["album"]["name"][$i]);
         $target_file1 = $target_db . $albumid . "-" . basename($_FILES["album"]["name"][$i]);
         $target_file = $target_dir . $albumid . "-" . basename($_FILES["album"]["name"][$i]);

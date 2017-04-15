@@ -29,6 +29,7 @@ if (!class_exists('LoginUser') && include("../../Class_Library/Api_Class/class_e
       "empcode":"",
       "password":"",
       "device":""
+      "usertype":""
       } */
 
     if ($jsonArr) {

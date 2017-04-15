@@ -27,7 +27,7 @@ $count = count($val);
                         <div class="card-header">
 
                             <div class="card-title">
-                                <div class="title"><strong>ALL Messages</strong></div>
+                                <div class="title"><strong>ALL Message Details</strong></div>
 								<!--<?php echo $user_type;
 								echo $clientid;
 								echo $user_uniqueid;
@@ -53,7 +53,7 @@ $count = count($val);
                                         <th>Like</th>
                                         <th>Comment</th> 
                                         <th>Status</th> 
-                                        <th>Last Updates</th>
+                                        <th>Publish Date</th>
                                         <th><center>Action</center></th>
                                          <!--<th>Salary</th>-->
                                 </tr>
@@ -68,7 +68,7 @@ $count = count($val);
                                         <th>Comment</th> 
 
                                         <th>Status</th>
-                                        <th>Last Updates</th>
+                                        <th>Publish Date</th>
                                         <th>Action</th>
                                         <!--<th>Salary</th>-->
                                     </tr>
@@ -105,7 +105,7 @@ $count = count($val);
                                             if (strlen($string) > 50) {
                                                 $stringCut = substr($string, 0, 50);
 
-                                                $string = substr($stringCut, 0, strrpos($stringCut, ' ')) . "....<a style='color:#00a4fd;margin-left:30px !important' href='full_view_message.php?idpost=" . $val[$i]['post_id'] . "'>Read More</a>";
+                                                $string = substr($stringCut, 0, strrpos($stringCut, ' ')) . "....<a style='color:#00a4fd;margin-left:30px !important' href='full_view_message.php?idpost=" . $val[$i]['post_id'] . "'></a>";
                                             }
                                             ?>
 

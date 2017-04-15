@@ -14,7 +14,7 @@ function ValidatePostalbum()
 {
     var title = document.postalbumform.title;
     var fi = document.getElementById("files");
-	//var fi = document.postalbumform.album[];
+	var gr = document.getElementById('selectedids').value;
     if (title.value == "")
     {
         window.alert("Please Enter Album Title.");
@@ -25,6 +25,11 @@ function ValidatePostalbum()
     {
         window.alert("Please Select Image");
 		fi.focus();
+        return false;
+    }
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
         return false;
     }
     return true;
@@ -47,7 +52,7 @@ function ValidatePostalbum()
 
 <div class="container" style="margin-left:10%;margin-top:80px;; border:1px solid #cdcdcd;padding:20px;margin-bottom:20px;" ><br>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <h3><strong>Add Gallery</strong></h3><hr>
+        <h3><strong>Memories</strong></h3><hr>
     </div>
 
     <div class="row">
@@ -103,7 +108,7 @@ function ValidatePostalbum()
             <!---------------------------------- option ----------------------------------->
 
             <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
-                <div class="publication">
+                <div class="publication" style="margin-top:20px;">
                     <!---------------------------------------------------------------------->
 
                     <div class="publication"><p id="publication_heading">Notification</p><hr>
@@ -141,19 +146,20 @@ function ValidatePostalbum()
                     <div class="form-group col-sm-12">
 
 
-                        <label for="exampleInputPassword1" style="padding-left:3px;">Select User</label>
+                        <label for="exampleInputPassword1" style="padding-left:3px;">Select Group</label>
                         <div>
-                            <div class="col-md-6">
-                                <input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
-                                <label for="radio5">
-                                    Send Post to All Groups
-                                </label>
-                            </div>
+                           
                             <div class="col-md-6">
                                 <input type="radio" id="user" ng-model="content"  name="user3" value="Selected">
                                 <label for="radio6">
-                                    Send Post to Selected Groups
+                                    Select Groups
                                 </label>
+                            </div>
+							 <div class="col-md-6">
+                                <!--<input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
+                                <label for="radio5">
+                                    Send Post to All Groups
+                                </label>-->
                             </div>
                         </div>
 

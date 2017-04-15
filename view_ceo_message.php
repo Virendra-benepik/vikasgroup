@@ -27,7 +27,7 @@ $count = count($val['posts']);
                         <div class="card-header">
 
                             <div class="card-title">
-                                <div class="title"><strong>Leadership Message</strong></div>
+                                <div class="title"><strong>All Leadership Connect Details</strong></div>
                             </div>
                             <!--    <div style="float:left; margin-top:13pxpx; font-size:20px;"> 
                                 <a href="postnews.php">
@@ -48,7 +48,7 @@ $count = count($val['posts']);
                                         <th>Title</th>
 
                                         <th>Description</th>
-                                        <th>Last Updates</th>
+                                        <th>Publish Date</th>
                                         <th>Action</th>
 
                                     </tr>

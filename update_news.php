@@ -34,7 +34,7 @@ function ValidateNews()
 
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"style="margin:1px !important;">
-                    <h4><strong>Update Post</strong></h4><hr>
+                    <h4><strong>Update What's Up</strong></h4><hr>
                     <?php
                     if (isset($_SESSION['msg'])) {
                         echo $_SESSION['msg'];
@@ -72,14 +72,38 @@ function ValidateNews()
                             <input type="hidden" name="page" value="<?php echo $page; ?>" />
                             <div class="row">
                             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+								<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="Articlecontent"> Title</label>
+                                    <label for="Articlecontent">TITLE</label>
                                     <input type="text" name="posttitle" id="posttitle" class="form-control" value="<?php echo $result[0]['post_title']; ?>">
+									</div>
                                 </div>
+								</div>
+								
+								<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
+                            
+                                    <div class="form-group">
+                                        <label for="Articlecontent">CONTENT</label>
+                                        <div>
+                                            <textarea cols="80" id="editor1" name="postcontent" rows="10">	
+                                                <?php echo $result[0]['post_content']; ?>
+                                            </textarea>
+                                        </div>
+                                    </div>  
+                                    <script>
+                                        CKEDITOR.replace('editor1');
+                                    </script>   <!--- this is for ckeditor   ----->
+
+								</div>
+								</div>
+								
                             </div>
 
                             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4 myImageRight">
-                                <label for="Articlecontent">Select Image</label>
+                                <label for="Articlecontent">UPLOAD IMAGE</label>
                                 <script type="text/javascript">
                                     /*function showimagepreview(input) {
                                         if (input.files && input.files[0]) {
@@ -146,27 +170,9 @@ function ValidateNews()
                             </div>
 							</div>
 
-                            <script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group">
-                                        <label for="Articlecontent">Content</label>
-                                        <div>
-                                            <textarea cols="80" id="editor1" name="postcontent" rows="10">	
-                                                <?php echo $result[0]['post_content']; ?>
-                                            </textarea>
-                                        </div>
-                                    </div>  
-                                    <script>
-                                        CKEDITOR.replace('editor1');
-                                    </script>   <!--- this is for ckeditor   ----->
-
-                                    </div>
-                        
-                    </div>
 					<div class="row">
 					<div class="form-group col-sm-12 col-sm-12 col-md-12 col-lg-12">
-                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save Now" id="getData" onclick = "return ValidateNews();"/></center>
+                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save" id="getData" onclick = "return ValidateNews();"/></center>
                                     </div>
 					</div>
                             </form>

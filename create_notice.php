@@ -11,7 +11,7 @@
 	<!-------------------------------SCRIPT END FROM HERE   --------->	
 	<script>
 function check() {
-       if (confirm('Are You Sure, You want to publish this Notice?')) {
+       if (confirm('Are You Sure, You want to publish this Announcement?')) {
            return true;
        } else {
            return false;
@@ -59,10 +59,13 @@ $(".noticetitle").html(title);
 						<img src="images/mobile.jpg"class="img img-responsive androidImage"/>
 					</div>
 					<div class="androidContentTab" >
-						<div class="wholeAndroidContentHolder">
-						
-					<div class="noticetitle" style="font-weight:bold;"></div>
-					<div class="noticecontent" style="height:315px;overflow-y:scroll;"></div>		
+						<div class="wholeAndroidContentHolder"  style="height:345px;overflow-y:scroll;">
+					
+					<div class="noticetitle" style="font-weight:bold; margin-left:10px; margin-right:10px;"></div>
+					
+					
+					<div class="noticecontent" style="text-align:justify; margin-left:10px; margin-right:10px;"></div>	
+					
 							
 						</div>
 					</div>
@@ -96,7 +99,7 @@ $(".noticetitle").html(title);
 	
 			<div class="row" >
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<h3><strong>Create Notice</strong></h3><hr>
+				<h3><strong>Announcement</strong></h3><hr>
 				<?php 
 				if(isset($_SESSION['msg']))
 				{
@@ -143,19 +146,20 @@ $(".noticetitle").html(title);
  
                                           <div class="form-group col-sm-12">
                                          
-                                         <label for="exampleInputPassword1">Select User</label>
+                                         <label for="exampleInputPassword1">Select Group</label>
                                           <div>
-                                             <div class="col-md-6">
-                                            <input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true" >
-                                            <label for="radio5">
-                                             Send Notice to All Groups
-                                            </label>
-                                          </div>
+                                             
                                           <div class="col-md-6">
                                             <input  type="radio" id="user" name="user3" ng-model="content" value="Selected">
                                             <label for="radio6">
-                                             Send Notice to Selected Groups
+                                             Select Groups
                                             </label>
+                                          </div>
+										  <div class="col-md-6">
+                                            <!--<input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true" >
+                                            <label for="radio5">
+                                             Send Notice to All Groups
+                                            </label>-->
                                           </div>
                                         </div>
                                          
@@ -195,8 +199,8 @@ $(".noticetitle").html(title);
 		
 		
 <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
-<div class="publication">
-<!---------------------------------------------------------------------->
+<!--<div class="publication">
+<!----------------------------------------------------------------------
 
         <div class="publication">
         <p id="publication_heading">PUBLICATION</p><hr>
@@ -268,11 +272,11 @@ $(document).ready(function(){
         </div>
         </div>
 
-</div>
+</div>---->
 
 
 		
-<div class="publication"><p id="publication_heading">Notification</p><hr>
+<div class="publication" style="margin-top:20px;"><p id="publication_heading">Notification</p><hr>
 		
 			
 
@@ -301,8 +305,9 @@ $(document).ready(function(){
 		
 		<div class="form-group col-sm-12">
 		<center>
-<input style="color:#2d2a3b;" type="button"  class="btn btn-md btn-info publishnowBtn" id="createNoticePubliceBtn"style="text-shadow:none;font-weight:normal;" value="Preview" />
-						<input style="color:#2d2a3b;"type="submit" name ="news_post" class="btn btn-md btn-info publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Publish" id="getData" onclick= "return ValidatePostNotice();" required/>
+<input style="color:#2d2a3b;"type="submit" name ="news_post" class="btn btn-md btn-info publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Publish" id="getData" onclick= "return ValidatePostNotice();" required/>
+<!--<input style="color:#2d2a3b;" type="button"  class="btn btn-md btn-info publishnowBtn" id="createNoticePubliceBtn"style="text-shadow:none;font-weight:normal;" value="Preview" />
+						-->
 </center>
 					</div>
 		

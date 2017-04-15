@@ -23,7 +23,7 @@ function ValidateEvent()
     var event_date = document.form1.event_date;
 	var todatdate = document.form1.today;
 	var event_time = document.form1.event_time;
-	var cost = document.form1.cost;
+	//var cost = document.form1.cost;
 	var description = document.form1.description;
 	
     if (posttitle.value == "")
@@ -56,12 +56,12 @@ function ValidateEvent()
         event_time.focus();
         return false;
     }
-	if (cost.value == "")
+	/*if (cost.value == "")
     {
         window.alert("Please Enter Cost.");
         cost.focus();
         return false;
-    }
+    }*/
 	if (description.value == "")
     {
         window.alert("Please Enter Description.");
@@ -79,7 +79,7 @@ function ValidateEvent()
 
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"style="margin:1px !important;">
-                    <h4><strong>Update Post</strong></h4><hr>
+                    <h4><strong>Update Save The Date</strong></h4><hr>
                     <?php
                     if (isset($_SESSION['msg'])) {
                         echo $_SESSION['msg'];
@@ -130,51 +130,8 @@ function ValidateEvent()
                             </div>
 							</div>
 							
-					      <div class="row">
-						  <div class="form-group col-md-6">
-							<label for="VENUE">Venue</label>
-							<input  style="color:#2d2a3b;" type="text" name="venue" id="venue" class="form-control" value="<?php echo $result['posts'][0]['venue']; ?>" placeholder=" Choose a venue" />
-						  </div>
-						   <div class="form-group col-md-3">
-							<label for="DATE">Date</label>
-							<input style="color:#2d2a3b;"  type="date" name="event_date" id="event_date" class="form-control" placeholder="Choose a date" value="<?php echo $result['posts'][0]['edate']; ?>"/>
-							<input type="hidden" name="today" value="<?php echo date("Y-m-d"); ?>">
-						  </div>
-						   <div class="form-group col-md-3">
-							<label for="TIME">Time</label>
-							<input style="color:#2d2a3b;" type="time" name="event_time" value ="<?php echo $result['posts'][0]['etime']; ?>" id="event_time" class="form-control" placeholder=" Choose a time" />
-						  </div>
-					     </div>
-						 
-							
-						<div class="row">
-						  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-									<label for="exampleInputPassword1">Registration</label>
-                                      <div>
-                                         <div class="col-md-4">
-                                        <input type="radio" id="user2" name="reg"  value="Yes" <?php echo ($registration=='Yes')?'checked':'' ?>>
-                                        <label for="radio5">
-                                          Yes
-                                        </label>
-                                      </div>
-                                      <div class="col-md-4">
-                                        <input type="radio" id="user2"   name="reg" value="No" <?php echo ($registration=='Yes')?'':'checked' ?>>
-                                        <label for="radio6">
-                                         No
-                                        </label>
-                                      </div>
-                                    </div>
-									
-									<!--<input type="hidden" id="user2" name="reg"  value="No">-->
-                          </div>
-						  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-						   <label for="TIME">Cost</label>
-							<input style="color:#2d2a3b;" type="text" name="cost" id="cost" class="form-control" placeholder="Enter Cost" value="<?php echo $result['posts'][0]['eventCost']; ?>"/>
-							</div>
-							</div>
-							
 							<div class="row">
-							<div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4 myImageRight">
+							<div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
                                 <label for="Articlecontent">Select Image</label>
                                 <script type="text/javascript">
                                     function showimagepreview(input) {
@@ -219,29 +176,76 @@ function ValidateEvent()
 									
 						
                                 </script>
-                                <img id="imgprvw1" alt="uploaded image preview" style="margin-bottom:5px; float:right; height:110px; width:200px;border:1px solid #f1f1f0;" 
+                                <img id="imgprvw1" alt="uploaded image preview" style="margin-bottom:5px;height:110px; width:200px;border:1px solid #f1f1f0;" 
                                      src='<?php echo $result['posts'][0]['post_img']; ?>' onerror='this.src="images/u.png"'/>
                                 <div>
                                       <input type="hidden" name="himage" value ="<?php echo $result['posts'][0]['post_img']; ?>" />
                               <input type="file" name="uploadimage" id="filUpload" onchange="showimagepreview(this)" />
                                 </div>
                             </div>
+							<div class="form-group col-xs-8 col-sm-8 col-md-8 col-lg-8 myImageRight"></div>
+                            
+							</div>
 							
+					      <div class="row" style="margin-top:15px;">
+						  <div class="form-group col-md-6">
+							<label for="VENUE">Venue</label>
+							<input  style="color:#2d2a3b;" type="text" name="venue" id="venue" class="form-control" value="<?php echo $result['posts'][0]['venue']; ?>" placeholder=" Choose a venue" />
+						  </div>
+						   <div class="form-group col-md-3">
+							<label for="DATE">Date</label>
+							<input style="color:#2d2a3b;"  type="date" name="event_date" id="event_date" class="form-control" placeholder="Choose a date" value="<?php echo $result['posts'][0]['edate']; ?>"/>
+							<input type="hidden" name="today" value="<?php echo date("Y-m-d"); ?>">
+						  </div>
+						   <div class="form-group col-md-3">
+							<label for="TIME">Time</label>
+							<input style="color:#2d2a3b;" type="time" name="event_time" value ="<?php echo $result['posts'][0]['etime']; ?>" id="event_time" class="form-control" placeholder=" Choose a time" />
+						  </div>
+					     </div>
+						 
 							
-						  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+						<div class="row" style="margin-top:15px;">
+						
+						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label for="Articlecontent">Description</label>
                                     <textarea class="form-control" rows="5" name="description" id="description"><?php echo $result['posts'][0]['post_content']; ?></textarea>
                                 </div>
                             </div>
+							
+						  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									<label for="exampleInputPassword1">Registration</label>
+                                      <div>
+                                         <div class="col-md-4">
+                                        <input type="radio" id="user2" name="reg"  value="Yes" <?php echo ($registration=='Yes')?'checked':'' ?>>
+                                        <label for="radio5">
+                                          Yes
+                                        </label>
+                                      </div>
+                                      <div class="col-md-4">
+                                        <input type="radio" id="user2"   name="reg" value="No" <?php echo ($registration=='Yes')?'':'checked' ?>>
+                                        <label for="radio6">
+                                         No
+                                        </label>
+                                      </div>
+                                    </div>
+									
+									<!--<input type="hidden" id="user2" name="reg"  value="No">-->
+                          </div>
+						  
+						   <!--<label for="TIME">Cost</label>-->
+							<input style="color:#2d2a3b;" type="hidden" name="cost" id="cost" class="form-control" placeholder="Enter Cost" value=""/>
+							
+							 
 							</div>
-													
+							
+																				
 							</div>
 							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"></div>
 							
 							
 							<div class="form-group col-sm-12 col-sm-8 col-md-8 col-lg-8">
-                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save Now" id="getData" onclick="return ValidateEvent();" /></center>
+                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save" id="getData" onclick="return ValidateEvent();" /></center>
                             </div>
 							
 

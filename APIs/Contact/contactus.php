@@ -36,7 +36,8 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
 
         extract($jsonArr);
         $result = $obj->contactUs($clientid, $employeeid);
-
+		//print_r($result);
+//die;
         if ($result['success'] == 1) {
             $usermail = $result['mailid'];
             $username = $result['name'];

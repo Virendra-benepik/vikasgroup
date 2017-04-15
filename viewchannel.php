@@ -31,7 +31,12 @@ $getcat = $value['posts'];
                                     <div class="card-title">
                                     <div class="title"><strong>View Groups</strong></div>
                                     </div>
-                                   
+                                     <div style="float:left; margin-top:13px; font-size:20px;"> 
+                                    <a href="addchannel.php?clientid=<?php echo $_SESSION['client_id']; ?>">
+                 <button type="button" class="btn btn-primary btn-sm">Create New Group</button>
+                                    </a>
+                                     </div> 
+                                    
                                 </div>
                                 
 
@@ -51,13 +56,13 @@ $getcat = $value['posts'];
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                               <th>Page Name</th>
-                                               
+                                               <th>Group Name</th>
+                                                
                                                 <th>Description</th>
                                                 <th>Created by</th>
                                                 <th>Created Date</th>
-                                               <!--- <th>Status</th>-->
-                                                <th>Action<th> 
+                                              <!--  <th>Status</th>-->
+                                                <th>Action</th> 
                                                 <!--<th>Salary</th>-->
                                             </tr>
                                         </tfoot>

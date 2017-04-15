@@ -37,7 +37,7 @@ if(!empty($jsonArr['clientid']))
 $obj = new Complaint();
 
  extract($jsonArr);
-$response= $obj->entrySugestion($clientid,$employeeid,$suggestionarea,$suggestion,$device);
+$response= $obj->entrySugestion($clientid,$employeeid,$suggestionarea,$suggestion,$device,$suggestionimage);
 
 }
 else

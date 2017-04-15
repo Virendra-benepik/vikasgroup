@@ -117,7 +117,7 @@ class PushNotification {
                         $qq1 = "select firstName,emailId from Tbl_EmployeeDetails_Master where " . $finalstring;
                         // echo $qq."<br/>";
                         $stmt2 = $this->DB->prepare($qq);
-                        // $stmt2->bindParam(':cid','',PDO::PARAM_STR);
+                       
                         if ($stmt2->execute()) {
 
                             $rows2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
@@ -500,8 +500,8 @@ class PushNotification {
     }
 
     function sendAPNSPush($post, $deviceToken, $pemFile, $device = '') {
-     // $apnsHost = 'gateway.sandbox.push.apple.com';       //dev
-       $apnsHost = 'gateway.push.apple.com';            //production
+        $apnsHost = 'gateway.sandbox.push.apple.com';       //dev
+ //      $apnsHost = 'gateway.push.apple.com';            //production
         $apnsPort = '2195';
         $apnsCert = (empty($device) || $device = '') ? BASE_PATH . '/' . $pemFile : dirname(BASE_PATH) . '/' . $pemFile; //dev
        // echo $apnsCert;die;
@@ -578,8 +578,8 @@ class PushNotification {
 	$deviceToken[] = $post['device_token'];
 	unset($post['device_token']);
 	
-     // $apnsHost = 'gateway.sandbox.push.apple.com';       //dev
-	$apnsHost = 'gateway.push.apple.com';            //production
+      $apnsHost = 'gateway.sandbox.push.apple.com';       //dev
+//	$apnsHost = 'gateway.push.apple.com';            //production
         $apnsPort = '2195';
         $apnsCert = (empty($device) || $device = '') ? BASE_PATH . '/' . $pemFile : dirname(BASE_PATH) . '/' . $pemFile; //dev
        // echo $apnsCert;die;

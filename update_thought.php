@@ -14,7 +14,7 @@
 
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"style="margin:1px !important;">
-                    <h4><strong>Update Picture</strong></h4><hr>
+                    <h4><strong>Update Thought</strong></h4><hr>
                     <?php
                     if (isset($_SESSION['msg'])) {
                         echo $_SESSION['msg'];
@@ -51,9 +51,9 @@
                             <input type="hidden" name = "client" value="<?php echo $cid; ?>">
                             <input type="hidden" name="postid" value="<?php echo $_GET['idpost']; ?>" />
                             <input type="hidden" name="page" value="<?php echo $page; ?>" />
-                            <div class="row">
+                            <div class="row" style="margin-left:10px;">
                             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                <label for="Articlecontent">Select Image</label>
+                                <label for="Articlecontent">Select Image</label><br>
                                 <script type="text/javascript">
                                     function showimagepreview(input) {
                                         if (input.files && input.files[0]) {
@@ -97,7 +97,7 @@
                                         }
                                     }
                                 </script>
-                                <img id="imgprvw1" alt="uploaded image preview" style="margin-bottom:5px; float:right; height:110px; width:200px;border:1px solid #f1f1f0;" 
+                                <img id="imgprvw1" alt="uploaded image preview" style="margin-bottom:5px; height:110px; width:200px;border:1px solid #f1f1f0;" 
                                      src='<?php echo $result[0]['thoughtImage']; ?>' onerror='this.src="images/u.png"'/>
                                 <div>
                                       <input type="hidden" name="himage" value ="<?php echo $result[0]['thoughtImage']; ?>" />
@@ -105,17 +105,18 @@
                                 </div>
                             </div>
 
-                            <div class="form-group col-xs-12 col-sm-8 col-md-8 col-lg-8 myImageRight">
+                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                 <div class="form-group">
 								<label for="Articlecontent">Description</label>
-								<textarea id="content" name="content" rows="5" cols="80"><?php echo $result[0]['message']; ?></textarea>
+								<textarea id="content" name="content" rows="5" class="form-control"><?php echo $result[0]['message']; ?></textarea>
 								</div>
                             </div>
+							<div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4"></div>
 							</div>
 
                                 <div class="row">
                                    <div class="form-group col-sm-12">
-                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save Now" id="getData" /></center>
+                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save" id="getData" /></center>
                                     </div>
 
                                 </div>

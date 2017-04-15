@@ -31,9 +31,45 @@ if (!empty($_POST["mydata"])) {
         //$res = json_decode($result , true);
         //echo $result;
         //echo "<pre>";
-
-        echo $result;
+        //echo $result;
         //print_r($result);
+		
+		$res = json_decode($result , true);
+			
+			//print_r($res);
+			
+			//echo $result;
+			//echo "<pre>";
+			
+			//echo count($res);
+			$post = array();
+			for($i=0; $i<count($res); $i++)
+			{
+				
+			$pdata['sn'] = $res[$i]['sn'] = $i+1 ;
+			$pdata['employeeCode'] = $res[$i]['employeeCode'];
+			$pdata['firstName'] = $res[$i]['firstName'];
+			$pdata['lastName'] = $res[$i]['lastName'];
+			$pdata['department'] = $res[$i]['department'];
+			$pdata['location'] = $res[$i]['location'];
+			//$pdata['deviceName'] = $res[$i]['deviceName'];
+						
+			if($res[$i]['deviceName'] == 2)
+			{
+				$dev = 'Android';
+			}
+			else
+			{
+				$dev = 'IOS';
+			}
+			$pdata['deviceName'] = $res[$i]['deviceName'] = $dev;
+			$pdata['date_entry_time'] = $res[$i]['date_entry_time'];
+			$pdata['appVersion'] = $res[$i]['appVersion'];
+			array_push($post,$pdata);
+			}
+			
+			echo $jsonres = json_encode($post);
+			
     }
 }
 ?>

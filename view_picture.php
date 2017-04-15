@@ -60,7 +60,7 @@ $path = SITE;
                                     <th>Like</th>
                                     <th>Comment</th>
                                     <th>Status</th>
-                                    <th>Last Updates</th>
+                                    <th>Publish Date</th>
                                     <th><center>Action</center></th>
                                      <!--<th>Salary</th>-->
                             </tr>
@@ -74,7 +74,7 @@ $path = SITE;
                                     <th>Like</th>
                                     <th>Comment</th>
                                     <th>Status</th>
-                                    <th>Last Updates</th>
+                                    <th>Publish Date</th>
                                     <th>Action</th>
                                     <!--<th>Salary</th>-->
                                 </tr>
@@ -120,7 +120,7 @@ $path = SITE;
                                 if (strlen($strres) < 15) {
                                     $result = $strres;
                                 } else {
-                                    $result = $strres . ".........<a style='color:#00a4fd;' href='full_view_picture.php?idpost=" . $val[$i]['post_id'] . "'>Read&nbsp;More</a>";
+                                    $result = $strres . ".........<a style='color:#00a4fd;' href='full_view_picture.php?idpost=" . $val[$i]['post_id'] . "'></a>";
                                 }
                                 echo $result;
 

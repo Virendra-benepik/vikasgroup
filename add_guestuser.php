@@ -102,7 +102,7 @@ function addUserValidation()
                                     </div>
                                 </a>
                             </li>
-                            <li role="step">
+                           <!-- <li role="step">
                                 <a href="#step2" role="tab" id="step2-tab" data-toggle="tab" aria-controls="profile">
                                     <div class="icon fa fa-user"></div>
                                     <div class="step-title">
@@ -111,7 +111,7 @@ function addUserValidation()
                                     </div>
                                 </a>
                             </li>
-
+							-->
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="step1" aria-labelledby="home-tab">

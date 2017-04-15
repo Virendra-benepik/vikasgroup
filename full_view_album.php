@@ -65,7 +65,7 @@ div.desc {
                                         }
 	?>
 	<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-	<div style="border:1px solid #f2f2f2;margin-bottom:10px;">
+	<div style="border:1px solid #f2f2f2;margin-bottom:10px; margin-top:10px;">
   <a target="_blank" href="view_album_likeComments.php?albumid=<?php echo $value; ?>&imageid=<?php echo $value1['posts'][$t]['autoId']; ?>">
   <div style="background-image:url('<?php echo $value1['posts'][$t]['imgName']; ?>');background-size:cover;min-height:150px;">
    <!-- <img src="<?php echo $value1['posts'][$t]['imgName']; ?>" alt="Image" class="albumImage img img-responsive" onerror='this.src="images/u.png"'>--></div>

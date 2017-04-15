@@ -111,16 +111,16 @@ $(document).ready(function(){
 </div>
 <div class="titlePost"></div>
 <div class="imagePost"><img class="post_img" /></div>
-<div class="useraboutPost" style="white-space:pre-wrap !important;"></div>
+<div class="useraboutPost OnboardPost" style="white-space:pre-wrap !important;"></div>
 
-<div class="designationPost"></div>
-<div class="dojPost"></div>
-<div class="locationPost"></div>
-<div class="drinksPost"></div>
-<div class="foodPost" style="white-space:pre-wrap !important;"></div>
-<div class="placeiseenPost"></div>
-<div class="projectdonePost"></div>
-<div class="mypersonalPost"></div>
+<div class="designationPost OnboardPost"></div>
+<div class="dojPost OnboardPost"></div>
+<div class="locationPost OnboardPost"></div>
+<div class="drinksPost OnboardPost"></div>
+<div class="foodPost OnboardPost" style="white-space:pre-wrap !important;"></div>
+<div class="placeiseenPost OnboardPost"></div>
+<div class="projectdonePost OnboardPost"></div>
+<div class="mypersonalPost OnboardPost"></div>
 
 <div class="contentPost"></div>
 
@@ -175,7 +175,7 @@ $(document).ready(function(){
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="form-group">
         <label for="TITLE"> Joinee's Name<span style="color:red">*</span></label>
-        <input style="color:#2d2a3b;" type="text" name="name" id="title" class="form-control" placeholder="Joinee's Name" />
+        <input style="color:#2d2a3b;" type="text" name="name" id="title" class="form-control" placeholder="Enter Joinee's Name" />
      
       </div>
     </div>
@@ -184,7 +184,7 @@ $(document).ready(function(){
   <div class="row">
     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
       
-        <label for="Article image">Upload Image<span style="color:red">*</span></label>
+        <label for="Article image">Upload Image<span style="color:red">*</span>(Max Image Upload Size: 2MB, Image Resolution: 640X362)</label>
         
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
 
@@ -244,7 +244,7 @@ filerdr.readAsDataURL(input.files[0]);
 </script>
 <img id="imgprvw" alt="uploaded image preview"/>
 <div>
-<input style="color:#2d2a3b;" type="file" id="uploadimage" accept="image/*" name="uploadimage" onchange="showimagepreview1(this)"/><span>(max upload size: 2 MB)</span>
+<input style="color:#2d2a3b;" type="file" id="uploadimage" accept="image/*" name="uploadimage" onchange="showimagepreview1(this)"/>
 </div>
 
       
@@ -254,70 +254,78 @@ filerdr.readAsDataURL(input.files[0]);
     <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
     <div class="form-group">
 <label for="comment">About<span style="color:red">*</span></label>
-<textarea style="color:#2d2a3b;" class="form-control" rows="5" id="userabout" cols="5" name="userabout" placeholder="Short paragraph to draw attention to the article... "></textarea>
+<textarea style="color:#2d2a3b;" class="form-control" rows="9" id="userabout" cols="5" name="userabout" placeholder="Enter About"></textarea>
 </div>
     </div>
   </div>
   
   <div class="row">
   
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
         <label for="Articlecontent">Designation<span style="color:red">*</span></label>
-		<div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="designation" cols="3" name="designation" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
+		<div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="designation" cols="3" name="designation" placeholder="Enter Designation"></textarea></div>
       </div>
     </div>
-    
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	
+	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
         <label for="Articlecontent">Date of joining<span style="color:red">*</span></label>
-		<div><input style="color:#2d2a3b;" type="date" class="form-control"  id="area5"  name="doj" placeholder="Short paragraph to draw attention to the article... "></div>
+		<div><input style="color:#2d2a3b;" type="date" class="form-control"  id="area5"  name="doj" placeholder="Enter Date Of Joining"></div>
       </div>
     </div>
+	
+	</div>
     
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
+    <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
         <label for="Articlecontent">Location<span style="color:red">*</span></label>
-		<div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="location" cols="3" name="location" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
+		<div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="location" cols="3" name="location" placeholder="Enter Location"></textarea></div>
       </div>
     </div>
     
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
-        <label for="Articlecontent">Drinks you like</label>
-      <div><textarea style="color:#2d2a3b;"class="form-control" rows="1" id="drinks" cols="3" name="drinks" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
+        <label for="Articlecontent">favourite Drinks</label>
+      <div><textarea style="color:#2d2a3b;"class="form-control" rows="1" id="drinks" cols="3" name="drinks" placeholder="Enter favourite Drinks"></textarea></div>
       </div>
     </div>
-    
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    </div>
+	
+	<div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
-        <label for="Articlecontent">Food you like</label>
-      <div><textarea style="color:#2d2a3b;"class="form-control" rows="2" id="food" cols="3" name="food" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
+        <label for="Articlecontent">favourite Food</label>
+      <div><textarea style="color:#2d2a3b;"class="form-control" rows="1" id="food" cols="3" name="food" placeholder="Enter favourite Food"></textarea></div>
       </div>
     </div>
     
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
-        <label for="Articlecontent">Places I have Seen</label>
-      <div><textarea style="color:#2d2a3b;"  class="form-control" rows="1" id="placeiseen" cols="3" name="placeiseen" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
+        <label for="Articlecontent">favourite Holiday/Place</label>
+      <div><textarea style="color:#2d2a3b;"  class="form-control" rows="1" id="placeiseen" cols="3" name="placeiseen" placeholder="Enter favourite Holiday/Place"></textarea></div>
       </div>
     </div>
+	</div>
     
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
         <label for="Articlecontent">Personal Achievements</label>
-      <div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="projectdone" cols="3" name="projectdone" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
+      <div><textarea style="color:#2d2a3b;" class="form-control" rows="1" id="projectdone" cols="3" name="projectdone" placeholder="Enter Personal Achievements"></textarea></div>
       </div>
     </div>
     
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
       <div class="form-group">
-        <label for="Articlecontent">My Personal Interests</label>
-      <div><textarea style="color:#2d2a3b;"class="form-control" rows="1" id="mypersonal" cols="3" name="mypersonal" placeholder="Short paragraph to draw attention to the article... "></textarea></div>
+        <label for="Articlecontent">Personal Interests/hobbies</label>
+      <div><textarea style="color:#2d2a3b;"class="form-control" rows="1" id="mypersonal" cols="3" name="mypersonal" placeholder="Enter Personal Interests/hobbies"></textarea></div>
       </div>
     </div>
-    
-  </div>
+    </div>
+  
  
  
 
@@ -327,20 +335,21 @@ filerdr.readAsDataURL(input.files[0]);
   <div class="form-group col-sm-12">
                                      
   
-                                     <label for="exampleInputPassword1">Select User</label>
+                                     <label for="exampleInputPassword1">Select Group</label>
                                       <div>
-                                         <div class="col-md-6">
-                                        <input style="color:#2d2a3b;" type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
-                                        <label for="radio5">
-                                          Send Post to All Groups
-                                        </label>
-                                      </div>
-                                      <div class="col-md-6">
+									  <div class="col-md-6">
                                         <input style="color:#2d2a3b;" type="radio" id="user" ng-model="content"  name="user3" value="Selected">
                                         <label for="radio6">
-                                         Send Post to Selected Groups
+                                         Select Groups
                                         </label>
                                       </div>
+                                         <div class="col-md-6">
+                                        <!--<input style="color:#2d2a3b;" type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
+                                        <label for="radio5">
+                                          Send Post to All Groups
+                                        </label>-->
+                                      </div>
+                                      
                                     </div>
                                 
                                     </div>
@@ -377,7 +386,7 @@ filerdr.readAsDataURL(input.files[0]);
 <!---------------------------------long news from End here--------------------------------->	
 
 <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
-<div class="publication">
+<div class="publication" style="margin-top:20px;">
 <!---------------------------------------------------------------------->
 <div class="publication"><p id="publication_heading">Options</p><hr>
   <div class="row">
@@ -432,14 +441,11 @@ filerdr.readAsDataURL(input.files[0]);
 <div class="form-group col-md-12">	
 <input style="color:#2d2a3b;" type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish" onclick="return ValidatePostonboard();" />
 <!--<button id="show" class="btn btn-md btn-info preview_postBtn">Preview</button>-->
-<input style="color:#2d2a3b;" type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none;
+<!--<input style="color:#2d2a3b;" type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none;
     font-weight: normal;
     position: absolute;
-    left: 280%;" value="Preview" />
-<div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
-<center>
-</center>
-</div>
+    left: 280%;" value="Preview" />-->
+
 </div>
 </center>
 

@@ -31,7 +31,7 @@ $count = count($val);
                         <div class="card-header">
 
                             <div class="card-title">
-                                <div class="title"><strong>All News Details</strong></div>
+                                <div class="title"><strong>All What's Up Details</strong></div>
                             </div>
                          <!---   <div style="float:left; margin-top:13px; font-size:20px;"> 
                                 <a href="postnews.php">
@@ -51,7 +51,8 @@ $count = count($val);
                                         <th>Like</th>
                                         <th>Comment</th>
                                         <th>Status</th>
-                                        <th>Last Updates</th>
+										<th>Publish Date</th>
+                                        <!--<th>Last Updates</th>-->
                                         <th><center>Action</center></th>
                                          <!--<th>Salary</th>-->
                                 </tr>

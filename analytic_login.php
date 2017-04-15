@@ -45,8 +45,15 @@ $clientid = $_SESSION['client_id'];
                         var jsonData = JSON.parse(resdata);
                         $('#myTable tbody').remove();
                         for (var i = 0; i < resdata.length; i++) {
-
-                            var newRow = '<tbody><tr><td>' + jsonData[i].firstName + '</td><td>' + jsonData[i].department + '</td><td>' + jsonData[i].location + '</td><td>' + jsonData[i].deviceName + '</td><td>' + jsonData[i].date_entry_time + '</td></tr><tbody>';
+                            /*if(jsonData[i].deviceName == 2)
+                             {
+                             var device = 'Android';
+                             }
+                             else
+                             {
+                             var device = 'IOS';
+                             }*/
+                            var newRow = '<tbody><tr><td>' + jsonData[i].sn + '</td><td>' + jsonData[i].employeeCode + '</td><td>' + jsonData[i].firstName + jsonData[i].lastName + '</td><td>' + jsonData[i].deviceName + '</td><td>' + jsonData[i].date_entry_time + '</td></tr><tbody>';
                             $('#myTable').append(newRow);
 
                         }
@@ -167,7 +174,7 @@ $clientid = $_SESSION['client_id'];
     <div class="container-fluid" style="margin-top:15px;border:1px solid #cdcdcd;margin-left:0px;">
         <div class="row" >
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h3 style="margin-left:80px;"><strong>Analytic</strong></h3>
+                <h3 style="margin-left:80px;"><strong>Analytics</strong></h3>
                 <hr>
             </div>
 
@@ -175,26 +182,28 @@ $clientid = $_SESSION['client_id'];
 
         <div class="row" style="margin-top:10px;">
             <form action="" method="POST">
-                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <input type="hidden" name="clientid" id="clientid" value="<?php echo $clientid; ?> ">
-                    <div class="form-group">
-                        <label for="sel1" style="margin-left:80px;">Device :</label>
-                        <select style="color:#2d2a3b;" name="device" class="form-control" id="device">
-                            <option value ="All">All</option>
-                            <option value ="2">Android</option>
-                            <option value ="3">iphone</option>
-
-                        </select>
-
-                    </div>
-                </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <input type="hidden" name="clientid" id="clientid" value="<?php echo $clientid; ?> ">
+                <input type="hidden" name="device" id="device" value="All">
+                <!--                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                  
+                                    <div class="form-group">
+                                        <label for="sel1" style="margin-left:80px;">Device :</label>
+                                        <select style="color:#2d2a3b;" name="device" class="form-control" id="device">
+                                            <option value ="All">All</option>
+                                            <option value ="2">Android</option>
+                                            <option value ="3">iphone</option>
+                
+                                        </select>
+                
+                                    </div>
+                                </div>-->
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label for="pwd">Date From :</label>
                         <input type="date" name="formdate" id="formdate" class="form-control" style="color:#2d2a3b;">
                     </div>
                 </div>
-                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label for="pwd">Date To :</label>
                         <input type="date" name="enddate" id="enddate" class="form-control" style="color:#2d2a3b;">
@@ -236,9 +245,10 @@ $clientid = $_SESSION['client_id'];
                                         <table class="datatable table table-responsive" cellspacing="2" width="100%" id="myTable">
                                             <thead>
                                                 <tr>
+                                                    <th>SN</th>
+                                                    <th>Employee Id</th>
                                                     <th>Employee Name</th>
-                                                    <th>Department</th>
-                                                    <th>Location</th>
+
                                                     <th>Device</th>
                                                     <th>Login Date</th> 
 
@@ -246,9 +256,10 @@ $clientid = $_SESSION['client_id'];
                                             </thead>
                                             <tfoot>
                                                 <tr>
+                                                    <th>SN</th>
+                                                    <th>Employee Id</th>
                                                     <th>Employee Name</th>
-                                                    <th>Department</th>
-                                                    <th>Location</th>
+
                                                     <th>Device</th>
                                                     <th>Login Date</th>
                                                 </tr>

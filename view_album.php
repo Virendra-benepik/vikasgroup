@@ -8,7 +8,7 @@ $clientid = $_SESSION['client_id'];
 $user_uniqueid = $_SESSION['user_unique_id'];
 $user_type = $_SESSION['user_type'];
 $device = "panel";
-$result = $object->getAlbum($clientid, $user_uniqueid, $device);
+$result = $object->getAlbum($clientid, $user_uniqueid,$user_type, $device);
 
 $val = json_decode($result, true);
 
@@ -31,7 +31,7 @@ $count = count($val['posts']);
                         <div class="card-header">
 
                             <div class="card-title">
-                                <div class="title"><strong>All Galleries</strong></div>
+                                <div class="title"><strong>All Memories</strong></div>
                             </div>
                             <!--  <div style="float:left; margin-top:13px; font-size:20px;"> 
                                   <a href="multipleImageUpload.php">
@@ -47,7 +47,7 @@ $count = count($val['posts']);
                                         <th>Image</th>
                                         <th>Title</th>
                                         <th> Total Images</th>
-                                        <th>Last Updates</th>
+                                        <th>Publish Date</th>
 										<th>Status</th>
                                         <th>Action</th>
 

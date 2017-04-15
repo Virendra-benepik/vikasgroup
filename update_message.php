@@ -101,14 +101,14 @@ function ValidateMessage()
                                 <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                               
                                     <label for="Articlecontent">Message</label>
-                                    <textarea cols="105" id="editor1" name="postcontent" rows="10"><?php echo $result[0]['post_content']; ?></textarea>
+                                    <textarea class="form-control" id="editor1" name="postcontent" rows="10"><?php echo $result[0]['post_content']; ?></textarea>
                                 </div>
                             </div>
 							
 							<div class="row">
 								   
 						    <div class=" form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save Now" id="getData" onclick="return ValidateMessage();"/></center>
+                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save" id="getData" onclick="return ValidateMessage();"/></center>
                                     </div>
 
                                 </div>

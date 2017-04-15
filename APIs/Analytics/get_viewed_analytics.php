@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL); ini_set('display_errors', 1);
-if (file_exists("../../Class_Library/class_reading.php") && include("../../Class_Library/class_reading.php")) {
+if (file_exists("../../Class_Library/Api_Class/class_AppAnalytic.php") && include("../../Class_Library/Api_Class/class_AppAnalytic.php")) {
 
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -28,13 +28,13 @@ if (file_exists("../../Class_Library/class_reading.php") && include("../../Class
 	 "employeeid":"pSNx6y5WCp1EuIOsoS3iBesrFSObKF",
 	 "flagType":"1",
 	 "device":"Ios"
+         "deviceId":
 	 }*/
 	
     if (!empty($jsonArr['clientid'])) {
-        $obj = new Reading();
-
+         $obj = new AppAnalytic();
         extract($jsonArr);
-        $response = $obj->viewednews($clientid, $post_id, $employeeid, $flagType, $device);
+        $response = $obj->viewednews($clientid, $post_id, $employeeid, $flagType, $device,$deviceId);
     } else {
         $response['success'] = 0;
         $response['result'] = "Invalid json";

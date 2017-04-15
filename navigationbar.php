@@ -29,7 +29,8 @@ if (!isset($_SESSION['user_session']) && $_SESSION['user_session'] == "") {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/appPreview.css">
         <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css">
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="lib/css/animate.min.css">
         <link rel="stylesheet" type="text/css" href="lib/css/bootstrap-switch.min.css">
         <link rel="stylesheet" type="text/css" href="lib/css/checkbox3.min.css">
@@ -39,7 +40,8 @@ if (!isset($_SESSION['user_session']) && $_SESSION['user_session'] == "") {
         <!-- CSS App -->
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <link rel="stylesheet" type="text/css" href="css/themes/flat-blue.css">
-
+     
+       
         <!--Angular plugin-->
 
         <script data-require="angular.js@1.1.5" data-semver="1.1.5" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js">
@@ -50,7 +52,7 @@ if (!isset($_SESSION['user_session']) && $_SESSION['user_session'] == "") {
         <!--external link for date picker that will be acceptable for all browser-->
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.js"></script>
         <script type="text/javascript" src="http://afarkas.github.io/webshim/js-webshim/minified/polyfiller.js"></script>
-        <script type="text/javascript" src="js/datepicker.js"></script>
+<!--        <script type="text/javascript" src="js/datepicker.js"></script>-->
 
         <!--for making toggle button-->
 
@@ -134,7 +136,6 @@ if (!isset($_SESSION['user_session']) && $_SESSION['user_session'] == "") {
                                                     <ul class="dropdown-menu animated fadeInDown">
                                                         <li class="profile-img">
                                                             <?php
-//                                $path = "http://admin.benepik.com/employee/virendra/benepik_admin/";
                                                             $path = SITE;
                                                             $name = $_SESSION['image_name'];
                                                             if ($name == "") {

@@ -43,7 +43,7 @@ function ValidateLeadership()
 
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"style="margin:1px !important;">
-                    <h4><strong>Update Post</strong></h4><hr>
+                    <h4><strong>Update Leadership Connect</strong></h4><hr>
                     <?php
                     if (isset($_SESSION['msg'])) {
                         echo $_SESSION['msg'];
@@ -81,6 +81,9 @@ function ValidateLeadership()
                             <input type="hidden" name = "client" value="<?php echo $cid; ?>">
                             <input type="hidden" name="postid" value="<?php echo $_GET['idpost']; ?>" />
                             <input type="hidden" name="page" value="<?php echo $page; ?>" />
+							
+							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+							
                             <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
@@ -91,8 +94,8 @@ function ValidateLeadership()
 							</div>
 							
 							<div class="row">
-                            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4 myImageRight">
-                                <label for="Articlecontent">Select Image</label>
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label for="Articlecontent">Select Image</label><br>
                                 <script type="text/javascript">
                                     /*function showimagepreview(input) {
                                         if (input.files && input.files[0]) {
@@ -151,15 +154,16 @@ function ValidateLeadership()
 }
 
                                 </script>
-                                <img id="imgprvw1" alt="uploaded image preview" style="margin-bottom:5px; float:right; height:110px; width:200px;border:1px solid #f1f1f0;" 
+                                <img id="imgprvw1" alt="uploaded image preview" style="margin-bottom:5px;height:110px; width:200px;border:1px solid #f1f1f0;" 
                                      src='<?php echo $result[0]['post_img']; ?>' onerror='this.src="images/u.png"'/>
                                 <div>
                                       <input type="hidden" name="himage" value ="<?php echo $result[0]['post_img']; ?>" />
                               <input type="file" name="uploadimage" id="filUpload" onchange="showimagepreview(this)" />
                                 </div>
                             </div>
-
-							<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+							</div>
+							<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="Articlecontent">Leader Name</label>
                                     <input type="text" name="leadername" class="form-control" value="<?php echo $result[0]['postTeaser']; ?>">
@@ -179,18 +183,21 @@ function ValidateLeadership()
                                     </div>  
 									</div>
 						 </div>
+						 
                                     <script>
                                         CKEDITOR.replace('editor1');
                                     </script>   <!--- this is for ckeditor   ----->
 								<div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group col-sm-12">
-                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save Now" id="getData" onclick = "return ValidateLeadership();" /></center>
+                                        <center><input type="submit" name ="news_post" class="btn btn-md btn-info commonColorSubmitBtn" style="text-shadow:none;font-weight:normal;" value="Save" id="getData" onclick = "return ValidateLeadership();" /></center>
                                     </div>
 
                                 </div>
                         
                     </div>
+					</div>
+						 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
                             </form>
                 </div>
                
