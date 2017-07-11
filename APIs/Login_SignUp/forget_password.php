@@ -60,7 +60,7 @@ if (file_exists("../../Class_Library/Api_Class/class_employee_forgetpassword.php
             <p>Regards,</p> Team " . $progNam . "
             </body>
             </html>";
-            $sub = "Haier Connect Password Assistance ";
+            $sub = "Vikas Live Password Assistance ";
             $from = "From: " . $progNam . "<" . $dedi . ">";
 
             if ($deciderVal > 0) {

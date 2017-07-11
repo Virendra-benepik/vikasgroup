@@ -26,7 +26,7 @@ if (file_exists("../../Class_Library/Api_Class/class_contact_directory.php") && 
     if (!empty($jsonArr['clientid'])) {
         extract($jsonArr);
         $location_obj = new ContactLocation();  // create object of class cl_module.php
-        $response = $location_obj->getLocationDepartment($clientid);
+        $response = $location_obj->getLocationDepartment($clientid, $companyId);
     } else {
         $response['success'] = 0;
         $response['result'] = "Invalid json";

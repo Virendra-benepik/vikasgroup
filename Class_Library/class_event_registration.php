@@ -208,6 +208,27 @@ class EventRegistration {
 
 /***************************** end get event query registration ***********************************/
 
+/************************ export ***************************/
+
+function eventRegistrationExportData($clientid,$eventid) {
+        
+        try {
+             $query = "select Tbl_EmployeeDetails_Master.companyName as company , CONCAT(Tbl_EmployeeDetails_Master.firstName,' ',Tbl_EmployeeDetails_Master.lastName) as name , Tbl_EmployeeDetails_Master.employeeCode , Tbl_C_EventDetails.title,Tbl_EmployeeDetails_Master.department , Tbl_EmployeeDetails_Master.location ,Tbl_EmployeeDetails_Master.designation from Tbl_Analytic_EventRegister JOIN Tbl_EmployeeDetails_Master ON Tbl_Analytic_EventRegister.userUniqueId = Tbl_EmployeeDetails_Master.employeeId JOIN Tbl_C_EventDetails ON Tbl_Analytic_EventRegister.eventId = Tbl_C_EventDetails.eventId where Tbl_Analytic_EventRegister.clientId =:cli and Tbl_Analytic_EventRegister.eventId =:eid";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
+            $stmt->bindParam(':eid', $eventid, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return json_encode($result);
+           
+        } catch (PDOException $ex) {
+            echo $ex;
+        }
+    }
+
+/*************************** end export ********************/ 
+
 }
 
 ?>

@@ -1,15 +1,18 @@
 <?php
+error_reporting(E_ALL); ini_set('display_errors', 1);
 @session_start();
-require_once('../Class_Library/class_thought.php');
-require_once('../Class_Library/class_push_notification.php');
 require_once('../Class_Library/class_reading.php');
 require_once('../Class_Library/class_welcomeTable.php');
+require_once('../Class_Library/class_thought.php');
+require_once('../Class_Library/class_push_notification.php');
+include_once('../Class_Library/class_get_group.php');
 
+$obj_group = new Group();
 $thought_obj = new ThoughtOfDay();
 $thought_maxid = $thought_obj->thoughtMaxId();
 //echo "maximunm id -: ".$thought_maxid."<br/>";
 $read = new Reading();
-$push_obj = new PushNotification(); 
+$push_obj = new PushNotification();     
 $welcome_obj = new WelcomePage();
 
 date_default_timezone_set('Asia/Calcutta');
@@ -36,7 +39,7 @@ $image_name = $thought_maxid."-".$timg;
 $imagepath = $folder.$image_name;
 $dbimage = $target.$image_name;
 $url = $thought_obj->compress_image($timgtemp, $imagepath, 30);
-$fullpath = "http://admin.benepik.com/employee/virendra/benepik_client/images/ThoughtsOFtheDAY/".$image_name;
+$fullpath = SITE_URL ."images/ThoughtsOFtheDAY/".$image_name;
 }
 else
 {
@@ -60,7 +63,7 @@ $USEREMAIL = $_POST['useruniqueid'];
 $clientid =  $_SESSION['client_id'];
 
 
-$ptime1 = $_POST['publish_date1']." ".$_POST['publish_time1'];
+/*$ptime1 = $_POST['publish_date1']." ".$_POST['publish_time1'];
 $utime1 = $_POST['publish_date2']." ".$_POST['publish_time2'];
 
 $timestamp = strtotime($ptime1);
@@ -76,27 +79,45 @@ else
 $timestamp1 = strtotime($utime1);
 $utime = date("Y-m-d H:i:s", $timestamp1);
 }
+*/
+$ptime = ""; 
+$utime = "";
 
-$User_Type = "All";
-//echo $User_Type;
-	/*if($User_Type == 'Selected')
-	{
-	$user1 = $_POST['selected_user'];
-	$user2 = rtrim($user1,',');
-          $myArray = explode(',', $user2);
-          $groupdata = json_encode($myArray);
-       
+//$User_Type = "All";
+$User_Type = "Selected";
+/****************************************************************/
+/*if ($User_Type == 'Selected') {
+            $user1 = $_POST['selected_user'];
+            $user2 = rtrim($user1, ',');
+            $myArray = explode(',', $user2);
+           
+        } else {
+            // echo "all user"."<br/>";
+            $User_Type = "Selected";
+            //  echo "user type:-".$User_Type;
+            $user1 = $_POST['all_user'];
+            $user2 = rtrim($user1, ',');
+            $myArray = explode(',', $user2);
+           
         }
-        else
+*/
+
+/****************************************************************/
+/******************************** fetch group *************************/
+/*************************** find group **************************** */
+    $result = $obj_group->getGroup($clientid);
+    $value = json_decode($result, true);
+    $getcat = $value['posts'];
+
+    $myArray = array();
+    foreach ($getcat as $groupid) 
         {
-      // $groupdata = $User_Type;
-      $User_Type = 'Selected';
-       $user1 = $_POST['all_user'];
-	$user2 = rtrim($user1,',');
-          $myArray = explode(',', $user2);
-          $groupdata = json_encode($myArray);
-        }*/
-       // echo "json group -: ".$groupdata."<br>";
+        array_push($myArray, $groupid['groupId']);
+    }
+	//echo "<pre>";
+	//print_r($myArray);
+	
+/********************** end fetch group *******************************/
     
     if(isset($_POST['push']) && $_POST['push'] == 'PUSH_YES') 
     {   
@@ -107,30 +128,80 @@ $User_Type = "All";
        $PUSH_NOTIFICATION = 'PUSH_No';
         }
     
-  // echo $PUSH_NOTIFICATION;
+   //echo $PUSH_NOTIFICATION;
+   
+/************************* get key pem *****************************/
+   $googleapiIOSPem = $push_obj->getKeysPem($clientid);
+       //print_r($googleapiIOSPem);   
+/************************* end get key pem *************************/   
    
 
 /*********************** insert into database *************************************************/
  //  echo "thought maxid : ".$thought_maxid."<br/>";
-$thoughtresult = $thought_obj->createThought($clientid,$thought_maxid,$thoughttext,$dbimage,$USEREMAIL,$ptime,$utime,$post_date);
+$thoughtresult = $thought_obj->createThought($clientid,$thought_maxid,$thoughttext,$dbimage,$FLAG,$USEREMAIL,$ptime,$utime,$post_date);
 if($thoughtresult == 'True')
 {
 //echo "data send";
 }
  $type = 'Thought';
    $img = "";
-$result1 = $welcome_obj->createWelcomeData($clientid,$thought_maxid,$type,$thoughttext,$dbimage,$post_date,$USEREMAIL);
+$result1 = $welcome_obj->createWelcomeData($clientid,$thought_maxid,$type,$thoughttext,$dbimage,$post_date,$USEREMAIL,$FLAG);
 
-/*$groupcount = count($myArray);
+$groupcount = count($myArray);
+$general_group = array();
+$custom_group = array();
 for($k=0;$k<$groupcount;$k++)
 {
-echo "group id".$myArray[$k];
-$result1 = $read->eventSentToGroup($clientid,$EVENT_ID,$myArray[$k]);
+//echo "group id".$myArray[$k];
+$result1 = $read->thoughtSentToGroup($clientid,$thought_maxid,$myArray[$k],$FLAG);
 //echo $result1;
-}*/
+
+/*********************** get group detail ****************/
+
+$groupdetails = $read->getGroupDetails($clientid, $myArray[$k]);  //get all groupdetails
+        if ($groupdetails['groupType'] == 2) {
+            array_push($custom_group, $myArray[$k]);
+        } else {
+            array_push($general_group, $myArray[$k]);
+        }
+
+/********************** / get group detail ***************/
+
+}
+
+/*echo "general";
+print_r($general_group);
+echo "custom";
+print_r($custom_group);*/
+
 /******************  fetch all user employee id from user detail start *****************************/
-$gcm_value = $push_obj->get_Employee_details($User_Type,$myArray,$clientid);
-$token = json_decode($gcm_value, true);
+
+if (count($general_group) > 0) 
+	{
+        $gcm_value = $push_obj->get_Employee_details($User_Type, $general_group, $clientid);
+        $generaluserid = json_decode($gcm_value, true);
+    }
+else
+	{   
+               $generaluserid = array();
+    }
+if (count($custom_group) > 0) 
+	{
+        $gcm_value1 = $obj_group->getCustomGroupUser($clientid, $custom_group);
+        $customuserid = json_decode($gcm_value1, true);
+    }
+else
+	{
+              $customuserid = array();
+    }
+	
+/*echo "general";
+print_r($generaluserid);
+echo "custom";
+print_r($customuserid);*/
+
+//$gcm_value = $push_obj->get_Employee_details($User_Type,$myArray,$clientid);
+//$token = json_decode($gcm_value, true);
 /*echo "hello user  id";
 echo "<pre>";
 print_r($token);
@@ -138,26 +209,32 @@ echo "</pre>";*/
 
 
 /***************************get group admin uuid  form group admin table if user type not= all ****************************/
+
+
 if($User_Type != 'All')
 {
-$groupadminuuid = $push_obj->getGroupAdminUUId($myArray,$clientid);
+	
+	$allempid = array_merge($generaluserid, $customuserid);
+	$allempid1 = array_values(array_unique($allempid));
+//$groupadminuuid = $push_obj->getGroupAdminUUId($myArray,$clientid);
 
 
-$adminuuid = json_decode($groupadminuuid, true);
+//$adminuuid = json_decode($groupadminuuid, true);
 /*echo "hello groupm admin id";
 echo "<pre>";
 print_r($adminuuid)."<br/>";
 echo "</pre>";*/
 /******** "--------------all employee id---------"***/
 
-$allempid = array_merge($token,$adminuuid);
+//$allempid = array_merge($token,$adminuuid);
+//$allempid = array_merge($token);
 /*echo "<pre>";
 print_r($allempid);
 echo "<pre>";*/
 
 /**** "--------------all unique employee id---------"***********/
 
-$allempid1 = array_unique($allempid);
+//$allempid1 = array_unique($allempid);
 /*echo "<pre>";
 print_r($allempid1);
 echo "<pre>";*/
@@ -165,17 +242,26 @@ echo "<pre>";*/
 }
 else
 {
-$allempid1 = $token;
+$allempid1 = $generaluserid;
+//$allempid1 = $token;
 }
+
+//print_r($allempid1);
+//print_r($allempid);
 
 /********* insert into post sent to table for analytic sstart*************/
 
 $total = count($allempid1);
 for($i=0; $i<$total; $i++)
 {
-$uuid = $allempid1[$i];
-//echo "post sent to :--".$uuid."<br/>";
-$read->thoughtSentTo($clientid,$thought_maxid,$uuid);
+	$uuid = $allempid1[$i];
+	//echo "post sent to :--".$uuid."<br/>";
+	if (!empty($uuid)) {
+	$read->thoughtSentTo($clientid,$thought_maxid,$uuid);
+	}else 
+	{
+	   continue;
+	}
 }
 /********* insert into post sent to table for analytic sstart*************/
 
@@ -187,6 +273,22 @@ echo "<pre>";
 print_r($token1);
 echo "<pre>";*/
 
+ /*********************Create file of user which this post send  start******************** */
+        $val[] = array();
+        foreach ($token1 as $row) {
+            array_push($val, $row["clientId"] . "," . $row["userUniqueId"] . "," . $row["registrationToken"]);
+        }
+
+        $file = fopen("../send_push_datafile/" . $thought_maxid . ".csv", "w");
+
+        foreach ($val as $line) {
+            @fputcsv($file, @explode(',', $line));
+        }
+        @fclose($file);
+
+        /********************Create file of user which this post send End*********************/
+
+
 /*********************check push notificaticon enabale or disable*********************/
 
 if($PUSH_NOTIFICATION == 'PUSH_YES')
@@ -194,36 +296,55 @@ if($PUSH_NOTIFICATION == 'PUSH_YES')
 
 /********************* send push by  push notification*********************/
 
-$hrimg = "http://admin.benepik.com/employee/virendra/benepik_admin/".$_SESSION['image_name'];
-$sf = "successfully send";
-$ids = array();
-foreach($token1 as $row)
-{
- array_push($ids,$row["registrationToken"]);
-}
-$k = "2";
+$hrimg = ($_SESSION['image_name']=='')?'':SITE_URL . $_SESSION['image_name'];
 
-$data = array('Id' => $thought_maxid,'Content' => $thoughttext, 'SendBy'=> $USEREMAIL, 'Picture'=> $hrimg, 'image' => $fullpath, 
+            $sf = "successfully send";
+            $ids = array();
+            $idsIOS = array();
+
+            foreach ($token1 as $row) {
+
+                if ($row['deviceName'] == 3) {
+                    array_push($idsIOS, $row["registrationToken"]);
+                } else {
+                    array_push($ids, $row["registrationToken"]);
+                }
+            }
+			
+			/*$data = array('Id' => $POST_ID, 'Title' => $POST_TITLE, 'Content' => $content, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $DATE, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);*/
+            
+            /*$data = array('Id' => $thought_maxid,'Content' => $thoughttext, 'SendBy'=> $USEREMAIL, 'Picture'=> $hrimg, 'image' => $fullpath, 
+'Publishing_time'=>$ptime,'Unpublishing_time'=>$utime, 'flag'=>$FLAG,'flagValue'=>$flag_name,'success'=>$sf);*/
+
+$data = array('Id' => $thought_maxid,'Title' => $thoughttext,'Content' => $thoughttext, 'SendBy'=> $USEREMAIL, 'Picture'=> $hrimg, 'image' => $fullpath,'Date' => $post_date, 
 'Publishing_time'=>$ptime,'Unpublishing_time'=>$utime, 'flag'=>$FLAG,'flagValue'=>$flag_name,'success'=>$sf);
 
- $revert = $push_obj->sendGoogleCloudMessage($data,$ids,$googleapi);
- $rt = json_decode($revert,true);
+			//print_r($data);
+			
+           $IOSrevert = $push_obj->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
+            $revert = $push_obj->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
+
+            $rt = json_decode($revert, true);
+            $iosrt = json_decode($IOSrevert, true);
+
+//		echo "<pre>";
+		//print_r($iosrt);
+		//print_r($rt);
 
  if($rt['success'] == 1)
  {
- if($dev == 'd1')
-{
 echo "<script>alert('Thought Posted Successfully');</script>";
-echo $rt;
+echo "<script>window.location='../todays_thought.php'</script>";
+//echo $rt;
 }
 else
 {
  echo "<script>alert('Thought Posted Successfully');</script>";
 echo "<script>window.location='../todays_thought.php'</script>";
-print_r($rt);
+//print_r($rt);
 }
 
- }
+ 
  }
  else
  {

@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 if (file_exists("../../Class_Library/Api_Class/class_employee_app_login.php") && include("../../Class_Library/Api_Class/class_employee_app_login.php")) {
+    require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -21,19 +22,34 @@ if (file_exists("../../Class_Library/Api_Class/class_employee_app_login.php") &&
     }
 
     $jsonArr = json_decode(file_get_contents("php://input"), true);
- /*{
-     "clientid":"",
-             "uid":""
+    
+ /*   {
+     "clientid":"CO-27",
+     "uid":"HGLF3M0DfwFdqWP3AbWPUWA0cD03O61",
+      "device":"Android",
+      "deviceId":"",
+  *   "appVersion":""
  }*/
-    if ($jsonArr["clientid"]) {
-        $obj = new LoginUser();
-        $cid = $jsonArr["clientid"];
-       //echo "clientid ".$cid."<br>";
-        $uid = $jsonArr['uid'];
-       //echo "user id ".$uid;
-        $response = $obj->forceValidUserUpdation($cid, $uid);
 
+    if ($jsonArr["clientid"]) 
+        {
+        $obj = new LoginUser();
         
+         $analytic_obj = new AppAnalytic();
+        
+        $cid = $jsonArr["clientid"];
+ 
+        $uid = $jsonArr['uid'];
+        $device = $jsonArr['device'];
+        $deviceId = $jsonArr['deviceId'];
+        $appVersion = $jsonArr['appVersion'];
+ 
+        $response = $obj->forceValidUserUpdation($cid, $uid);
+        if($response['success'] == '1') {
+		$response['posts'][0]['androidUpgradeLink'] = "https://iphone.benepik.com/vikaslive";
+		$response['posts'][0]['iosUpgradeLink']     = "https://iphone.benepik.com/vikaslive";
+        }
+        $analytic_obj->checkspalshopen($cid,$uid,$device,$deviceId,$appVersion);
     }
     else {
         $response['success'] = 0;

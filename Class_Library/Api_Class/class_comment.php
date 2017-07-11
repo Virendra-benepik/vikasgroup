@@ -18,7 +18,7 @@ class Comment {
     public $commentedby;
     public $commentcontent;
 
-    function create_Comment($client, $pid, $comby, $comcon, $flag, $device) {
+    function create_Comment($client, $pid, $comby, $comcon, $flag, $device,$deviceId) {
         $this->clientid = $client;
         $this->postid = $pid;
         $this->commentedby = $comby;
@@ -46,8 +46,8 @@ class Comment {
 
 
         try {
-            $query = "insert into Tbl_Analytic_PostComment(commentId,clientId,postId,comment,commentBy,commentDate,status,flagType,device)
-            values(:pid,:cli,:pt,:cc,:pi,:cd,:st,:flag,:device)";
+            $query = "insert into Tbl_Analytic_PostComment(commentId,clientId,postId,comment,commentBy,commentDate,status,flagType,device,deviceId)
+            values(:pid,:cli,:pt,:cc,:pi,:cd,:st,:flag,:device,:did)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':pid', $commentid, PDO::PARAM_STR);
             $stmt->bindParam(':cli', $this->clientid, PDO::PARAM_STR);
@@ -58,6 +58,7 @@ class Comment {
             $stmt->bindParam(':st', $st, PDO::PARAM_STR);
             $stmt->bindParam(':flag', $flag, PDO::PARAM_STR);
             $stmt->bindParam(':device', $device, PDO::PARAM_STR);
+              $stmt->bindParam(':did', $deviceId, PDO::PARAM_STR);
 
             if ($stmt->execute()) {
                 try {
@@ -111,7 +112,7 @@ class Comment {
                             $post["firstname"] = $row["firstName"];
                             $post["lastname"] = $row["lastName"];
                             $post["designation"] = $row["designation"];
-                            $post["userImage"] = $forimage . $row["userImage"];
+                            $post["userImage"] = ($row["userImage"]=="")?"":$forimage . $row["userImage"];
                             $post["cdate"] = $rows[$i]["commentDate"];
 
                             array_push($response["posts"], $post);

@@ -26,7 +26,10 @@ $(window).load(function () {
         e.preventDefault(); // Needed?
         var files = e.target.files;
         var len = files.length;
-        if (len > maxUpload || thumbsArray.length >= maxUpload) {
+        //if (len > maxUpload || thumbsArray.length >= maxUpload) {
+			if (len > maxUpload) {
+			$("#files").val("");
+			$("#list").empty();
             return alert("Sorry you can upload only 15 images");
         }
         for (var i = 0; i < len; i++) {

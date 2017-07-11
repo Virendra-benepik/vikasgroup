@@ -23,7 +23,7 @@ function compress_image($source_url, $destination_url, $quality) {
         $imagevalue = filesize($source_url);
         $valueimage = $imagevalue/1024;
         
-        if($valueimage > 40)
+        if($valueimage > 200)
         {  
 	$info = getimagesize($source_url);
  
@@ -82,8 +82,8 @@ function compress_image($source_url, $destination_url, $quality) {
       
   }
 
-               //  $clientid, $POST_ID, $POST_TITLE, $POST_IMG, $POST_IMG_THUMB, $POST_CONTENT, $DATE, $USERID, $BY, $FLAG, $like, $comment
-  function create_Post($cid,$pid,$ptitle,$pimg,$POST_IMG_THUMB,$pcontent,$pdate,$mail,$by,$flag,$like,$comment)
+               // $clientid, $POST_ID, $POST_TITLE, $POST_IMG, $POST_IMG_THUMB,$POST_TEASER,$POST_CONTENT, $DATE, $USERID, $BY, $FLAG, $like, $comment
+  function create_Post($cid,$pid,$ptitle,$pimg,$POST_IMG_THUMB,$pteaser,$pcontent,$pdate,$mail,$by,$flag,$like,$comment)
   {
      $this->postid = $pid;
      $this->posttitle = $ptitle;
@@ -100,15 +100,16 @@ function compress_image($source_url, $destination_url, $quality) {
      $this->client = $cid;
     
      try{
-     $query = "insert into Tbl_C_PostDetails(clientId,post_id,post_title,post_img,thumb_post_img,post_content,created_date,created_by,userUniqueId,flagcheck,likeSetting,comment,status)
-                                      values(:cid,:pid,:pt,:pi,:thumbimg,:pc,:cd,:cb,:em,:fl,:lk,:ck,:st)";
+         
+     $query = "insert into Tbl_C_PostDetails(clientId,post_id,post_title,post_img,thumb_post_img,postTeaser,post_content,created_date,created_by,userUniqueId,flagcheck,likeSetting,comment,status)
+                                      values(:cid,:pid,:pt,:pi,:thumbimg,:lname,:pc,:cd,:cb,:em,:fl,:lk,:ck,:st)";
              $stmt = $this->DB->prepare($query);
              $stmt->bindParam(':cid',$this->client, PDO::PARAM_STR);
               $stmt->bindParam(':pid',$this->postid, PDO::PARAM_STR);
              $stmt->bindParam(':pt',$this->posttitle, PDO::PARAM_STR);
              $stmt->bindParam(':pi',$this->imgpath, PDO::PARAM_STR);
              $stmt->bindParam(':thumbimg',$POST_IMG_THUMB, PDO::PARAM_STR);
-             
+              $stmt->bindParam(':lname',$this->teaser, PDO::PARAM_STR);
              $stmt->bindParam(':pc',$this->postcontent, PDO::PARAM_STR);
              $stmt->bindParam(':cd',$this->pdate, PDO::PARAM_STR);
              $stmt->bindParam(':cb',$this->author, PDO::PARAM_STR);

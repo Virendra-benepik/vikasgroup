@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once('../Class_Library/class_get_useridbygroupid.php');
 $push = new PushNotification1(); 
 if(!empty($_POST))

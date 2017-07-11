@@ -1,7 +1,8 @@
 <?php
 
-include_once('class_connect_db_Communication.php');
-
+if(!class_exists("Connection_Communication")){
+    include_once('class_connect_db_Communication.php');
+}
 class PushNotification {
 
     public $DB;
@@ -116,7 +117,7 @@ class PushNotification {
                         $qq1 = "select firstName,emailId from Tbl_EmployeeDetails_Master where " . $finalstring;
                         // echo $qq."<br/>";
                         $stmt2 = $this->DB->prepare($qq);
-                        // $stmt2->bindParam(':cid','',PDO::PARAM_STR);
+                       
                         if ($stmt2->execute()) {
 
                             $rows2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
@@ -259,7 +260,7 @@ class PushNotification {
         $post = array(
             'registration_ids' => $ids,
             'priority' => "high",
-            //            'notification' => array( "title" => "Android Learning", "body" => $message, "tag" => $tag ),
+            // 'notification' => array( "title" => "Android Learning", "body" => $message, "tag" => $tag ),
             'data' => $data,
         );
         //   echo json_encode($post);
@@ -312,6 +313,80 @@ class PushNotification {
         return json_encode($response);
     }
 
+     /************ Function for cron wish push **********************************************/
+     function sendGoogleCloudMessageCron($data, $gpk) {
+     	$ids = array($data['device_token']);
+     	unset($data['device_token']);
+        // Insert real GCM API key from Google APIs Console
+        // https://code.google.com/apis/console/     
+        $this->googleapi = $gpk;
+        $apiKey = $this->googleapi;
+        // Define URL to GCM endpoint
+        //        $url = 'https://gcm-http.googleapis.com/gcm/send';
+        $url = "https://fcm.googleapis.com/fcm/send";
+        $message = "test message";
+        $tag = "test";
+        
+        // Set GCM post variables (device IDs and push payload)     
+        $post = array(
+            'registration_ids' => $ids,
+            'priority' => "high",
+            // 'notification' => array( "title" => "Android Learning", "body" => $message, "tag" => $tag ),
+            'data' => $data,
+        );
+
+        //   echo json_encode($post);
+        // Set CURL request headers (authentication and type)       
+        $headers = array(
+            $url,
+            'Authorization: key=' . $apiKey,
+            'Content-Type: application/json'
+        );
+
+        // Initialize curl handle       
+        $ch = curl_init();
+
+        // Set URL to GCM endpoint      
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        // Set request method to POST       
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        // Set our custom headers       
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        // Get the response back as string instead of printing it       
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        // Set JSON post data
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post));
+
+        // Actually send the push  
+
+        $result = curl_exec($ch);
+
+        // Error handling
+        if (curl_errno($ch) || $result === FALSE) {
+            die('FCM error: ' . curl_error($ch));
+        }
+
+        // Close curl handle
+        curl_close($ch);
+
+        // Debug GCM response   
+       $response['result'] = $result;
+        $response['postdata'] = $post;
+        $response['success'] = 1;
+        $response['msg'] = 'post send';
+
+
+        return ($response);
+    }
+
+    /*******************************************************************************/
+    
     /*     * ******************************************** Function to send APNS push ************************************ */
 
     function sendAPNSPush_OLD_NOV($post, $deviceToken, $pemFile) {
@@ -425,8 +500,8 @@ class PushNotification {
     }
 
     function sendAPNSPush($post, $deviceToken, $pemFile, $device = '') {
-      $apnsHost = 'gateway.sandbox.push.apple.com';       //dev
-       //$apnsHost = 'gateway.push.apple.com';            //production
+        $apnsHost = 'gateway.sandbox.push.apple.com';       //dev
+ //      $apnsHost = 'gateway.push.apple.com';            //production
         $apnsPort = '2195';
         $apnsCert = (empty($device) || $device = '') ? BASE_PATH . '/' . $pemFile : dirname(BASE_PATH) . '/' . $pemFile; //dev
        // echo $apnsCert;die;
@@ -496,6 +571,87 @@ class PushNotification {
 
         return json_encode($response);
     }
+    
+    
+    /*****************************    *********************/
+    function sendAPNSPushCron($post, $pemFile, $device = '') {
+	$deviceToken[] = $post['device_token'];
+	unset($post['device_token']);
+	
+      $apnsHost = 'gateway.sandbox.push.apple.com';       //dev
+//	$apnsHost = 'gateway.push.apple.com';            //production
+        $apnsPort = '2195';
+        $apnsCert = (empty($device) || $device = '') ? BASE_PATH . '/' . $pemFile : dirname(BASE_PATH) . '/' . $pemFile; //dev
+       // echo $apnsCert;die;
+        $passPhrase = 'benepik123';
+        $streamContext = stream_context_create();
+        stream_context_set_option($streamContext, 'ssl', 'local_cert', $apnsCert);
+        $apnsConnection = stream_socket_client('ssl://' . $apnsHost . ':' . $apnsPort, $error, $errorString, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $streamContext);
+
+        if ($apnsConnection == false) {
+            echo "Failed to connect {$error} {$errorString}\n";
+            return;
+        } else {
+//            echo "Connection successful<br>";
+            $alert = "";
+            $flagdata = $post['flag'];
+            $flagvalue = $post['flagValue'];
+            if ($flagdata == 3 || $flagdata == 4) {      //flag 2- for message  , flag 3- for picture
+                $content = $post['Content'];
+                $fulltitle = $flagvalue . $content;
+                $alert = $fulltitle;
+            } else {
+                $title = $post['Title'];
+                $fulltitle = $flagvalue . $title;
+                $alert = $fulltitle;
+            }
+            $contentsring = strip_tags($post['Content']);
+            //echo "post content-".$contentsring;
+            $push_array = array(
+                'alert' => $alert,
+                'picture' => $post['Id'],
+                'sound' => 'default',
+                'flag' => $flagdata,
+                'title' => $post['Title'],
+                'content' => $contentsring,
+                'date' => $post['Date']
+            );
+        }
+        $payload['aps'] = $push_array;
+        $payload = json_encode($payload);
+
+        try {
+            if ($alert != "") {
+                $count = 0;
+                foreach ($deviceToken as $token) {
+                    $apnsMessage = chr(0) . @pack("n", 32) . @pack('H*', str_replace(' ', '', $token)) . @pack("n", strlen($payload)) . $payload;
+//                $apnsMessage = chr(0) . chr(0) . chr(32) . pack('H*', $deviceToken) . chr(0) . chr(strlen($payload)) . $payload;
+//                $apnsMessage = chr(1) . pack("N", $msg_id) . pack("N", $expiry) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
+                    $fwrite = fwrite($apnsConnection, $apnsMessage);
+//                    echo $token . '<br>';
+                    if ($fwrite) {
+//                        echo "true<br>";
+//                        $count++;
+                    } else {
+//                        echo "false";
+                    }
+                }
+//                echo $count;
+            }
+        } catch (Exception $e) {
+            echo 'Caught exception: ' . $e->getMessage() . "\n";
+        }
+        @fclose($apns);
+
+        $response['success'] = 1;
+        $response['msg'] = 'post send';
+        $response['Posts'] = $post;
+
+        return ($response);
+    }
+    
+    /*****************************************************/
+    
 
     /*     * ****************************** */
 

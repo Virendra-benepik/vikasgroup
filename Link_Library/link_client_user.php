@@ -5,7 +5,8 @@ require_once('../Class_Library/class_user.php');
 $obj = new User();     //class object
 $clientid = $_SESSION['client_id'];
 $user = $_SESSION['user_unique_id'];
-
+$adminname = $_SESSION['user_name'];
+$adminemail = $_SESSION['user_email'];
 //echo "user id-: ".$user;
 
 if (!empty($_POST)) {
@@ -20,7 +21,7 @@ if (!empty($_POST)) {
 
         $fullcsvpath = $target1 . $upload_file_name;
 //echo $fullcsvpath;
-        $result1 = $obj->uploadUserCsv($clientid, $user, $filename, $filtempname, $fullcsvpath);
+        $result1 = $obj->uploadUserCsv($clientid, $user, $filename, $filtempname, $fullcsvpath,$adminname,$adminemail);
         $result = json_decode($result1, true);
 //print_r($result);
         $message = $result['msg'];
@@ -29,7 +30,9 @@ if (!empty($_POST)) {
         if ($suc == 1) {
             move_uploaded_file($filtempname, $target . $upload_file_name);
             echo "<script>alert('data successfully uploaded')</script>";
-            echo "<script>window.location='../add_user.php'</script>";
+           echo "<script>window.location='../add_user.php'</script>";
+            //print_r($result);
+            die;
         } else {
             echo $message;
         }
@@ -39,8 +42,8 @@ if (!empty($_POST)) {
     if (isset($_POST['user_form'])) {
 //        echo '<pre>';print_r($_POST);die;
         extract($_POST);
-
-        $result = $obj->userForm($clientid, $user, $first_name, $middle_name, $last_name, $emp_code, $dob, $fathername, $email_id, $designation, $department, $contact, $location, $branch, $grade, $gender);
+		
+        $result = $obj->userForm($clientid, $user, $first_name, $middle_name, $last_name, $emp_code, $dob, $doj, $email_id, $designation, $department, $contact, $location, $branch, $grade, $gender,$companyname,$companycode,$adminname,$adminemail);
         print_r($result);
     }
 } else {

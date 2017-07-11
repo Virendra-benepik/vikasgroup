@@ -1,4 +1,5 @@
 <?php 
+error_reporting(E_ALL); ini_set('display_errors', 1);
 require_once('class_connect_db_Communication.php');
 
 class Complaint
@@ -6,164 +7,10 @@ class Complaint
 	 public $db_connect;
 	 public function __construct()
     {
-	$dbh = new Connection_Mahle();
+	$dbh = new Connection_Communication();
 	$this->db_connect =  $dbh->getConnection_Communication();
     }
-/*************************** Complaint details data into database  **************************************/	
 
-	function entryComplaint($cid,$mail,$con,$sta)
-	{        
-	        $this->client_id  = $cid;
-		$this->email = $mail;
-		$this->content = $con;
-		$this->status = $sta;
-
-     date_default_timezone_set('Asia/Calcutta');
-     $cd = date('d M Y, h:i A');
-
-		try{
-			$max = "select max(autoId) from Tbl_EmployeeComplaints";
-			$stmt = $this->db_connect->prepare($max);
-			if($stmt->execute())
-			{
-				$tr  = $stmt->fetch();
-				$c_id = $tr[0];
-				$c_id1 = $c_id+1;
-				$comid = "COM-".$c_id1;
-			}
-		  }
-			catch(PDOException $e)
-			{ 
-                                echo $e;
-				trigger_error('Error occured fetching max autoid : '. $e->getMessage(), E_USER_ERROR);	
-		        }
-		
-		/***************** Insert Client Data into benepik admin Database start ***************************************/
-		try
-		{
-		$query = "insert into Tbl_EmployeeComplaints(complaintId,clientId,emailId,content,visiblity,date_of_complaint)
-    values(:crid,:cid,:email1,:msg,:visibl,:date1)";
-		$stmt = $this->db_connect->prepare($query);
-                $stmt->bindParam(':crid',$comid, PDO::PARAM_STR);                               
-                $stmt->bindParam(':cid',$this->client_id, PDO::PARAM_STR); 
-                 $stmt->bindParam(':email1',$this->email, PDO::PARAM_STR); 
-		$stmt->bindParam(':msg',$this->content, PDO::PARAM_STR); 
-		$stmt->bindParam(':visibl',$this->status, PDO::PARAM_STR); 
-		$stmt->bindParam(':date1',$cd, PDO::PARAM_STR);       
-        
-                if($stmt->execute())
-	     {
-	     
-	     /*******************************mail to Hr*******************************************/
-
-                 $to1 = "virendra@benepik.com";
-                 $subject1 = "Complaint From Employee";
-                 $text1 =$this->content;
-                  if($this->status == 'no')
-                  {
-                  $email = $this->email;
-                  }
-                  else
-                  {
-                  $email = "Anonymous";
-                  }
-
-                 $headers1= "From:".$email."\r\n";
-
-                 mail($to1,$subject1,$text1,$headers1);
-                
-	 /*********************************************************************************************/    
-                  $response =array();
-                  $response["success"]=1;
-                  $response["message"]="Complaint is registered";
-                  return json_encode($response);
-             }
-               
-		}      //--------------------------------------------- end of try block
-		catch(PDOException $e) 
-		{
-		echo $e;                 
-        }              
-        
-}   
-         
-/*************************** Sugestion details data into database  **************************************/	
-
-	function entrySugestion($cid2,$mail,$con,$sta)
-	{
-	         $this->client_id = $cid2;
-		$this->email = $mail;
-		$this->content = $con;
-		$this->status = $sta;
-
-     date_default_timezone_set('Asia/Calcutta');
-     $cd = date('d M Y, h:i A');
-
-		try{
-			$max = "select max(autoId) from Tbl_EmployeeSugestions";
-			$stmt = $this->db_connect->prepare($max);
-			if($stmt->execute())
-			{
-				$tr  = $stmt->fetch();
-				$c_id = $tr[0];
-				$c_id1 = $c_id+1;
-				$comid = "SUG-".$c_id1;
-			}
-		  }
-			catch(PDOException $e)
-			{ 
-                                echo $e;
-				trigger_error('Error occured fetching max autoid : '. $e->getMessage(), E_USER_ERROR);	
-		        }
-		
-		try
-		{
-		$query = "insert into Tbl_EmployeeSugestions(sugestionId,clientId,emailId,content,visiblity,date_of_sugestion)
-    values(:crid,:cid,:eml,:eid,:emid,:cmod)";
-		$stmt = $this->db_connect->prepare($query);
-                $stmt->bindParam(':crid',$comid, PDO::PARAM_STR);                               
-                $stmt->bindParam(':cid',$this->client_id, PDO::PARAM_STR); 
-                 $stmt->bindParam(':eml',$this->email, PDO::PARAM_STR); 
-		$stmt->bindParam(':eid',$this->content, PDO::PARAM_STR); 
-		$stmt->bindParam(':emid',$this->status, PDO::PARAM_STR); 
-		$stmt->bindParam(':cmod',$cd, PDO::PARAM_STR);       
-        
-                if($stmt->execute())
-	     {
-	     
-	     /*******************************mail to Hr*******************************************/
-
-                 $to1 = "virendra@benepik.com";
-                 $subject1 = "Suggestion From Employee";
-                 $text1 =$this->content;
-                  if($this->status == 'no')
-                  {
-                  $email = $this->email;
-                  }
-                  else
-                  {
-                  $email = "Anonymous";
-                  }
-
-                 $headers1= "From:".$email."\r\n";
-
-                 mail($to1,$subject1,$text1,$headers1);
-                
-	 /*********************************************************************************************/ 
-	     
-                  $response =array();
-                  $response["success"]=1;
-                  $response["message"]="Sugestion is sent";
-                  return json_encode($response);
-             }
-               
-		}    
-		catch(PDOException $e) 
-		{
-		echo $e;                 
-        }              
-        
-   } 
    
    /******************************************************** Get Complain ***********************************/
    public $client_id;
@@ -172,18 +19,16 @@ class Complaint
    $this->client_id = $cid;
    try
    {
-   $query = "select Tbl_EmployeeComplaints.*, Tbl_EmployeePersonalDetails.* from Tbl_EmployeeComplaints join Tbl_EmployeePersonalDetails on Tbl_EmployeeComplaints.emailId = Tbl_EmployeePersonalDetails.emailId where Tbl_EmployeeComplaints.clientId = :cid order by date_of_complaint desc";
+   $query = "select Tbl_EmployeeComplaints.*,DATE_FORMAT(Tbl_EmployeeComplaints.date_of_complaint,'%d %b %Y %h:%i %p') as date_of_complaint,Tbl_EmployeePersonalDetails.*,Tbl_EmployeeDetails_Master.firstName,Tbl_EmployeeDetails_Master.lastName from Tbl_EmployeeComplaints join Tbl_EmployeePersonalDetails on Tbl_EmployeeComplaints.userUniqueId = Tbl_EmployeePersonalDetails.employeeId join Tbl_EmployeeDetails_Master on Tbl_EmployeeComplaints.userUniqueId = Tbl_EmployeeDetails_Master.employeeId where Tbl_EmployeeComplaints.clientId = :cid order by date_of_complaint desc";
    $stmt = $this->db_connect->prepare($query);
    $stmt->bindParam(':cid',$this->client_id,PDO::PARAM_STR);
    $stmt->execute();
    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
   return json_encode($row);
-   
    }
    catch(PDOException $e)
    {
    echo $e;
-   
    }
    
    }
@@ -195,7 +40,7 @@ class Complaint
    $this->client_id = $cid1;
    try
    {
-   $query = "select Tbl_EmployeeSugestions.*, Tbl_EmployeePersonalDetails.* from Tbl_EmployeeSugestions join Tbl_EmployeePersonalDetails on Tbl_EmployeeSugestions.emailId = Tbl_EmployeePersonalDetails.emailId where Tbl_EmployeeSugestions.clientId = :cid order by date_of_sugestion desc";
+    $query = "select Tbl_EmployeeSuggestions.*, DATE_FORMAT(Tbl_EmployeeSuggestions.date_of_sugestion,'%d %b %Y %h:%i %p') as date_of_sugestion, Tbl_EmployeePersonalDetails.*,Tbl_EmployeeDetails_Master.firstName,Tbl_EmployeeDetails_Master.lastName from Tbl_EmployeeSuggestions join Tbl_EmployeePersonalDetails on Tbl_EmployeeSuggestions.userUniqueId = Tbl_EmployeePersonalDetails.employeeId join Tbl_EmployeeDetails_Master on Tbl_EmployeeSuggestions.userUniqueId = Tbl_EmployeeDetails_Master.employeeId where Tbl_EmployeeSuggestions.clientId = :cid order by date_of_sugestion desc";
    $stmt = $this->db_connect->prepare($query);
    $stmt->bindParam(':cid',$this->client_id,PDO::PARAM_STR);
    $stmt->execute();
@@ -207,8 +52,85 @@ class Complaint
    {
    echo $e;
    
-   }
+   }    
    
    }
+   
+   
+     function getonesuggestion($postid) {
+        $this->id_posts = $postid;
+		$path = SITE; 
+        try {
+            /*$query = "select * , DATE_FORMAT(date_of_sugestion,'%d %b %Y %h:%i %p') as date_of_sugestion from Tbl_EmployeeSuggestions where sugestionId =:comm";*/
+			
+			$query = "select Tbl_EmployeeSuggestions.* ,if(Tbl_EmployeeSuggestions.suggestionImage = '' or Tbl_EmployeeSuggestions.suggestionImage IS NULL ,'',CONCAT('".$path."' ,Tbl_EmployeeSuggestions.suggestionImage)) as suggestionImage , DATE_FORMAT(Tbl_EmployeeSuggestions.date_of_sugestion,'%d %b %Y %h:%i %p') as date_of_sugestion , CONCAT(Tbl_EmployeeDetails_Master.firstName , ' ',Tbl_EmployeeDetails_Master.lastName) as name ,Tbl_EmployeeDetails_Master.employeeCode , Tbl_EmployeePersonalDetails.Companyname from Tbl_EmployeeSuggestions JOIN Tbl_EmployeeDetails_Master ON Tbl_EmployeeSuggestions.userUniqueId =  Tbl_EmployeeDetails_Master.employeeId JOIN Tbl_EmployeePersonalDetails ON Tbl_EmployeeSuggestions.userUniqueId = Tbl_EmployeePersonalDetails.employeeId where Tbl_EmployeeSuggestions.sugestionId =:comm";
+			
+            $stmt = $this->db_connect->prepare($query);
+            $stmt->bindParam(':comm', $this->id_posts, PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $response["success"] = 1;
+        $response["message"] = "Displaying post details";
+        $response["posts"] = array();
+
+        if ($rows) {
+            for ($i = 0; $i < count($rows); $i++) {
+                $post["sugestionId"] = $rows[$i]["sugestionId"];
+                $post["clientId"] = $rows[$i]["clientId"];
+                $post["suggestionArea"] = $rows[$i]["suggestionArea"];
+                 $post["content"] = $rows[$i]["content"];
+                  $post["date_of_sugestion"] = $rows[$i]["date_of_sugestion"];
+				  $post["name"] = $rows[$i]["name"];
+				  $post["Companyname"] = $rows[$i]["Companyname"];
+				  $post["suggestionImage"] = $rows[$i]["suggestionImage"];
+				  $post["employeeCode"] = $rows[$i]["employeeCode"];
+                   
+                array_push($response["posts"], $post);
+            }
+           
+        }
+         return json_encode($response);
+    }
+    
+     function getonecomplain($postid) {
+        $this->id_posts = $postid;
+
+        try {
+            /*$query = "select * , DATE_FORMAT(date_of_complaint,'%d %b %Y %h:%i %p') as date_of_complaint from Tbl_EmployeeComplaints where complaintId =:comm";*/
+			
+			$query = "select Tbl_EmployeeComplaints.* , DATE_FORMAT(Tbl_EmployeeComplaints.date_of_complaint,'%d %b %Y %h:%i %p') as date_of_complaint , Tbl_EmployeePersonalDetails.Companyname , Tbl_EmployeePersonalDetails.employeeCode from Tbl_EmployeeComplaints JOIN Tbl_EmployeePersonalDetails ON Tbl_EmployeeComplaints.userUniqueId = Tbl_EmployeePersonalDetails.employeeId where Tbl_EmployeeComplaints.complaintId =:comm";
+			
+            $stmt = $this->db_connect->prepare($query);
+            $stmt->bindParam(':comm', $this->id_posts, PDO::PARAM_STR);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $response["success"] = 1;
+        $response["message"] = "Displaying post details";
+        $response["posts"] = array();
+
+        if ($rows) {
+            for ($i = 0; $i < count($rows); $i++) {
+                $post["complaintId"] = $rows[$i]["complaintId"];
+                $post["clientId"] = $rows[$i]["clientId"];
+                $post["complaintBy"] = $rows[$i]["complaintBy"];
+                 $post["content"] = $rows[$i]["content"];
+                  $post["date_of_complaint"] = $rows[$i]["date_of_complaint"];
+				   $post["Companyname"] = $rows[$i]["Companyname"];
+				   $post["employeeCode"] = $rows[$i]["employeeCode"];
+                   
+                array_push($response["posts"], $post);
+            }
+           
+        }
+         return json_encode($response);
+    }
 }
 ?>

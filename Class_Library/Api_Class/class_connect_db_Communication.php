@@ -23,7 +23,7 @@ class Connection_Communication {
 
         try {
        
- $conn = new PDO("mysql:host=localhost;dbname=Test_vikasgroup;charset=utf8", "root", "veeru@123");
+ $conn = new PDO("mysql:host=localhost;dbname=Test_vikasgroup;charset=utf8", "root", "veeru@123 ");
      //       $conn = new PDO("mysql:host=localhost;dbname=employee_DB_Benepik_demo;charset=utf8mb4_unicode_ci", "root", "benepik123");
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {

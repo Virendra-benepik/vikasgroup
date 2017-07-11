@@ -32,7 +32,7 @@ class ClientLogin
      $query = "select C.*,CA.*,U.*,UP.* from Tbl_ClientAdminDetails as CA 
      join Tbl_ClientDetails_Master as C on C.client_id = CA.clientId 
      join Tbl_EmployeeDetails_Master as U on CA.userUniqueId = U.employeeId 
-     join Tbl_EmployeePersonalDetails as UP on UP.employeeId = U.employeeId where U.emailId = :mail or U.employeeCode = :mail";
+     join Tbl_EmployeePersonalDetails as UP on UP.employeeId = U.employeeId where U.emailId = :mail or U.employeeCode = :mail AND U.status = 'Active'";
              $stmt = $this->DB->prepare($query);
            
              $stmt->execute(array(':mail'=>$this->emailid));
@@ -60,9 +60,8 @@ class ClientLogin
                 @session_start();
                 $_SESSION['user_session'] = $userRow['userId'];
                 $_SESSION['user_unique_id'] = $userRow['employeeId'];
-                 $_SESSION['user_name'] = $userRow['firstName'];
+                $_SESSION['user_name'] = $userRow['firstName'] . " " .$userRow['lastName'];
                 $_SESSION['user_email'] = $useremail;
-              //  $_SESSION['user_access'] = $subadmin;
                 $_SESSION['user_type'] = $access;
                 $_SESSION['client_name'] = $clientname;
                 $_SESSION['client_id'] = $clientid;
@@ -73,6 +72,8 @@ class ClientLogin
                 $_SESSION['dedicated_mail'] = $userRow['dedicated_mail'];
                 $_SESSION['gpk'] = $googleapi;
 		$_SESSION['iosPemfile'] = $userRow['iosPemfile'];
+                $_SESSION['usercompany'] = $userRow['companyName'];
+                $_SESSION['companyUniqueId'] = $userRow['companyUniqueId'];
                
                $res = 'True';
               $result['success'] = $res;
@@ -122,8 +123,8 @@ class ClientLogin
    {
         session_destroy();
         unset($_SESSION['user_session']);
-        setcookie ("user_email", '', time() - (2*60));
-        setcookie ("password", '', time() - (2*60));
+        //setcookie ("user_email", '', time() - (2*60));
+        //setcookie ("password", '', time() - (2*60));
         return true;
    }
  /******************************************* forfet password ****************************/  
@@ -153,18 +154,19 @@ class ClientLogin
    if( $st->execute())  {
    
    $to1 = $email;
-$subject1 = " password ";
+$subject1 = "Vikas Live Password Assistance";
 
 $message = '<html><body>';
-$message .= "<h1>Hello ".$val['firstName'].", </h1>";
-$message .= "We received a request to send the password associated with this e-mail address.";
+//$message .= "<h6>Dear ".$val['firstName'].", </h6>";
+$message .= "Dear ".$val['firstName'].",";
+$message .= "<p>We received a request to send the password associated with this e-mail address.</p>";
 $message .='<p>Your Password : '. $randompassword.'</p>';
 $message .='<p>If you did not request to have your password you can safely ignore this email. Rest assured your customer account is safe.</p>';
 $message .= "<p>Regards,</p>";
-$message .= "<p>Team Manav Rachna</p>";
+$message .= "<p>Team Vikas Live</p>";
 $message .= '</body></html>';
 
-$headers1 = "From: Support Benepik <info@benepik.com> \r\n";
+$headers1 = "From: Vikas Live <vikaslive@benepik.com> \r\n";
 $headers1 .= "MIME-Version: 1.0\r\n";
 $headers1 .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
                 

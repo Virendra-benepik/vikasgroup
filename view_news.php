@@ -31,7 +31,7 @@ $count = count($val);
                         <div class="card-header">
 
                             <div class="card-title">
-                                <div class="title"><strong>All News Details</strong></div>
+                                <div class="title"><strong>All What's Up Details</strong></div>
                             </div>
                          <!---   <div style="float:left; margin-top:13px; font-size:20px;"> 
                                 <a href="postnews.php">
@@ -51,7 +51,8 @@ $count = count($val);
                                         <th>Like</th>
                                         <th>Comment</th>
                                         <th>Status</th>
-                                        <th>Last Updates</th>
+										<th>Publish Date</th>
+                                        <!--<th>Last Updates</th>-->
                                         <th><center>Action</center></th>
                                          <!--<th>Salary</th>-->
                                 </tr>
@@ -99,8 +100,11 @@ $count = count($val);
     </a>-->
 
                                             <a target="_blank" href="full_view_news.php?idpost=<?php echo $val[$i]['post_id'] ?>" style="color:#00a4fd;margin-left:29px !important;">View</a>
-
-                                            <a href="Link_Library/post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>" style="color:#CE3030;margin-left:30px !important">
+											
+											<a target="_blank" href="update_news.php?idpost=<?php echo $val[$i]['post_id'] ?>&page=news" style="color:#00a4fd;margin-left:29px !important;">Edit</a>
+											
+											 <!--<a target="_blank" href="update_news.php?idpost=<?php echo $val[$i]['post_id'] ?>&page=news" style="color:#00a4fd;margin-left:29px !important;">Edit</a>-->
+                                            <a href="Link_Library/link_post_status.php?postid=<?php echo $val[$i]['post_id']; ?>&poststatus=<?php echo $val[$i]['status']; ?>" style="color:#CE3030;margin-left:30px !important">
 
                                                 <?php echo $action; ?>
 

@@ -18,7 +18,7 @@ if (!class_exists("Connection_Communication")){
             $sts = "Active";
             $query1 = "INSERT INTO Tbl_EmployeeGCMDetails
 (userUniqueId,clientId,deviceName,registrationToken,date_entry_time,status,insertedBy,appVersion) VALUES (:email,:client,:device,:id,:dte,:sts,:inby,:appver)
-ON DUPLICATE KEY UPDATE userUniqueId = :email,clientId=:client,deviceName=:device, updatedDate =:udate,updatedBy = :uby ,appVersion=:appver";
+ON DUPLICATE KEY UPDATE userUniqueId = :email,clientId=:client,deviceName=:device, updatedDate =:udate,updatedBy = :uby ,appVersion=:appver,deviceId=:did";
 
             $query_params1 = array(
                 ':email' => $data['userUniqueId'],
@@ -30,8 +30,8 @@ ON DUPLICATE KEY UPDATE userUniqueId = :email,clientId=:client,deviceName=:devic
                 ':inby' => $data['userUniqueId'],
                 ':udate' => $dt,
                 ':uby' => $data['userUniqueId'],
-				':appver' => $data['appVersion']
-				
+				':appver' => $data['appVersion'],
+		':did' => $data['deviceId']		
             );
 
             try {

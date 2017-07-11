@@ -47,10 +47,11 @@ function surveyGraph(resdata) {
   
     var categorydata = resdata;
     console.log(categorydata);
+    //console.log(JSON.parse(categorydata).length);
     FusionCharts.ready(function () {
         var visitChart = new FusionCharts({
-           type: 'bar2d',
-          // type: 'doughnut2d',
+         //  type: 'bar2d',
+           type: 'doughnut2d',
         renderAt: 'chart-container',
         width: '850',
         height: '450',
@@ -58,8 +59,8 @@ function surveyGraph(resdata) {
         dataSource: {
             "chart": {
                 "caption": "Survey Respondent",
-              //  "subCaption": "Percentage of user in respect of noraml, sad and happy user",
-               /* "numberPrefix": "",
+                 "subCaption": "Percentage of respondent with respect to normal, sad ,happy and  extra happy",
+                "numberPrefix": "",
                 "paletteColors": "#0075c2,#1aaf5d,#f2c500,#f45b00,#8e0000",
                 "bgColor": "#ffffff",
                 "showBorder": "0",
@@ -72,15 +73,15 @@ function surveyGraph(resdata) {
                 "showLegend": "1",
                 "legendShadow": "0",
                 "legendBorderAlpha": "0",
-               // "defaultCenterLabel": "Total revenue: JSON.parse(categorydata).length",
+               // "defaultCenterLabel": "Total Respondent:".JSON.parse(categorydata).length,
                 "centerLabel": " $label: $value",
                 "centerLabelBold": "1",
                 "showTooltip": "0",
                 "decimals": "0",
                 "captionFontSize": "14",
                 "subcaptionFontSize": "14",
-                "subcaptionFontBold": "0"*/
-                     "numberPrefix": "user ",
+                "subcaptionFontBold": "0"
+             /*        "numberPrefix": "user ",
                 "paletteColors": "#0075c2,#1aaf5d,#f2c500,#f45b00,#8e0000",
                 "bgColor": "#ffffff",
                 "showBorder": "0",
@@ -103,7 +104,7 @@ function surveyGraph(resdata) {
                 "toolTipBgColor": "#000000",
                 "toolTipBgAlpha": "80",
                 "toolTipBorderRadius": "2",
-                "toolTipPadding": "5"
+                "toolTipPadding": "5"*/
             },  
             "data": JSON.parse(categorydata)
            

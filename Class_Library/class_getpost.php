@@ -16,7 +16,7 @@ class GetPost {
     public $useruniqueid;
     public $usertype;
 
-    // public $pdate;
+    //public $pdate;
     // public $author;
 
     function getAllNews($clientid, $user_uniqueid, $user_type) {
@@ -101,7 +101,7 @@ class GetPost {
 
     function getAllMessage($clientid, $user_uniqueid, $user_type) {
 
-        $this->clientid = $clientid;
+	    $this->clientid = $clientid;
         $this->useruniqueid = $user_uniqueid;
         $this->usertype = $user_type;
 
@@ -130,7 +130,7 @@ class GetPost {
             WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
             ) as TotalCount
 
-            FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 2 and Tbl_C_PostDetails.clientId = '$this->clientid' and Tbl_C_PostDetails.userUniqueId ='$this->useruniqueid' order by Tbl_C_PostDetails.auto_id desc";
+            FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 2 and Tbl_C_PostDetails.clientId = :cli and Tbl_C_PostDetails.userUniqueId = :eid1 order by Tbl_C_PostDetails.auto_id desc";
 
             try {
                 $stmt = $this->DB->prepare($query);
@@ -182,14 +182,15 @@ class GetPost {
 
     /*     * ***************************************** getting picture  start from here ********************** */
 
-    function getAllPicture($clientid, $user_uniqueid, $user_type) {
+/*function getAllPicture($clientid, $user_uniqueid, $user_type) {
 
         $this->clientid = $clientid;
         $this->useruniqueid = $user_uniqueid;
         $this->usertype = $user_type;
+		
         if ($user_type == "SubAdmin") {
-            $query = "
-            SELECT Tbl_C_PostDetails . * , DATE_FORMAT(PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
+			
+            $query = "SELECT Tbl_C_PostDetails . * , DATE_FORMAT(PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
 
             SELECT COUNT( * ) 
             FROM Tbl_Analytic_PostComment
@@ -256,7 +257,87 @@ class GetPost {
         $rows = $stmt->fetchAll();
         return json_encode($rows);
     }
+	*/
+	
+	
+	function getAllPicture($clientid, $user_uniqueid, $user_type) {
 
+        $this->clientid = $clientid;
+        $this->useruniqueid = $user_uniqueid;
+        $this->usertype = $user_type;
+		
+		if($user_type == 'SubAdmin')
+		{
+		try {
+            $query = "SELECT Tbl_C_PostDetails . * , DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
+            SELECT COUNT( * ) 
+            FROM Tbl_Analytic_PostComment
+            WHERE Tbl_Analytic_PostComment.postId = Tbl_C_PostDetails.post_id
+            ) as commentCount, (
+
+            SELECT COUNT( * ) 
+            FROM Tbl_Analytic_PostLike
+            WHERE Tbl_Analytic_PostLike.postId = Tbl_C_PostDetails.post_id
+            ) as likeCount , (
+
+            SELECT COUNT(distinct email_id) 
+            FROM Tbl_Analytic_PostView
+            WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
+            ) as ViewPostCount, (
+
+            SELECT COUNT(*) 
+            FROM Tbl_Analytic_PostView
+            WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
+            ) as TotalCount
+
+            FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 3 and Tbl_C_PostDetails.clientId =:cli and userUniqueId = :uid order by Tbl_C_PostDetails.auto_id desc";
+           
+                $stmt = $this->DB->prepare($query);
+                $stmt->bindParam(':cli', $this->clientid, PDO::PARAM_STR);
+				$stmt->bindParam(':uid', $user_uniqueid, PDO::PARAM_STR);
+                $stmt->execute();
+				$rows = $stmt->fetchAll();
+				return json_encode($rows);
+            } catch (PDOException $e) {
+                echo $e;
+            }	
+		}
+		else
+		{
+		 try {
+            $query = "SELECT Tbl_C_PostDetails . * , DATE_FORMAT(Tbl_C_PostDetails.created_date,'%d %b %Y %h:%i %p') as created_date , (
+            SELECT COUNT( * ) 
+            FROM Tbl_Analytic_PostComment
+            WHERE Tbl_Analytic_PostComment.postId = Tbl_C_PostDetails.post_id
+            ) as commentCount, (
+
+            SELECT COUNT( * ) 
+            FROM Tbl_Analytic_PostLike
+            WHERE Tbl_Analytic_PostLike.postId = Tbl_C_PostDetails.post_id
+            ) as likeCount , (
+
+            SELECT COUNT(distinct email_id) 
+            FROM Tbl_Analytic_PostView
+            WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
+            ) as ViewPostCount, (
+
+            SELECT COUNT(*) 
+            FROM Tbl_Analytic_PostView
+            WHERE Tbl_Analytic_PostView.post_id = Tbl_C_PostDetails.post_id
+            ) as TotalCount
+
+            FROM Tbl_C_PostDetails where Tbl_C_PostDetails.flagCheck = 3 and Tbl_C_PostDetails.clientId =:cli order by Tbl_C_PostDetails.auto_id desc";
+           
+                $stmt = $this->DB->prepare($query);
+                $stmt->bindParam(':cli', $this->clientid, PDO::PARAM_STR);
+                $stmt->execute();
+				$rows = $stmt->fetchAll();
+				return json_encode($rows);
+            } catch (PDOException $e) {
+                echo $e;
+            }
+         }
+	}
     /* --------------------------------these for index page client communication module --------------------------------- */
 
     function getIndexPost() {
@@ -276,7 +357,7 @@ class GetPost {
 
     function getSinglePost($k) {
         $this->id = $k;
-        $query = "select *, DATE_FORMAT(created_date,'%d %b %Y %h:%i %p') as created_date  from Tbl_C_PostDetails where flagCheck = 1 and post_id ='" . $this->id . "'";
+        $query = "select *, DATE_FORMAT(created_date,'%d %b %Y %h:%i %p') as created_date  from Tbl_C_PostDetails where post_id ='" . $this->id . "'";
         try {
             $stmt = $this->DB->prepare($query);
             $stmt->execute();

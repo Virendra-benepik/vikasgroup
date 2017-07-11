@@ -22,8 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 $jsonArr = json_decode(file_get_contents("php://input"), true);
-
-//initial querye
+/*{
+	"userUniqueId": "HGLF3M0DfwFdqWP3AbWPUWA0cD03O61",
+	"device": "android",
+	"regToken": "12345ds5",
+	"clientId":"CO-27",
+	"appVersion":"1",
+	"deviceId":"test"
+	
+}*/
 if (!empty($jsonArr['userUniqueId'])) 
 {
 	//print_r($jsonArr);

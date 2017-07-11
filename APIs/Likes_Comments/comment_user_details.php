@@ -29,7 +29,8 @@ $jsonArr = json_decode(file_get_contents("php://input"), true);
 	"employeeid":"bllQIibhNzypMGlEtwU8Bn5JpbdHdp",
 	"message":"hello nice comment",
 	"flag":"1"
-	"device":"IOS"
+	"device":"IOS",
+         "deviceId":""
 }*/
 if (!empty($jsonArr['clientid'])) {
     $comment = new Comment();
@@ -47,14 +48,14 @@ if (!empty($jsonArr['clientid'])) {
 
     $googleapiIOSPem = $push->getKeysPem($clientid);
 
-    $createComment = $comment->create_Comment($clientid, $post_id, $employeeid, $message, $flag, $device);
+    $createComment = $comment->create_Comment($clientid, $post_id, $employeeid, $message, $flag, $device,$deviceId);
     $myArray = $comment->getGroups($clientid, $post_id, $flag);
 	//print_r($myArray);
     $POST_ID = $post_id;
     $POST_TITLE = "Comment";
     $POST_IMG = "";
     $POST_TEASER = "";
-    $POST_CONTENT = substr($createComment['posts'][0]['firstname'] . $createComment['posts'][0]['lastname'] . " commented " . $createComment['posts'][0]['content'], 0, 30) . '.....';
+    $POST_CONTENT = substr($createComment['posts'][0]['firstname'] ." ". $createComment['posts'][0]['lastname'] . " commented " .'"'. $createComment['posts'][0]['content'], 0, 30) . '....."';
     $DATE = date('Y-m-d H:i:s A');
     $FLAG = $flag;
     $fullpath = '';
@@ -111,9 +112,13 @@ if (!empty($jsonArr['clientid'])) {
         $allempid1 = $token;
     }
 
+	//print_r($allempid1);
+	
     /*** ** get all registration token  for sending push **************** */
     $reg_token = $push->getGCMDetails($allempid1, $clientid);
     $token1 = json_decode($reg_token, true);
+	//echo "regtoken";
+	//print_r($token1);
 
     /** *******************Create file of user which this post send  start******************** */
     $val = array();
@@ -129,7 +134,7 @@ if (!empty($jsonArr['clientid'])) {
     @fclose($file);
     /*     * *******************Create file of user which this post send End******************** */
 
-    $hrimg = SITE_URL . $image;
+    $hrimg = ($image=='')?"":dirname(SITE_URL)."/" . $image;
     $sf = "successfully send";
     $ids = array();
     $idsIOS = array();
@@ -146,12 +151,15 @@ if (!empty($jsonArr['clientid'])) {
 
     $data = array('Id' => $POST_ID, 'Title' => $POST_TITLE, 'Content' => $POST_CONTENT, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath,'Date' => $DATE, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
 
-    $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'], $device);
-    $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
+	//print_r($data);
+	
+    //$IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'], $device);
+    //$revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
 
-    $rt = json_decode($revert, true);
-    $iosrt = json_decode($IOSrevert, true);
+    //$rt = json_decode($revert, true);
+    //$iosrt = json_decode($IOSrevert, true);
 //print_r($rt);
+//print_r($iosrt);
     $response = $createComment;
 } else {
     $response['success'] = 0;

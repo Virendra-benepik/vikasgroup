@@ -1,225 +1,245 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(E_ALL);ini_set('display_errors', 1);
+
 @session_start();
 require_once('../Class_Library/class_HappinesQuestion.php');
 require_once('../Class_Library/class_push_notification.php');
-include_once('../Class_Library/class_get_group.php');  // for getting all group
-//require_once('../Class_Library/class_reading.php');
+//include_once('../Class_Library/class_get_group.php');  // for getting all group
+require_once('../Class_Library/class_reading.php');
 //require_once('../Class_Library/class_welcomeTable.php');
 
 $survey_obj = new HappinessQuestion();
-$obj_group = new Group();                  //class_get_group.php
+//$obj_group = new Group();           //class_get_group.php
 
-//$read = new Reading();
+$read = new Reading();
 $push_obj = new PushNotification();
 //$welcome_obj = new WelcomePage();
-date_default_timezone_set('Asia/Calcutta');
-$post_date = date("Y-m-d H:i:s A");
+date_default_timezone_set('Asia/Kolkata');
+$post_date = date("Y-m-d H:i:s");
 
-if (!empty($_POST)) 
-    {
-    /** ***************** check poll image and poll question exist or not ************************* */
+if (!empty($_POST)) {
+    /**     * **************** check poll image and poll question exist or not ************************* */
     $FLAG = 20;
     $dev = $_POST['device'];
     $flag_name = "Survey : ";
     $USERID = $_POST['useruniqueid'];
-    $POST_TITLE = "Please Submit Your Survey";
+    $POST_TITLE = "";
     $username = $_SESSION['user_name'];
     $clientid = $_SESSION['client_id'];
     $createdby = $_SESSION['user_unique_id'];
-
+    $surveytitle = $_POST['surveytitle'];
     $enableComment = $_POST['surveychoice'];
-    $ptime1 = $_POST['publish_date1'];
+    $ptime1 = (!empty($_POST['publish_date1']))?$_POST['publish_date1']:$post_date;
     $utime1 = $_POST['publish_date2'];
-      $content = "";
-    $surveyid = $survey_obj->surveyMaxId($clientid);
-   // echo "this si ssurvey question-".$surveyid; 
+   // $content = "Request Feedback";
+   $content = "Fill-Out " . $surveytitle;
+   //$POST_TITLE = "Fill-Out " . $surveytitle;
+    // echo "this si ssurvey question-".$surveyid; 
     if ($ptime1 == "") {
-        $ptime = date("Y-m-d");
+        $ptime = date("Y-m-d H:i:s");
     } else {
         $ptime = $ptime1;
     }
-    if ($_POST['publish_date2'] == "") {
-
-        $utime = date('Y-m-d', strtotime("+1 month"),$ptime);
+    if ($utime1 === "") {
+        $time = strtotime($ptime);
+        $utime = date("Y-m-d H:i:s", strtotime("+1 month", $time));
     } else {
         $timestamp1 = strtotime($utime1);
         $utime = date("Y-m-d", $timestamp1);
     }
-    $startdate = (!empty($ptime)) ? $ptime : date('Y-m-d', now());
+    $startdate = (!empty($ptime)) ? $ptime : date('Y-m-d H:i:s', now());
     $expiryDate = $utime;
     $createddate = $post_date;
-    echo "publish Time before format :" . $ptime . "<br/>";
-    echo "unpublish Time before format :" . $utime . "<br/>";
+    // echo "publish Time before format :" . $ptime . "<br/>";
+    // echo "unpublish Time before format :" . $utime . "<br/>";
+    // $User_Type = "Selected";
 
-     $User_Type = "Selected";
-    
-     /*************************** find group **************************** */
-    $result = $obj_group->getGroup($clientid);
-    $value = json_decode($result, true);
-    $getcat = $value['posts'];
+    /*     * ************************* find group **************************** */
+    /* $result = $obj_group->getGroup($clientid);
+      $value = json_decode($result, true);
+      $getcat = $value['posts'];
 
-    $wholegroup = array();
-    foreach ($getcat as $groupid) 
-        {
-        array_push($wholegroup, $groupid['groupId']);
-    }
+      $wholegroup = array();
+      foreach ($getcat as $groupid)
+      {
+      array_push($wholegroup, $groupid['groupId']);
+      }
+     */
 
-    echo "this is user group";
-    print_r($wholegroup);
-    
     $PUSH_NOTIFICATION = "";
     $push = "";
     // echo $push_noti;
-    if (!isset($_POST['push'])) 
-        {
+    if (!isset($_POST['push'])) {
         $PUSH_NOTIFICATION = 'PUSH_NO';
         $push = "No";
-    } 
-    else 
-        {
+    } else {
         $PUSH_NOTIFICATION = 'PUSH_YES';
         $push = "Yes";
-      }
-
-    /************************* option  start ****************** */
-
-
-    $total_option = $_POST['option'];
-
-    echo "this is total option-:" . $total_option . "<br/>";
-    for ($t = 1; $t <= $total_option; $t++) 
-    {
-
-        $textname = "text" . $t;
-        //echo $textname;
-        $questiontext = $_POST[$textname];
-        // echo "queq :".$t.$optiontext;
-        $ansdbimage = "";
-
-       $response = $survey_obj->createSurvey($surveyid,$clientid, $questiontext, $enableComment, $startdate, $expiryDate, $createdby, $createddate);
     }
-    echo "this si response";
-   
-    /************************************* Get GoogleAPIKey and IOSPEM file ********************************* */
-    $googleapiIOSPem = $push_obj->getKeysPem($clientid);
-   
-    /*********************** insert into database ************************************************ */
-  
-  /*  $type = "Poll";
-  $result1 = $welcome_obj->createWelcomeData($clientid, $poll_maxid, $type, $ques, $img, $post_date, $USERID, $FLAG);*/
 
-   /* 
-    if ($pollresult == 'True') 
-    {
-//echo "data send";
-    }
-    $groupcount = count($wholegroup);
-    for ($k = 0; $k < $groupcount; $k++) {
-//echo "group id".$myArray[$k];
-        $result1 = $read->pollSentToGroup($clientid, $poll_maxid, $myArray[$k], $FLAG);
-//echo $result1;
-    }*/
+    //echo $PUSH_NOTIFICATION;
+    /*     * *********************** option  start ****************** */
 
-    /******************  fetch all user employee id from user detail start **************************** */
+    /*     * ****************** find group **************************** */
 
-    $gcm_value = $push_obj->get_Employee_details($User_Type, $wholegroup, $clientid);
-    $token = json_decode($gcm_value, true);
-  /*   echo "hello user  id";
-      echo "<pre>";
-      print_r($token);
-      echo "</pre>"; 
-    */
-    /*************get group admin uuid  form group admin table if user type not= all ************** */
-      
-    if ($User_Type != 'All') {
-        $groupadminuuid = $push_obj->getGroupAdminUUId($wholegroup, $clientid);
+    $User_Type = $_POST['user3'];
+    if ($User_Type == 'Selected') {
+        $user1 = $_POST['selected_user'];
+        $user2 = rtrim($user1, ',');
 
-        $adminuuid = json_decode($groupadminuuid, true);
-      /*  echo "hello groupm admin id";
-          echo "<pre>";
-          print_r($adminuuid)."<br/>";
+        $myArray = explode(',', $user2);
+
+        /* echo "<pre>";
+          echo "selected";
+          print_r($myArray);
           echo "</pre>"; */
-        /******** "--------------all employee id---------"***/
+    } else {
+        // echo "all user"."<br/>";
+        $User_Type = "Selected";
+        //  echo "user type:-".$User_Type;
+        $user1 = $_POST['all_user'];
+        $user2 = rtrim($user1, ',');
+        $myArray = explode(',', $user2);
+        /* echo "<pre>";
+          print_r($myArray)."<br/>";
+          echo "</pre>"; */
+    }
 
-        $allempid = array_merge($token, $adminuuid);
-       /* echo "admin id";
-          echo "<pre>";
-          print_r($allempid);
-          echo "<pre>";*/
+    /*     * ********************* end find group ********************** */
 
-        /** ** "--------------all unique employee id---------"********** */
+//    $countsurvey = $survey_obj->checkSurveyAvailablity($clientid, $startdate);
 
-        $allempid1 = array_values(array_unique($allempid));
-       /* echo "<pre>";
+//    $value1 = json_decode($countsurvey, true);
+
+//    if ($value1["success"] === 1) {
+//        echo "<script>alert('survey is Available');</script>";
+//        echo "<script>window.location='../createHappinessQuestion.php'</script>";
+//    } else {
+        $total_option = $_POST['option'];
+        $status = 1;
+        $value = $survey_obj->createSurvey($clientid, $surveytitle, $total_option, $createdby, $createddate, $expiryDate, $startdate, $status);
+
+        $surveyid = $value['lastid'];
+
+        for ($t = 1; $t <= $total_option; $t++) {
+            $textname = "text" . $t;
+            //echo $textname;
+            $questiontext = $_POST[$textname];
+            // echo "queq :".$t.$optiontext;
+            $ansdbimage = "";
+
+            $response = $survey_obj->createSurvey1($surveyid, $clientid, $questiontext, $enableComment, $startdate, $expiryDate, $createdby, $createddate);
+        }
+
+
+
+        /*         * *************** add survey in post sent to group table ******************* */
+        $groupcount = count($myArray);
+        for ($k = 0; $k < $groupcount; $k++) {
+            //echo "group id".$myArray[$k];
+            $result1 = $read->postSentToGroup($clientid, $surveyid, $myArray[$k], $FLAG);
+//echo $result1;
+        }
+        /*         * ****************** end add survey in post sent to group table *************** */
+        /*         * *********************************** Get GoogleAPIKey and IOSPEM file ********************************* */
+        $googleapiIOSPem = $push_obj->getKeysPem($clientid);
+
+        /*         * ****************  fetch all user employee id from user detail start **************************** */
+
+        $gcm_value = $push_obj->get_Employee_details($User_Type, $myArray, $clientid);
+        $token = json_decode($gcm_value, true);
+
+        /*         * ***********get group admin uuid  form group admin table if user type not= all ************** */
+
+        if ($User_Type != 'All') {
+            //$groupadminuuid = $push_obj->getGroupAdminUUId($myArray, $clientid);
+            // $adminuuid = json_decode($groupadminuuid, true);
+            /*  echo "hello groupm admin id";
+              echo "<pre>";
+              print_r($adminuuid)."<br/>";
+              echo "</pre>"; */
+            /*             * ****** "--------------all employee id---------"** */
+
+            $allempid = array_merge($token);
+            /* echo "admin id";
+              echo "<pre>";
+              print_r($allempid);
+              echo "<pre>"; */
+
+
+            /**             * * "--------------all unique employee id---------"********** */
+            $allempid1 = array_values(array_unique($allempid));
+            /* echo "<pre>";
+              print_r($allempid1);
+              echo "<pre>"; */
+        } else {
+            $allempid1 = $token;
+        }
+
+        /* echo "<pre>";
           print_r($allempid1);
-          echo "<pre>";*/
-    } 
-    else 
-        {
-        $allempid1 = $token;
-    }
+          echo "<pre>"; */
+        /**         * ****** insert into post sent to table for analytic sstart************ */
+        $total = count($allempid1);
 
-    /** ******* insert into poll sent to table for analytic sstart************ *
+        for ($i = 0; $i < $total; $i++) {
+            $uuid = $allempid1[$i];
+            //echo "post sent to empid:--".$uuid."<br/>";
+            if (!empty($uuid)) {
+                $read->postSentTo($clientid, $surveyid, $uuid, $FLAG);
+            }
+        }
+        /**         * ****** insert into post sent to table for analytic sstart************ */
+        /**         * ** get all registration token  for sending push **************** */
+        $reg_token = $push_obj->getGCMDetails($allempid1, $clientid);
+        $token1 = json_decode($reg_token, true);
+        /* echo "----regtoken------";
+          echo "<pre>";
+          print_r($token1);
+          echo "<pre>"; */
 
-    $total = count($allempid1);
-    for ($i = 0; $i < $total; $i++) {
-        $uuid = $allempid1[$i];
-        $read->PollSentTo($clientid, $poll_maxid, $uuid);
-    }
-    /** ******* insert into poll sent to table for analytic sstart************ */
-
-    /** *** get all registration token  for sending push **************** */
-    $reg_token = $push_obj->getGCMDetails($allempid1, $clientid);
-    $token1 = json_decode($reg_token, true);
-    /*echo "----regtoken------";
-      echo "<pre>";
-      print_r($token1);
-      echo "<pre>";
-*/
-    /*********************check push notificaticon enabale or disable******************** */
-    if ($PUSH_NOTIFICATION == 'PUSH_YES') 
-        {
-        $fullpath = '';
-        $hrimg = SITE_URL . $_SESSION['image_name'];
+        /*         * *******************check push notificaticon enabale or disable******************** */
+        if ($PUSH_NOTIFICATION == 'PUSH_YES') {
+            $fullpath = '';
+            $hrimg = SITE_URL . $_SESSION['image_name'];
 //echo "hr image:-".$hrimg;
-        $sf = "successfully send";
-        $ids = array();
-        $idsIOS = array();
-        foreach ($token1 as $row) {
+            $sf = "successfully send";
+            $ids = array();
+            $idsIOS = array();
+            foreach ($token1 as $row) {
 
-            if ($row['deviceName'] == 'ios') {
-                array_push($idsIOS, $row["registrationToken"]);
-            } else {
-                array_push($ids, $row["registrationToken"]);
+                if ($row['deviceName'] == 3) {
+                    array_push($idsIOS, $row["registrationToken"]);
+                } else {
+                    array_push($ids, $row["registrationToken"]);
+                }
             }
-            //array_push($ids,$row["registrationToken"]);
-        }
 
-       // $content = str_replace("\r\n", "", strip_tags($ques));
-        $data = array('Id' => $surveyid, 'Title' => $POST_TITLE, 'Content' => $content, 'SendBy' => $username, 'image' => $fullpath, 'Picture' => $hrimg, 'Date' => $post_date,
-            'Publishing_time' => $ptime, 'Unpublishing_time' => $utime, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf);
+            // $content = str_replace("\r\n", "", strip_tags($ques));
+            $data = array('Id' => $surveyid, 'Title' => $content, 'Content' => $content, 'SendBy' => $username, 'image' => $fullpath, 'Picture' => $hrimg, 'Date' => $post_date,
+                'Publishing_time' => $ptime, 'Unpublishing_time' => $utime, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf);
 
-        $IOSrevert = $push_obj->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
-        $revert = $push_obj->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
-        $rt = json_decode($revert, true);
-print_r($rt);
-        if ($rt) {
-            if ($dev == 'd2') {
-                echo "<script>alert('Post Successfully Send');</script>";
-              //  echo "<script>window.location='../create_poll.php'</script>";
-echo $revert;
+            //print_r($data);
+
+            $IOSrevert = $push_obj->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile']);
+            $revert = $push_obj->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
+            $rt = json_decode($revert, true);
+            /* echo "<pre>";
+              print_r($IOSrevert);
+              print_r($rt); */
+            if ($rt['success'] == 1) {
+
+                echo "<script>alert('Survey Successfully Created');</script>";
+                echo "<script>window.location='../createHappinessQuestion.php'</script>";
             } else {
-               // echo "<script>alert('Post Successfully Send');</script>";
-                echo $rt;
+                echo "<script>alert('Survey Successfully Created');</script>";
+                echo "<script>window.location='../createHappinessQuestion.php'</script>";
             }
+        } else {
+            echo "<script>alert('Survey Successfully Created');</script>";
+            echo "<script>window.location='../createHappinessQuestion.php'</script>";
         }
-    } 
-    else {
-        echo "<script>alert('Post Successfully Send');</script>";
-      //  echo "<script>window.location='../create_poll.php'</script>";
-    }
+//    }
 } else {
     ?>
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

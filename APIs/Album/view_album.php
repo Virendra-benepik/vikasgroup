@@ -1,7 +1,8 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-if (file_exists("../../Class_Library/class_upload_album.php") && include("../../Class_Library/class_upload_album.php")) {
 
+if (file_exists("../../Class_Library/class_upload_album.php") && include("../../Class_Library/class_upload_album.php")) {
+//require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -23,16 +24,19 @@ if (file_exists("../../Class_Library/class_upload_album.php") && include("../../
 
     $jsonArr = json_decode(file_get_contents("php://input"), true);
 /*{
-     "client":"CO-25",
-      "uuid":"",
-       "module":""
-    
+    "clientid":"CO-27",
+    "uuid":"1NtwiCYbQ7IxpjQb30cfzTzenjKCmC",
+    "device":2,
+    "deviceId":""
 }*/
     if (!empty($jsonArr['clientid'])) {
         $obj = new Album();
-
+        // $analytic_obj = new AppAnalytic();
+$flagtype = 11;
         extract($jsonArr);
-        $response = $obj->getAlbum($clientid,$uuid,$module);
+            $deviceId = (!empty($deviceId))?$deviceId:"";
+     //   $analytic_obj->listAppview($clientid, $uuid, $device, $deviceId,$flagtype);
+        $response = $obj->getAllAlbum($clientid,$uuid,$module);
     }
     else {
         $result['success'] = 0;

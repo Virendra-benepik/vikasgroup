@@ -1,7 +1,8 @@
 <?php
-
 error_reporting(E_ALL ^ E_NOTICE);
+ini_set('display_errors', 1);
 if (file_exists("../../Class_Library/Api_Class/class_display_welcome_data.php") && include("../../Class_Library/Api_Class/class_display_welcome_data.php")) {
+     require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
 
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -23,12 +24,27 @@ if (file_exists("../../Class_Library/Api_Class/class_display_welcome_data.php") 
     }
 
     $jsonArr = json_decode(file_get_contents("php://input"), true);
+    
+  /*  {
+   "clientid":"CO-27",
+   "uid":"1NtwiCYbQ7IxpjQb30cfzTzenjKCmC",
+   "value":"0",
+   "device":2,
+   "deviceId":""
+}*/
 
     if (!empty($jsonArr['clientid'])) {
         $obj = new PostDisplayWelcome();
+          $analytic_obj = new AppAnalytic();
 
         extract($jsonArr);
         $response = $obj->PostDisplay($clientid, $uid, $value);
+       $analytic_obj->checkHomeOpen($clientid, $uid, $device, $deviceId);
+        if (empty($response['welcomedata']) && ($response['success'] == 1)) {
+            $response = array();
+            $response['success'] = 0;
+            $response['message'] = "No more post available";
+        }
     } else {
         $response['success'] = 0;
         $response['result'] = "Invalid json";

@@ -77,9 +77,9 @@
                 <div class="row mobile_articals"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;"></i><font class="white_color">Article</font></div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                            <p class="titlePost NewsPriviewtitle" style="margin-top:-13px ! important;"></p> 
-                            <p class="author previewAuthor"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
-
+                             
+                            <p class="previewAuth"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
+							<p class="titlePost"></p>
                         </div>
                     </div>
                    
@@ -88,16 +88,16 @@
 
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <img class="post_img img img-responsive imagePost previewImage" /></div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <img class="post_img " /></div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                        <p class="contentPost previewContent"></p>
+                        <p class="contentPost"></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                        <p class="date" style="margin-top:-30px;" >Date: <?php echo date("d/m/Y"); ?></p>
+                        <p class="date">Date: <?php echo date("d/m/Y"); ?></p>
                     </div>
                 </div>
 
@@ -131,7 +131,7 @@
 
             <div class="row " >
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h3><strong> News </strong></h3><hr>
+                    <h3><strong> What's up </strong></h3><hr>
                 </div>
             </div>
 
@@ -155,114 +155,13 @@
                                 </div>
                             </div>
                         </div>
+						
+						<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left:15px;margin-bottom:10px;">
+                            <label for="Article image" style="font-weight: 600 ! important;">UPLOAD IMAGE (Max Image Upload Size: 2MB, Image Resolution: 640X362)</label>
 
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                                <script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    <div class="form-group">
-                                        <label for="Articlecontent">NEWS CONTENT</label>
-                                        <div><textarea cols="120" id="editor1" name="content"  rows="10" required>	
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-                        <div class="row">
-
-                            <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
-                                <!--
-        <div class="form-group">
-            <label for="comment">TEASER TEXT</label>
-            <textarea class="form-control" rows="8" id="comment"cols="8" name="teasertext" placeholder="Short paragraph to draw attention to the article... "></textarea>
-        </div>-->
-                            </div>
-                        </div>
-                        <!--
-                                                <div class="row">
-                                                    <script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                        <div class="form-group">
-                                                            <label for="Articlecontent">ARTICLE  CONTENT</label>
-                                                            <div><textarea cols="120" id="editor1" name="content"  rows="10" required>	
-                                                                </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
-                        <script>
-                    CKEDITOR.replace('editor1');
-                        </script>   <!--- this is for ckeditor   ----->
-
-                        <script data-require="angular.js@1.1.5" data-semver="1.1.5" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js">
-
-                        </script>
-                        <div class="form-group col-sm-12">
-
-
-                            <label for="exampleInputPassword1" style="padding-left:3px;">Select User</label>
-                            <div>
-                                <div class="col-md-6">
-                                    <input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
-                                    <label for="radio5">
-                                        Send Post to All Groups
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="radio" id="user" ng-model="content"  name="user3" value="Selected">
-                                    <label for="radio6">
-                                        Send Post to Selected Groups
-                                    </label>
-                                </div>
-                            </div>
-
-                        </div>
-                        <!---------------------this script for show textbox on select radio button---------------------->                        
-
-
-
-                        <!------------Abobe script for show textbox on select radio button---------------------->
-                        <div id ="everything" ng-show="content == 'Selected'">
-                            <input type='hidden' name="useruniqueid" id="userid" value="<?php echo $_SESSION['user_unique_id']; ?>">
-                            <input type='hidden' name="clientid" id="clientid" value="<?php echo $_SESSION['client_id']; ?>">
-                            <div class="form-group col-sm-5"id="alldatadiv" >
-                                <center><p class="groupalldataheading">All Group</p> </center>
-                                <div id="allitems" >
-                                </div>
-
-                            </div>
-                            <div class="col-sm-1"></div>
-                            <div id="selecteditems1" class="form-group col-sm-6" style="border:1px solid #dddddd;" >
-                                <center><p class="groupselecteddataheading">Selected Group</p> </center>  
-                                <p id="selecteditems"></i></p>
-
-                            </div> 
-
-
-                            <textarea id ="allids" style="display:none;" name="all_user"  height="660"></textarea>
-                            <textarea id ="selectedids" style="display:none;" name="selected_user" ></textarea>
-                        </div>
-
-                    </div>
-
-
-                    <!---------------------------------long news from End here--------------------------------->	
-
-                    <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
-
-
-                        <!--------------------This code is used to browse and display the image  and video start------------------------->
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <label for="Article image" style="font-weight: 600 ! important;">UPLOAD IMAGE</label>
-
-                            <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
-
+                            <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+							-->
                             <script type="text/javascript">
 
                             function showimagepreview1(input) {
@@ -279,8 +178,37 @@
                                         $("#videoPlayer").hide();
                                         var filerdr = new FileReader();
                                         filerdr.onload = function (e) {
-                                            $('#imgprvw').attr('src', e.target.result);
-                                            $('.post_img').attr('src', e.target.result);
+											var image = new Image();
+                                            image.src = e.target.result;
+                                            image.onload = function () {
+                                                //alert($("#uploadimage")[0].files[0].size);
+                                                var height = this.height;
+                                                var width = this.width;
+                                                var size = parseFloat($("#uploadimage")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+
+                                                else if (height > 1000 || width > 1000) {
+                                                    alert("Width and Height must not exceed 1000 X 1000 px.");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+                                                else
+                                                {
+                                                    $('#imgprvw').attr('src', e.target.result);
+                                                    $('.post_img').attr('src', e.target.result);
+                                                }
+                                            }
+                                           // $('#imgprvw').attr('src', e.target.result);
+                                           // $('.post_img').attr('src', e.target.result);
                                         }
                                         filerdr.readAsDataURL(input.files[0]);
                                     } else
@@ -349,16 +277,112 @@
 							   <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />
                             </div>
 
+                        </div>
+						
+						</div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                <script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <label for="Articlecontent">CONTENT</label>
+                                        <div><textarea cols="120" id="editor1" name="content"  rows="10" required>	
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
 
 
+                        <div class="row">
+
+                            <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                                <!--
+        <div class="form-group">
+            <label for="comment">TEASER TEXT</label>
+            <textarea class="form-control" rows="8" id="comment"cols="8" name="teasertext" placeholder="Short paragraph to draw attention to the article... "></textarea>
+        </div>-->
+                            </div>
+                        </div>
+                        <!--
+                                                <div class="row">
+                                                    <script src="http://cdn.ckeditor.com/4.5.7/standard-all/ckeditor.js"></script>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="Articlecontent">ARTICLE  CONTENT</label>
+                                                            <div><textarea cols="120" id="editor1" name="content"  rows="10" required>	
+                                                                </textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+                        <script>
+                    CKEDITOR.replace('editor1');
+                        </script>   <!--- this is for ckeditor   ----->
+
+                        <script data-require="angular.js@1.1.5" data-semver="1.1.5" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js">
+
+                        </script>
+                        <div class="form-group col-sm-12">
+
+
+                            <label for="exampleInputPassword1" style="padding-left:3px;">Select Group</label>
+                            <div>
+                                
+                                <div class="col-md-6">
+                                    <input type="radio" id="user" ng-model="content"  name="user3" value="Selected" >
+                                    <label for="radio6">
+                                        Select Groups
+                                    </label>
+                                </div>
+								<div class="col-md-6">
+                                    <!--<input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
+                                    <label for="radio5">
+                                        Send Post to All Groups
+                                    </label>-->
+                                </div>
+                            </div>
 
                         </div>
-                        <!--------------------This code is used to browse and display the image  and video end------------------------->
+                        <!---------------------this script for show textbox on select radio button---------------------->                        
 
-                        <br><br><br><br><br><br><br><br><br><br><br>
-                        <div class="publication" style="margin-top:23px;">
+
+
+                        <!------------Abobe script for show textbox on select radio button---------------------->
+                        <div id ="everything" ng-show="content == 'Selected'">
+                            <input type='hidden' name="useruniqueid" id="userid" value="<?php echo $_SESSION['user_unique_id']; ?>">
+                            <input type='hidden' name="clientid" id="clientid" value="<?php echo $_SESSION['client_id']; ?>">
+                            <div class="form-group col-sm-5"id="alldatadiv" >
+                                <center><p class="groupalldataheading">All Group</p> </center>
+                                <div id="allitems" >
+                                </div>
+
+                            </div>
+                            <div class="col-sm-1"></div>
+                            <div id="selecteditems1" class="form-group col-sm-6" style="border:1px solid #dddddd;" >
+                                <center><p class="groupselecteddataheading">Selected Group</p> </center>  
+                                <p id="selecteditems"></i></p>
+
+                            </div> 
+
+
+                            <textarea id ="allids" style="display:none;" name="all_user"  height="660"></textarea>
+                            <textarea id ="selectedids" style="display:none;" name="selected_user" ></textarea>
+                        </div>
+
+                    </div>
+
+
+                    <!---------------------------------long news from End here--------------------------------->	
+
+                    <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
+                
+                        <div class="publication" style="margin-top:20px;">
                             <!---------------------------------------------------------------------->
                             <div class="publication"><p id="publication_heading">Options</p><hr>
                                 <div class="row">
@@ -429,9 +453,14 @@
                     <br/>
                     <center><div class="form-group col-md-12">	
                             <input type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish" onclick= "return ValidatePostNews();" required/>
-                            &nbsp;&nbsp;&nbsp;<a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 53.5%" value="Preview" />
-                            </a>
+<!--                           <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 53.5%" value="Preview" />
+                            </a>-->
 
+<!--                            <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2" style="margin-bottom:8px;"><center>
+                                    <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 280%;" value="Preview" />
+                                    </a>
+                                </center>
+                            </div>-->
                         </div>
                     </center>
 

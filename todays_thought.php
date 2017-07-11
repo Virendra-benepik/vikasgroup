@@ -19,6 +19,41 @@ function check() {
     }
 </script>
 
+<script>
+    $(document).ready(function () {
+
+        $("#preview_post").click(function () {
+            var mesg = $("#editor1").val();
+			
+            $("#preview_div").css({"display": "block"});
+            $(".contentPost").html(mesg);
+
+            $("#Iphone5").click(function () {
+                $("#rightoneIphone6").css({"z-index": 0});
+                $("#rightoneIphone5").css({"z-index": 1});
+            });
+            $("#Iphone6").click(function () {
+                $("#rightoneIphone5").css({"z-index": 0});
+                $("#rightoneIphone6").css({"z-index": 1});
+            });
+        });
+    });
+</script>
+
+<script>
+function ValidateThought()
+{
+    var thoughtimage = document.form1.thoughtimage;
+	//alert(thoughtimage);
+    if (thoughtimage.value == "")
+    {
+        window.alert("Please Upload Image.");
+        thoughtimage.focus();
+        return false;
+    }
+	return true;
+}
+</script>
 <!-------------------------------SCRIPT END FROM HERE   --------->   
 <script>
 $(document).ready(function(){
@@ -43,10 +78,15 @@ $(document).ready(function(){
 
 <div class="androidContentTab">
 
-<div class="wholeAndroidContentHolder">
+<div class="wholeAndroidContentHolder" style="max-height:98%;">
 <div id="img_preview" style="display:none"><img src='' id='imgprvw'/></div>
 
 <div class="preview_content mythoughtOFtheDay"></div>
+				
+                <div class="imagePost img-responsive"><img class="post_img" style="max-width:100%;"/></div>
+				 <div style="text-align:justify;"> {{textboxdata}} </div>
+				 
+				 
 
 </div>
 
@@ -142,8 +182,8 @@ $(document).ready(function(){
   <div class="bs-example">
 
   <div class="row">
-    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
-    <h3><strong>Create Thought</strong><hr></h3>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <h3><strong>Thought</strong><hr></h3>
     </div>
 	
   </div>
@@ -153,7 +193,7 @@ $(document).ready(function(){
 
 <!---------------------------------long news from start here--------------------------------->	
 
-<form name="form1" role="form" action="Link_Library/link_thoughtOFtheDAY.php" method="post" enctype="multipart/form-data">
+<form name="form1" role="form" action="Link_Library/link_thoughtOFtheDAY.php" method="post" enctype="multipart/form-data" onsubmit="return check();">
 <input type="hidden" name = "flag" value="5">         
 <input type="hidden" name = "device" value="d2">   
 <input type="hidden" name = "useruniqueid" value="<?php echo $_SESSION['user_unique_id']; ?>">
@@ -162,33 +202,89 @@ $(document).ready(function(){
       
   
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
       
-        <label for="Article image">UPLOAD IMAGE</label>
+        <label for="Article image">UPLOAD IMAGE (max upload size: 2 MB)</label>
+		
+		<script type="text/javascript">
+                                   function showimagepreview1(input) 
+										{
+										if (input.files && input.files[0]) {
+										var filerdr = new FileReader();
+										filerdr.onload = function(e) {
+											//alert("hello");
+											var image = new Image();
+												//Set the Base64 string return from FileReader as source.
+													   image.src = e.target.result;
+															
+													   //Validate the File Height and Width.
+													   image.onload = function () {
+														   var height = this.height;
+														   var width = this.width;
+														   var size = parseFloat($("#thoughtimage")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#thoughtimage').val("");
+                                                    return false;
+                                                }
+												  else if (height > 1000 || width > 1000) {
+													   alert("Height and Width must not exceed 1000 X 1000 px.");
+														$('#imgprvw1').attr('src', "");
+														$('.post_img').attr('src', "");
+														 $('#thoughtimage').val("");
+													   return false;
+												   }
+												   else
+												   {
+													   //alert ("image gud");
+														$('#imgprvw1').attr('src', e.target.result);
+														$('.post_img').attr('src', e.target.result);
+												   }
+											}
+													
+												/*$('#imgprvw').attr('src', e.target.result);
+												$('.post_img').attr('src', e.target.result);*/
+												}
+												filerdr.readAsDataURL(input.files[0]);
+												}
+}
+                                </script>
+<img id="imgprvw1" alt="uploaded image preview"/>
         <div>
 <input type="file" name="thoughtimage" accept="image/*" id="thoughtimage" value="uploadimage" onchange="showimagepreview1(this)" />
 </div>
       
     </div>
-    
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+      <div class="form-group">
+        <label for="Articlecontent">CONTENT</label>
+      <div>
+	  <textarea class="form-control" id="editor1" ng-model="textboxdata" name="content"  rows="7" required/></textarea>
+	  </div>
+      </div>
+	</div>
    
   </div>
-  
+  <!--
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="form-group">
         <label for="Articlecontent">CONTENT</label>
-      <div><textarea cols="100" id="editor1" name="content"  rows="10" required>    
-</textarea></div>
+      <div><textarea cols="80" id="editor1" ng-model="textboxdata" name="content"  rows="10" required/>    
+</textarea>
+</div>
       </div>
     </div>
   </div>
-  
+  -->
   <!---------------------this script for show textbox on select radio button---------------------->                            
 </div>
 <!---------------------------------long news from End here--------------------------------->  
-<div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
-<div class="publication">
+<div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv" style="    margin-top: 22px;">
+<!--<div class="publication">-->
 <!---------------------------------------------------------------------->
 <!--<div class="publication"><p id="publication_heading">Options</p><hr>
   <div class="row">
@@ -227,7 +323,7 @@ $(document).ready(function(){
                                 
   </div>
   </div>  --->
-        <div class="publication">
+        <!--<div class="publication">
         <p id="publication_heading">PUBLICATION</p><hr>
         
         <p class="publication_subheading">PUBLICATION TIME </p>
@@ -295,9 +391,9 @@ $(document).ready(function(){
                 <input type="time"class="form-control"style="width: 100% !important;" name="publish_time2"/>
                 
         </div>
-        </div>
+        </div>-->
 
-</div>
+<!--</div>-->
 
 
 		
@@ -332,9 +428,9 @@ $(document).ready(function(){
 
 <br/>
 <br/>
-<center><div class="form-group col-md-12">    
-<input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Preview" />
-<input type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish Now" onclick= "return check();"/>
+<center><div class="form-group col-md-12">
+<input type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish" onclick= "return ValidateThought();"/>    
+<!--<input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Preview" />-->
 <!---<a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info" style="text-shadow:none;font-weight:normal;" value="Priview" /></a>--->
 <!--<div class="col-xs-4 col-sm-4 col-md-2 col-lg-2" style="margin-bottom:8px;"><center>
 <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none;

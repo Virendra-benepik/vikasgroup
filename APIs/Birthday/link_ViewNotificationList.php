@@ -1,4 +1,5 @@
 <?php
+
 /*
   Description :- link files contain all fields from HTML file and create object of class files . call functions help of object and pass parameter into function .
  */
@@ -46,24 +47,32 @@ if (!empty($indata)) {
 
     $notilistdetails = $obj->workAndBirthNotiListDetails($clientid, $empid, $startlimit);
     $Data = json_decode($notilistdetails, true);
+     echo "<pre>";
+    print_r($Data);
+
+    $site_url = site_url;
     
-    $Count = count($Data['Data']);
-    for ($intRow = 0; $intRow < $Count; $intRow++) {
-        $Data['Data'][$intRow]['userImage'] = (!empty($Data['Data'][$intRow]['userImage']))?site_url . $Data['Data'][$intRow]['userImage']:"";
-        $wishFlag = $Data['Data'][$intRow]['wishFlag'];
+    if ($Data['success'] == 1) {
+        $Count = count($Data['Data']);
+        for ($intRow = 0; $intRow < $Count; $intRow++) {
 
-        if ($wishFlag == "0") {
-            $Data['Data'][$intRow]['message'] = $Data['Data'][$intRow]['username'];
-        } else {
-            $WishDate = @date_create($Data['Data'][$intRow]['WishDate']);
-            $username = $Data['Data'][$intRow]['username'];
+            $Data['Data'][$intRow]['userImage'] = (!empty($Data['Data'][$intRow]['userImage'])) ? $site_url . $Data['Data'][$intRow]['userImage'] : "";
+            $wishFlag = $Data['Data'][$intRow]['wishFlag'];
 
-            $Data['Data'][$intRow]['message'] = $obj->workAndBirthMessage($WishDate, $username, $wishFlag, $Data['Data'][$intRow]['Title']);
+            if ($wishFlag == "0") {
+                $Data['Data'][$intRow]['message'] = $Data['Data'][$intRow]['username'];
+            } else {
+                $WishDate = @date_create($Data['Data'][$intRow]['WishDate']);
+                $username = $Data['Data'][$intRow]['username'];
+
+                $Data['Data'][$intRow]['message'] = $obj->workAndBirthMessage($WishDate, $username, $wishFlag,$Data['Data'][$intRow]['eventId'], $Data['Data'][$intRow]['Title']);
+            }
         }
-    }
+    } 
 } else {
     $Data['response'] = 0;
     $Data['message'] = "Invalid json";
 }
+header("Content-Type:application/json");
 echo json_encode($Data);
 ?>

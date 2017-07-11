@@ -200,6 +200,7 @@ $qu = "insert into Tbl_EmployeeDetails_Master
 
 function userForm($fname)
  {
+    //echo "i am here".$fname;
  $this->first_name = "%".$fname."%";
  
  $clientid= $_SESSION['client_id'];
@@ -211,7 +212,7 @@ function userForm($fname)
                 $stmt->bindParam(':cli',$clientid, PDO::PARAM_STR);	
 		$stmt->execute();
                 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+                //print_r($rows);
 if($rows)
 {
 $response = array();
@@ -229,8 +230,10 @@ return json_encode($response);
       
   }
 
-function userFormUpdate($emp_id,$emp_name,$emp_last,$temp_depar,$emp_desig,$emp_loc,$emp_bra,$emp_gra,$idclient,$user_unique_id)
+function userFormUpdate($emp_id,$emp_name,$emp_middle,$emp_last,$temp_depar,$emp_desig,$emp_loc,$emp_bra,$emp_gra,$idclient,$user_unique_id,$emp_emailid)
 {
+	
+	
 $updateddate = date("Y-m-d h:i:s");
 
 $this->empid = $emp_id;
@@ -246,9 +249,11 @@ $this->updatedby = $user_unique_id;
 $this->updateddate = $updateddate;
 
 
-$query4 = "update Tbl_EmployeeDetails_Master set firstName=:nam, lastName=:nam2,department=:depart,designation=:desig,location=:loc,branch=:bra,grade=:gra,updatedBy=:updatedby,updatedDate=:updateddate where employeeId=:ema and clientId=:cli";
+
+$query4 = "update Tbl_EmployeeDetails_Master set firstName=:nam ,middleName=:middlenam , lastName=:nam2, department=:depart, designation=:desig, location=:loc, branch=:bra, grade=:gra, emailId=:email,updatedBy=:updatedby,updatedDate=:updateddate where employeeId=:ema and clientId=:cli";
 		$stmt4 = $this->DB->prepare($query4);
                 $stmt4->bindParam(':nam',$this->name, PDO::PARAM_STR);
+				$stmt4->bindParam(':middlenam',$emp_middle, PDO::PARAM_STR);
                 $stmt4->bindParam(':nam2',$this->last, PDO::PARAM_STR);
                 $stmt4->bindParam(':depart',$this->depart, PDO::PARAM_STR);
                 $stmt4->bindParam(':desig',$this->desig, PDO::PARAM_STR);
@@ -256,11 +261,20 @@ $query4 = "update Tbl_EmployeeDetails_Master set firstName=:nam, lastName=:nam2,
                 $stmt4->bindParam(':bra',$this->bra, PDO::PARAM_STR);
                 $stmt4->bindParam(':gra',$this->gra, PDO::PARAM_STR);
                 $stmt4->bindParam(':ema',$this->empid, PDO::PARAM_STR);
-                $stmt4->bindParam(':cli',$this->clientid, PDO::PARAM_STR);
+                $stmt4->bindParam(':email',$emp_emailid, PDO::PARAM_STR);
+				$stmt4->bindParam(':cli',$this->clientid, PDO::PARAM_STR);
 				$stmt4->bindParam(':updatedby',$this->updatedby, PDO::PARAM_STR);
 				$stmt4->bindParam(':updateddate',$this->updateddate, PDO::PARAM_STR);
+				$stmt4->execute();
 	
-        if($stmt4->execute())
+	$query5 = "update Tbl_EmployeePersonalDetails set emailId=:email where employeeId=:emp and clientId=:clid";
+		$stmt5 = $this->DB->prepare($query5);
+                $stmt5->bindParam(':email',$emp_emailid, PDO::PARAM_STR);
+                $stmt5->bindParam(':clid',$this->clientid, PDO::PARAM_STR);
+                $stmt5->bindParam(':emp',$this->empid, PDO::PARAM_STR);
+              
+				
+        if($stmt5->execute())
           {
             $response = array();
             $response["success"]=1;

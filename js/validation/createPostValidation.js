@@ -3,7 +3,8 @@ function ValidatePostNews()
     var title = document.form1.title;
     var uploadimage = document.form1.uploadimage;
     //var content = document.form1.content;
-
+    var gr = document.getElementById('selectedids').value;
+	//alert(gr);
 
     if (title.value == "")
     {
@@ -15,6 +16,11 @@ function ValidatePostNews()
     {
         window.alert("Please Upload Image.");
         uploadimage.focus();
+        return false;
+    }
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
         return false;
     }
 //	if(content.value == "")
@@ -32,6 +38,7 @@ function ValidatePostMessage()
 {
     var title = document.postmessageform.title;
     var content = document.postmessageform.content;
+	var gr = document.getElementById('selectedids').value;
     if (title.value == "")
     {
         window.alert("Please enter Post Title.");
@@ -44,6 +51,11 @@ function ValidatePostMessage()
         content.focus();
         return false;
     }
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
+        return false;
+    }
 
     return true;
 }
@@ -51,22 +63,27 @@ function ValidatePostMessage()
 function ValidatePostpicture()
 {
     var uploadimage = document.postpictureform.uploadimage;
-   // var content = document.postpictureform.content;
-
+    var content = document.postpictureform.content;
+	var gr = document.getElementById('selectedids').value;
     if (uploadimage.value == "")
     {
         window.alert("Please Select Picture.");
         uploadimage.focus();
         return false;
     }
-   /*
+   
    if (content.value == "")
     {
         window.alert("Please Enter Description");
         content.focus();
         return false;
     }
-	*/
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
+        return false;
+    }
+	
 
     return true;
 }
@@ -75,27 +92,25 @@ function ValidatePostpicture()
 function ValidatePostalbum()
 {
     var title = document.postalbumform.title;
-    var desc = document.postalbumform.desc;
-    //var album = document.postalbumform.album;
-    //var files = document.getElementById('files').value;
+    
     var fi = document.getElementById("files");
-	//var fi = document.postalbumform.album[];
+	var gr = document.getElementById('selectedids').value;
     if (title.value == "")
     {
-        window.alert("Please Enter Album Title.");
+        window.alert("Please Enter Title.");
         title.focus();
         return false;
     }
-    if (desc.value == "")
-    {
-        window.alert("Please Enter Description");
-        desc.focus();
-        return false;
-    }
+    
     if (fi.value == "")
     {
         window.alert("Please Select Image");
 		fi.focus();
+        return false;
+    }
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
         return false;
     }
     return true;
@@ -110,7 +125,8 @@ function ValidatePostonboard()
     var designation = document.form1.designation;
     var doj = document.form1.doj;
     var location = document.form1.location;
-
+	var gr = document.getElementById('selectedids').value;
+	
     if (name.value == "")
     {
         window.alert("Please Enter Joinee's Name");
@@ -147,7 +163,11 @@ function ValidatePostonboard()
         location.focus();
         return false;
     }
-
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
+        return false;
+    }
 
     return true;
 }
@@ -156,6 +176,8 @@ function ValidatePostCeoMessage()
 {
     var title = document.form1.title;
     var uploadimage = document.form1.uploadimage;
+	var leadername = document.form1.leadername;
+	var gr = document.getElementById('selectedids').value;
     //var content = document.form1.content;
     if (title.value == "")
     {
@@ -167,6 +189,17 @@ function ValidatePostCeoMessage()
     {
         window.alert("Please Select Image");
         uploadimage.focus();
+        return false;
+    }
+	if (leadername.value == "")
+    {
+        window.alert("Please Enter Leader Name");
+        leadername.focus();
+        return false;
+    }
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
         return false;
     }
 
@@ -182,19 +215,25 @@ function ValidatePostCeoMessage()
 function ValidatePostNotice()
 {
     var title = document.notice.noticetitle;
-    var content = document.notice.noticecontent;
+	var gr = document.getElementById('selectedids').value;
+    //var content = document.notice.noticecontent;
     if (title.value == "")
     {
-        window.alert("Please enter Notice Title.");
+        window.alert("Please enter Title.");
         noticetitle.focus();
         return false;
     }
-    if (content.value == "")
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
+        return false;
+    }
+    /*if (content.value == "")
     {
         window.alert("Please enter Notice Message.");
         noticecontent.focus();
         return false;
-    }
+    }*/
 
     return true;
 }

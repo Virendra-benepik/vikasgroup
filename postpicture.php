@@ -73,17 +73,33 @@ $obj = new GetGroup();
                  border: 1px solid #5cb85c;padding-left:15px;margin-top:-2px;"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " ><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;">&nbsp;&nbsp;&nbsp;</i><font style="color:#fff">Article</font></div>
 
                 <div class="row">
-                    <div class="col-xs-12 col-md-4 col-sm-4 col-lg-4"><img src="images/usericon.png"class="img img-responsive"id="user_image_priview_news"/></div>
+                    <div class="col-xs-12 col-md-4 col-sm-4 col-lg-4" style="margin: 0% !important; padding: 0% !important;">
+					<img src="images/usericon.png"class="img img-responsive"id="user_image_priview_news"/></div>
                     <div class="col-xs-12 col-md-8 col-sm-8  col-lg-8 "><p id="HRnamenewsPriview"><?php echo $username = $_SESSION['user_name']; ?></p><p id="Date_newsPriview">Date: <?php echo date("d/m/Y"); ?></sub> </div>
 
                 </div>
-
+				
+				<div class="row">
+				<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
                 <div class="imagePost"><img class="post_img" /></div>
+				</div>
+				</div>
+				
+				<div class="row">
+				<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
                 <div class="titlePost"></div>
-                <div class="contentPost" style="overflow-y:scroll;height:100px;"></div>
-                <div class="row"style="margin:0px">
+				</div>
+				</div>
+			
+				<div class="row">
+				<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                <div class="contentPost"   style="overflow-y:scroll;height:100px; white-space:pre-wrap !important;"></div>
+				</div>
+				</div>
+				
+                <div class="row">
                     <div class="col-xs-12 col-md-12 col-sm-5 col-lg-5 "><font style="font-size:10px;">0 Likes</font><br> <button type="button" class="btn btn-xs"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i><font style="font-size:10px;">Like</font></button> </div>
-                    <div class="col-xs-12 col-md-12 col-sm-7 col-lg-7 "><font style="font-size:10px;"> 12 Comments</font><br> <button type="button" class="btn btn-xs"><i class="fa fa-commenting-o" aria-hidden="true"></i><font style="font-size:10px;">Comments</font></button></div
+                    <div class="col-xs-12 col-md-12 col-sm-7 col-lg-7 "><font style="font-size:10px;"> 0 Comments</font><br> <button type="button" class="btn btn-xs"><i class="fa fa-commenting-o" aria-hidden="true"></i><font style="font-size:10px;">Comments</font></button></div
                     <hr style="height:1px;background-color:gray;width:92%;">
                 </div>
 
@@ -302,12 +318,12 @@ $obj = new GetGroup();
                         <div class="row">
                             <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                 <div class="form-group">
-                                    <label for="Articlecontent"> IMAGE</label><br>
+                                    <label for="Articlecontent">UPLOAD IMAGE (max upload size: 2 MB, Image Resolution 640X362 )</label><br>
 
 
 
                                     <script type="text/javascript">
-                                        function showimagepreview(input) {
+                                        /*function showimagepreview(input) {
                                             if (input.files && input.files[0]) {
                                                 var filerdr = new FileReader();
                                                 filerdr.onload = function (e) {
@@ -316,7 +332,51 @@ $obj = new GetGroup();
                                                 }
                                                 filerdr.readAsDataURL(input.files[0]);
                                             }
-                                        }
+                                        }*/
+										function showimagepreview(input) 
+										{
+										if (input.files && input.files[0]) {
+										var filerdr = new FileReader();
+										filerdr.onload = function(e) {
+											//alert("hello");
+											var image = new Image();
+												//Set the Base64 string return from FileReader as source.
+													   image.src = e.target.result;
+															
+													   //Validate the File Height and Width.
+													   image.onload = function () {
+														   var height = this.height;
+														   var width = this.width;
+														   var size = parseFloat($("#filUpload")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw1').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#filUpload').val("");
+                                                    return false;
+                                                }
+												  else if (height > 1000 || width > 1000) {
+													   alert("Height and Width must not exceed 1000 X 1000 px.");
+														$('#imgprvw1').attr('src', "");
+														$('.post_img').attr('src', "");
+														 $('#filUpload').val("");
+													   return false;
+												   }
+												   else
+												   {
+													   //alert ("image gud");
+														$('#imgprvw1').attr('src', e.target.result);
+														$('.post_img').attr('src', e.target.result);
+												   }
+											}
+													
+												/*$('#imgprvw').attr('src', e.target.result);
+												$('.post_img').attr('src', e.target.result);*/
+												}
+												filerdr.readAsDataURL(input.files[0]);
+												}
+}
                                     </script>
                                     <img id="imgprvw1" alt="uploaded image preview"style="margin-bottom:5px;"/>
                                     <div>
@@ -335,20 +395,21 @@ $obj = new GetGroup();
 
                             <div class="form-group col-sm-12">
 
-                                <label for="exampleInputPassword1">Select User</label>
+                                <label for="exampleInputPassword1">Select Group</label>
                                 <div>
-                                    <div class="col-md-4">
-                                        <input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
-                                        <label for="radio5">
-                                            Send Post to All Groups
-                                        </label>
-                                    </div>
-                                    <div class="col-md-4">
+									<div class="col-md-4">
                                         <input type="radio" id="user" name="user3" ng-model="content" value="Selected">
                                         <label for="radio6">
-                                            Send Post to Selected Groups
+                                            Select Groups
                                         </label>
                                     </div>
+                                    <div class="col-md-4">
+                                        <!--<input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
+                                        <label for="radio5">
+                                            Send Post to All Groups
+                                        </label>-->
+                                    </div>
+                                    
                                 </div>
 
                             </div>
@@ -385,7 +446,7 @@ $obj = new GetGroup();
                     </div>
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
-                        <div class="publication">
+                        <div class="publication" style="margin-top:20px;">
                             <!------------------------------------------------------------------------------------>
                             <br>
                             <div class="publication"><p id="publication_heading">Options</p><hr>
@@ -440,7 +501,7 @@ $obj = new GetGroup();
                     <div class="form-group col-sm-12">
                         <center>
                             <input style="color:#2d2a3b;" type="submit" name ="news_post" class="btn btn-md btn-info publishnowBtn" style="text-shadow:none;font-weight:normal;" value="Publish" id="getData" onclick="return ValidatePostpicture();" /></center>
-                        <button type="button" class="btn btn-info btn-md preview_postBtn" name="preview_post" id="preview_post" style="margin-left:53.7%;margin-top:-58px;" > Preview</button>
+<!--                        <button type="button" class="btn btn-info btn-md preview_postBtn" name="preview_post" id="preview_post" style="margin-left:53.7%;margin-top:-58px;" > Preview</button>-->
 
                     </div>
                 </form>			

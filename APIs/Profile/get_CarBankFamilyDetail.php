@@ -31,13 +31,14 @@ if ((file_exists("../../Class_Library/Api_Class/class_bank.php") && include_once
 	}*/
     if (!empty($jsonArr['cid'])) {
 
+	$objfam = new Family();
         extract($jsonArr);
         $result = array();
         $result['employeeId'] = $eid;
         $result["car"] = (new Car())->GetCars($cid, $eid);
         $result["bank"] = (new Bank())->GetFromBank($cid, $eid);
-        $result["family"] = (new Family())->getFamilyDetails($eid);
-		$result["personal"] = (new Family())->getPersonalDetails($eid);
+        $result["family"] = $objfam->getFamilyDetails($eid);
+		$result["personal"] = $objfam->getPersonalDetails($eid);
         $response = $result;
     }
     else {

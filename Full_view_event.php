@@ -26,7 +26,7 @@ $value = json_decode($result, true);
                 <img src="<?php echo $path . $value['posts'][0]['post_img']; ?>"class="img img-responsive" style="box-shadow: gray 0px -1px 10px 1px;max-height: 250px; width: 100%" onerror='this.src="images/u.png"'/>
                 <div style="font-size: 16px;font-family: calibri, sans-serif; text-align: justify;"><b>Venue</b><?php echo "<p >" . $value['posts'][0]['venue'] . "</p>"; ?></div>
 				<div style="font-size: 16px;font-family: calibri, sans-serif; text-align: justify;"><b>Date</b><?php echo "<p >" . $value['posts'][0]['eventTime'] . "</p>"; ?></div>
-				<div style="font-size: 16px;font-family: calibri, sans-serif; text-align: justify;"><b>Cost</b><?php echo "<p >" . $value['posts'][0]['eventCost'] . "</p>"; ?></div>
+				<!--<div style="font-size: 16px;font-family: calibri, sans-serif; text-align: justify;"><b>Cost</b><?php echo "<p >" . $value['posts'][0]['eventCost'] . "</p>"; ?></div>-->
 				<div style="font-size: 16px;font-family: calibri, sans-serif; text-align: justify;"><b>Registration</b><?php echo "<p >" . $value['posts'][0]['registration'] . "</p>"; ?></div>
 				<div style="font-size: 16px;font-family: calibri, sans-serif; text-align: justify;"><?php echo "<p >" . $value['posts'][0]['post_content'] . "</p>"; ?></div>
             </div>

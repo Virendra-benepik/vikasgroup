@@ -1,90 +1,207 @@
 <?php
-/********************************** included class file and create object of class *******************************/
+
+/* * ******************************** included class file and create object of class ****************************** */
 /*
-Created By :- Monika Gupta
-Created Date :- 03/11/2016
-Description :- link files contain all fields from HTML file and create object of class files . call functions help of object and pass parameter into function . 
-*/
+  Created By :- Monika Gupta
+  Created Date :- 03/11/2016
+  Description :- link files contain all fields from HTML file and create object of class files . call functions help of object and pass parameter into function .
+ */
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+if ((!class_exists("PushNotification") && include("../../Class_Library/class_push_notification.php")) &&
+        (!class_exists("wish") && include("../../Class_Library/Api_Class/class_wish.php")) &&
+        (!class_exists("User") && include("../../Class_Library/class_user.php"))) {
 
-require_once('../../Class_Library/Api_Class/class_wish.php');
-$obj = new wish();
+    $obj = new wish();
+    $push = new PushNotification();                         // object of class push notification page
+    $user = new User();
 
-/********************************** end included class file and create object of class *******************************/
+    /*     * ******************************** end included class file and create object of class ****************************** */
 
-/********************************START HERE*************************************************/
+    /*     * ******************************START HERE************************************************ */
 
- if (isset($_SERVER['HTTP_ORIGIN'])) {
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Max-Age: 86400');    // cache for 1 day
     }
- 
+
     // Access-Control headers are received during OPTIONS requests
     if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
- 
+
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
- 
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
         if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
             header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
- 
+
         exit(0);
     }
- 
 
-$wishdata = file_get_contents("php://input",true); 
 
-	
-/*		$wishcomment = "this is comment";
+//$wishdata = file_get_contents("php://input",true); 
+    $jsonArr = json_decode(file_get_contents("php://input"), true);
 
-		$wishimgage ="/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERQUExQWFRUWFxcZFxYVFxQVFxgYGBUXHBgYGBUYHCYeFxkjHRQVIC8gJCcpLCwsFh4xNTAqNSYrLCkBCQoKDgwOGg8PGikkHyQsKSkpKSksKSwsKSwqLCwsKSksKSksLCkpLCwpLCwsLCwpKSwpKSkpKSkpLCkpLCwsKf/AABEIAQAAwAMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAFAgMEBgcBAAj/xABFEAABAwEFBQQIBAQEBQUBAAABAgMRAAQFEiExBiJBUWETcYGRBxQyQlKhscEjYnLRM4KS8EOywuEVJFOi8RdjZMPSFv/EABoBAAIDAQEAAAAAAAAAAAAAAAECAAMEBQb/xAAqEQACAgEEAgIBBAIDAAAAAAAAAQIRAwQSITFBUSJhEzJxgZEF8BQjQv/aAAwDAQACEQMRAD8A024FSY5pqKtEKI617Zx/2DUq8GocNaPJURq6BXYrsUxCHeTctqohcysVjHQ1Ftg3Fd1SNnBFkVPOlkFHK80vUjhXqb2dViceQfCoyUOkznTL1nCtamuFIERCgdaZilTIQHbR2QSIkcTRa7bVCgRoahWuz4kKEcKb2caUpI6GhaIHrxaEcBHCqtfYnCOZqzW9Y7QSJgVWr6zeQOtLHjgIfuJuPAUFvizqbdK088wKP3WISs9KHLE650fJB26b0EcwflUi2Xd7yTlVeUksLk+wr5VZbLbEEYQd0jjUb9AB3q5iYy500U1OtTSm933TTLb2EEEAz8qO5kI1cIpahUS2WrAnrwqwgzb7VG6nNRopdV3Czt41ZrNRbisYCu0d9o6A1NtalLVPDhUABrkdKSUHUGrPb28aQseNArVYcRxJyUKlWG8lIyUO/lQaIKiu064oK0EUybKVaqgUSDDyO1/DSczRddl7JkNp4ammLMUNDcEq5muKtSiCCZmqndjDBofcgV6wspExRZNlJzOQqv3xtizYCUp/EeXo2jMzwnl9elLLIkAtb2BwykwriDQm2bRWZjdW4FL4JbBcV5Jmq/ZtmbXb4XbHOwaOYZakKUPzEH61YmW7HYEYUJSjpErPfXPzayMeEOosEP7RWl0FNmsThn33lpaEdICleYFG7qTa2282mEmNMbij4kJFCrT6QQPYby5qP2H70FtXpRIkFxpB5HD91Vietm/0pg+K8lmtD9rKjKGCeWJ0fVNCXLXaVPY3LNknIdk6lR/pUE/Wq/8A+qL5/hqszp5SB8wa436aSgxa7EpKfjbWFfJQH1po6nOxbj7NAsO0bBSpCippR4OpKPI6Hzro0kGRzEEedDLm2jsVvTDLiVHi2r2v6FfamntklIJVZXlMK1KfabPek6Vox6+nU1QQzaXMYhQBHdQq7yUudlryqE7flpZEWpiBweZlaO9SdU0Ru5aVDt0qCx8QMjzrfDLCSuLAWizuwMK4mMpoXamt4zVYuOym833LU+kerp/Ds6VCQqDvORwBIyqo7a3mwm1pSlsIDawN0RJCs/pVEdR8qoLNLto7ISrlNR7mu0vK7VzJI0FOusesO7ygEzpRi3owIShPs1tjJ9AIF4OBZgDIaVES2RooipGGuYatALiu4aUBXoqEOAV6KVFOJdASREk0rdBGyycutN06q2EEGdKpHpB2pUylLDGb7wOnuJ4nvOceNVSltVshzavbpwr9UscKc0W5wR0HXrwqXsPsgholw77mq3FczmYoHsrs/wBngaRm4v2l8hxNWja2/EWVktoyQ2N78x5fvXC1GeU3tiSPti9qdt0MJKUKAyMqJ/uKrd1XU/bN9RLDRzxKGJ1YPFKTkjvVPdUTYfZ5VsV65aRKJlls5gwf4h5j4R48q0dtoccq0YNGkrl2G2+wTZ9m7O2f4YWfic3z/wB2Q8KIJEZJGEck5D5VJ7GvKbAE10Y40ugEZbKVZLSF/qAV9aFW/Y6yug/hBE8Ubn+XKjxQK52M0JQRKMd2k9Ejrcu2RZcwmQn2HRHFJEBR7sNP7FemVxpQYt8qSDh7aCHEEZQ4mM+pyIrV3GcIz1qj7d7BN25JWiG7QNFxkv8AKv7Hh8qongjkVSAlXRo7LqVpC0KEESCmCk1BcuZoqWtxQCVCFAbmIdYOYrEvRpt07d9oNktMhsqwlKtW1cu41vK7sadAVEg55aVxckcmnntf8fZZ2QWby7QkNDAy0mMhE5cOQAFYptao4ws6lWLxma3tdlSllaUiBhVp3VhHpJRgyGWRq7SycpiyvybM4wCadZcIykkcjXXFST38K8BXo4gFhmRNNxSorxFOgHQKVFdApwNZTwqWEaptRpxVISmTFK3XJCFb7YlptbijCUJKj3AVluzYVaXnLY77SzujknkP74dasfpkvXBZm2EZKfXBz91MT5lSRT2z904W20AcBXL1mXigMN7Ls4EuvnUJy8if2rPNsHDbLQxZEK/irAWrvzWrvCQo1ol/Wo2VhYCZBSPqKoWw7XaXshSuCHVZ8937E1z9JHdPcwX4NTsbIbSlKRCUgADkAMhUkLEVxTeVVy1OGFKCzIBkGeHFPAjTLKOteghBMjdFjLoAoLtC4qFIUEqQtMZg5Gc8PPhUe0OnMTkC7GXwKGUzyUM9RFN3g8txIRiGagJwxvFEp97IEqgnhrnWiMUVZJOqA9k2gcbTgZWhYbJJRqYzlJ5DqNKu9ktYcQlYyxAGOU8KpNtsQUyt1AQ06gtHFgJwx2mOUjOd0SOOGMpqYw4Wnpb3UKW4AkjFADPaAziEyAMuE8aeUVIEW0W94dZqC83UNd4ryGWYnMR7ilEa67vznoULtayJGeQMYYBkAxOI6AnOPd61neMt3FH9LGxXbNetND8RsHGAM1oHHvTn4TVk9C22PrVnLKzLjUDvHA+X3o22JSJGus8R1H2rK7DZ/wDg99JjJl0gp4bilRh/lJjuIrnavFuh9odSrk3p8bqx0P0rBfS0iFeBrfH8xI4g/SsI9K4xZ9D9K5WkdZaHmbDhilJFLab/AAwY1Ag+FeAr0sHaEORXopQrpFWEOgV2a7XqBBBph1UHKn11EdpZEMt9I7naXnZGz7qZ81g/6RWm3FZIUOgH0rKdt1RfTB5to/zH961u63gFjqkfSuD/AJB/JC3yI2vYCmHP0E+UH7Vlmxdqw3o2PiS4keIn/TWobS2kYc9CCD3EVh9ucXYn23ozacB7wDn5j60mhfLA3yfRLaxEVAVdKCZj5mpdieCkpUkgpUkFJ5giR9acrvQddFlJg83QjiDx4q468c5486jWi5BGuROYOI66SJzijVJWmRnVimxJQTKtbbp7I7s4SBlJgkeOoJ+dV+x3GtIQy0peJEqla1BSlEytSuaziM95rRVMnnoQRIHDmf2poXentO1IGPhE/wBk1ashT+J2Mf8ACUjSRpopQ0049T50w5c85D2RwMnyz5ZccqLEUhQqq2X7UD1tVRPStcHbWPtgN+zkq6ltUBY8ICv5a0l5CSnLIj5/396HPMpWhaFiQoFJ7iINUS5QaHtib19asFnd4lACu8ZH6VmHpBseJBMZZirN6InCym02RerK5HdJBPySf5qj+kazfgOEfGr5ya4GNbczQZfpRdrM5LaBwwp+gpxIqNYT+Gj9Cf8AKKlJFekh0QVFeilpFKcA4U4BIFeiugV41CDLlRH6JNwJmh9pFI2Qyb0rM9nbrK7zbn+hwZfOtGu9yW21g8I8qqPpXu/Gyy8NWllJ/S5H3QPOjXo/toesuA6py8v9oria9eSqYRv1eJPdVZvy4E2qxqI9pGSu7gr7VY710IoPYLx9XckiW1ZLHTnWTBLa7Bjl7Ifoq2pKf+RfMLR/BUT7ac5R3jh31p7aJrANtrjVZngpObSjjaWkkKTGcpUM8su6rzsJ6UUOgNWpQSsQEu+6v9Q91XXSu7jyKS4LkzTGk50h1OddBxZjTpXCelXIcbJrpTlS0t5TNMk0ydis8TXBXq4k0SDLqaiKEGiFoIJyqG6mh4AVhaTZ7xW8kD8RqSOBKMlfLDQ3aC9kPsOJBzIKiOR6VZL1u4u4CFBKkE5lGOUqEFMYk8kmZ4UEXsMtQUlD6E4hBPq5P/3Vycmmk8m5IDstl1Kllo/+2j/KKnpFQ7ts3ZttoJxYEpTMROEATGcaUQUQTkIrrR4CeCa9SkrNcp0Q8BXqUKUpAio2EZVUdxualEVxLuGetLLrgBXb5u0PsuNK0WkjuPA+cVnWx16qsj5SuRnhWORBOfhWquNSaoe3FwmTaWxMD8UDWBosd3GsOpxb40LJWXe1NhxIUmCCO/50IVdwggjI86rmyW2PZQ25m2dDxT+4rQUNpWAtJCgRIIzFeempYmY5RafBVXLvSG1MupKmVafE2fiTWe7TbBqs5xpOJs+y6gZdyhwNbO7YpoU4ypsnDEHVJzSe8Vdh1TQ8ctcMzC4NubdYBEdsyPdMkDu+GtL2a9LFktMJUoMuH3XDl4KoDbtm2HSS0r1Z34VZtK7vhqq33swGzhtTBQDo6j2T1kZHxrqY9X7NKkbylwEAgyDxGnhzpKk1hF1IttlGKxWsLT/0l/8A5J+hqx3d6Z1tKwW+yqQfjbk+JQoAx3GtsM8ZdMbdZqWDWk0MuXauy2sSw8hf5ZhQ70nOii6vTIINNLTTppMUQjGCuoRTsUoJqUQWW44zSwKSkUsUUA9SorgrtEJ0V416vRUIJIpC007SSKBCG4IqCtAznjRRxNRXWqRxsBmO1GxymyXbOJRqpsap6o5p6cKHbP7Xu2UgpOJB1Sc0nr07xWprYiq3fuxzbxK0Q24dSBKFfqTwPUfOsWXApeBHEP3HtfZ7UAAcC/hUfoeNFH7IOVYzbbjcYVvDAeB1QruVp4UbubbS0WeAuVI67w/2rj5dG0/iVSxp8Mst6XdnSLDaHGxh9pB1SvNPkaJ3dtVZrQN4YT5jzoqi7EKEoII6Z1RulDiSFUJx6Kla9hbNaN5kqszn5d5B/l4eFV6+dnbbZ0kPNptLQ95AxZfp1FaqxYQnhUpCakdQ0+S+Cb/UfN79yMOnEyotLGYGeR6HUGit3ekS8bDCXYtLY07Q70dHAJ8wa12/9gbNawSUdm5wcbAB8RoazTaLYa1WME/xmviSNB+ZPCulh1X2O4OJcdmfSbZLZCcXYu/9N2B/SvRVWwnnXzba7rQ5mmEnlw/2ots56Q7Zd5Da/wAdkaNuEykfkXmQOmYrpwzqQEz6AaiDzrgNBNmdq7Pb28bCswN5tWS0d45dRR5tgkE1oTVWMeBpQpApYpgHRXaTNKFME9NdpJNcmoAVXopE16aUh40ytNPKUKbNQhGcbphaanKFNqRStEBzlmSoEEZHXj5jjVft2x6DJaUWzyAlPij9iKta2qZUiq5Y0+wUZzbtn3W8y2f1tSrzTqKbsV/PNZpXi7jB+VaMoxUK3XMw8JcQmfiG6r+oVkyaZMXaDLu9Jahk4gKHfB84irRdu2VmegBYQr4V7vz0qiW7YZQlTDgUPhXkf6hkfKq9bELYMPNlPU6eB0rn5NH9E3Sibuh4U8BNYXYNq3mP4Lkp+BWY8uHhV32Y9JaHVBDo7NR5mUnuP2rMsEoc+C2Ob2PbXejBp+XLPDTvEAbqvDgetZFetzqQotOpKVDgfqK+l0LBEjSs29JIbcWlJTCxorpWly2NV5BNJcmJNuO2R5LjSihafZWn6dR0rcvR96Q0XggoWA3aEAYkA5KHxo+44VmNsurGkoOvA9arDLrtmeDjZKHWzIPUc+YNdHDm3CJn1IaUmgOym1CLdZkPJyJyWn4VjUUax10E7GHa6DTYNLpiHq9XJpJNQAomk4qQpVQLxvlpgBTy0tpJgFRgEwTA6wD5UG6CEZrpVQL/APrbNE9siO+ibFoCkhQ0IBy60ikn0yEia4abxV3FTEOkUhTdLmvVCEdbVMLYqcRSVChSACnLPl1qMskyMjzSoT5g0ZU2Kg2uxBXQjRQ1H98qRxAU+9tj2XM2/wDl3OBSJbPejh4VXvUuyX2VpSEk+ysZoV3HgavzqZlC4CxmOAUPiTy6jhQx9sOtqBSFxkpBynp0ngeBrPPGpAYS2K2hU0sWZ5WJCsmlnUH4T9jQbbFtaLQpCiT8HcaBWqWMO8VtLzacMhQj3Fclj7dKvLzwttjbtAjtG5Qvv5/fxrk5sezkiVqmVH1LIDjrVe2suiMLoGSpSrvGn3q/2W6zBUqoV6XYHLI703x4H9qyY8+2dhSKl6K769XtqmSdx8QBwxpkjzBI8q25tdfNVvcLDjbqfabUFjvSQR9K+i7I+FJChoQCO4ia9NgnasdqggDSxTKDS0KrSA7NIUquFVM2h7CknWBpQYDq3KzX01vTY2R/8hJ8OydB+oq921ZjGjMxMD3hy7+VZz6VXMbLRGafa/qU2AfImqpvgFh2+L0RaLlKsI7RASnIAZZfKKf2Dv8A7WyNp1WiUHph0JPdVe2VGOwup1Bb+3+1BNh7yLL7rGJKQ4ApKlGAkpnMcznpXL0b2ylEjdmxvWjAhSznhBPLQUm77YFjLoSeqhMeAIoOh4LakmVk4VEmYMwY5CJOVRNlrYfV3JyhZAEzCSkFuf5SK6e7kWy1ofClEDRIE9SdB4DP+YU4F1UrBfvalaGfjVjc4AYiAExqYTrwqZfF7KYZPZILjsQhHXSSBoka0YyUnSJuDj9sCdSPMADqTwFB7z24srKSVOhUAnc3suc6c+NZ/YdnrU8929vKnENwoIWdxSzITuDdCU933kze90ItYhwGROFSQlS0hXtJAVkUmBlwirtoS72W8Cob6OzVOaFKBI7yBE5aCa8+6v4JHRWfzAoO9eYQmVGDlqcSsozJ4mnxtC0QiCDjnCkkYiExiyPASJPWlolgy97wIhJSUqzKCrLeA0k7pJ5A5iaEWe34n8SNwqADiCNDMacpIg/mNWS3WxtwFpY9sRgXlI8cj3jSqDeVmDa9wKxbzZGLCUrSJSU9DkcJy5VjyNRdorbDKEJWt2zO7oeBWkfA4kwopPEGUn+qn/RvbVNqtNmdyMQf1JmD40AvO++0s7T3sutrCpHELI7Qd4CpKe6kXpfgbebd0WsBK40lJG9PVJqnURU4MtizRLwQcJjjAHechT7dihlwc21fTKoItoWGR1Kj/KI+qhRx10di6eSFfSvKu40vsajCNqLDCCe+ti2QtGKyWdXNtH0rKtrFfh94JHd/c1oOy1vDdgsgjEstJCEDVRj5DmeFes0TbjyRlxftAQgqJA6nISdKcZeECJjmcp886AWp4N4FukKcxSBMIRGoT3ZZ6n5U2zby5K1E4dBBwz/Nw/SmTzIrX+T5UhN3NFjx1Ft3smK449CkkaK3T38D8iPKuLdBJTx5dOYq27JYKu+34gU8RBHcSR8iD5is42/fGB1E+wUwOinUq8tfKrJaLQWnlkGQghSRGqVQFgmdPYV/JVY2muN62WhXYpPZlDYU4cmwuVGJ4kA6DSe6sjyePQ+OEsj2xVhn0dkqagaRn4VVdqWzZ7XjQIwKxJ5FJzjuiRVu2NQLJ+CsjFqSNFAqOh8ajbfXZ2gKhqmdOIOvka5GOezO/TGninie2apiXryxdqtg9mFNpUPhKiCkyJid4ZjlQW+doFNlSEHCHE4XYM6KPZhJ45YxPKgdktCkkNLzDZSoH4cgqQOJzjxrl9LDqGkJSMQSVFXeAMPdlXSk/kjM+y47HX3hQtlG4oKIJEEwMsXRIGQ6mjN37cts2tpISVJ3wuCVEJOHfUf1BNZfYrzlPtKSlWbuGJMD2ZOgMn+o1Yrt2YtLqVqbGFLiRhG+rCkkmBznia0Y07oKTs1dW21meUGQJDkjLoCR9I8apFp2jUcm+JwpA948c+AAzPeKCPXebA9gnE6ECXDORWJ3UzAImJqK1aMAxBMqQFYY5LCQrxHZpI551ql8I2NJku2322FYVKUr8ILxpAKIJMnWfIV21WooRhxe2UhMEwYGJao6BTY/nFeZu5LzwCslKaCYHDeVkfD6U9e1z4kHDl6ukz1xr3gOsIQPCqY5k6Xslpkqz3o28zhcBThIGKSEE8N6YQudCYn6Cn7etdpSkqxAAgODVRSNzEPiGY/8Uc2PUlDS21AKKjLgyPAbpHHL71XrYhHrSQ0pJGLGlONIICTrJOhzrPqUn15E2uXCQm/Ulyzh1ACSoELTwVBJSehBChP5qG3zb0vWdpxIzQ5H8qkkj5ii4/Es60gwStQSkxqTiGHz08aE3pd2AM4QChzs8eHTEkgSPBVVY/0tPwOouPD4NF2edxLjkhP/AHFR/wBAqx3paCmxuQYU5hbSTpKuJ6AST0BqoXO/2b+ehQM+oz+hNEtpLzENsg+w2pSv1LIQnxjH51wJ4t2Vei2+DPNsH5STmARug6hIECesRPWtFuBr1dlDj6glZQlInRtAHsjrxPMkchWaX252lobQBihQOHnBG746UeeeU/aAHz2qk+6MkJJH8NPLmpWvCu/hezGJN0FbXei7StSoOCQltByBEmMR4A5nTgatl07PKC/xXA4pOu7up5JSCck68BpQq6EoxvHEns24RI1K1p3wBoYGEA/qqxXQicZhUFWQnWABvK4nI+dNjjTW7yUpexFvfwhY1KU40GcyE5wecEDzFMXq8hWBJcQ04TKcSwgKT72uqSMjTF+O42lKAkokhSTmMjiCgYIymslfeDylqdbUt9SwlteOEIbRkU9nGZPOePnZKdco16bB+addLyXra29LKEuBD/bWhe7+CIaQkgBUrPtZJ0HMd9M3Aqz+rErePbKVhZYRE4lKhJJOuIkGchBqmWK8XbK4HENpKkHLGMQB0zBgcaebvW0P2hWFhC3FytQGQA5xwGVZpKU3uo9RglpNPH8cZP3u8v6/YO3paXXQgQltbONJKRBJxCcRB3oKY86fZv3GzKwcSJSdYVloDpMZx3Gq+3toAkpcs+HCqDgIyIBygjIa8aJXNtMUtuhDZW06N9DqSpskDJQKTuqE6jl0rPLFJv5f2Pro6bV4v+prcv4v+wLtbdpbeW8kZBSgRyw5Ye4xlQm3vdmpaR7I3fFGSh/UPKrKm+O0DiHgJKZJ4KOYn6d0UK2huvC46qJQ44s5cytR886vxz/8zPJZMbhLbLtACye0rLIkZa56jLzrZ9n/AEiJZsjbZAKkNpSTPLKsiFm7JEnOZIPPgMvGnWv4ajpKk92EAn6x5VqUkmyiT5LhtneqX7Ql1H+KhJ7oABjukVCasxwEj3CFyeMTl41AuJlQVMEIK0BzIE4N6SZBzEyBUl+0lu0PMHVC3Gzy3VEYu4xM8jWmM98GgXaFWW2qS6lSZlGvOUuZA9TBFEVXuG0BJErcUMkyrQGEpT7yiogRxzques9ggiZXJE8viV5GB3k1Oudtxu0MPJAWpkglqQDkJIngopJM84rmxTv6H0+J5Z0hy3XM9ZmHUvFbT6sCg2NCDOMqUCZMZRPE6xVlvvaWwmyNWOwNiXFt6pw4SFCMSlRiWTlOmZM8w21W0LtsfK+wKEBISlJOIwCcychJnSgDb6GG3w6kdoQ2WpzGSlBSSOSkqPikVbbkeihhx4YKTLs7tQ36mqzEklhDiHEolQUvEEpUhQyUklRM9M6C3MtTrlmbcQEhCSciDIiAVAaGfpQO6r2UVFaUpCUQFgQN1U5CeJw/SrRdd3KbS65ixqXuoV+Xn01FUZpbItM52oyQVpfuE3kQ2HTpixH9CSJ8TNB78vU4lqMSSnF1Jxq8hu+dFr3tSVtpZHs7ie8Jkq8J+1Vm12I2h0ITopwnEMhEDXl7VYMCvs5jnzZHuJJHa2j3jutk6JmZXPyHcaP7ONpRCBmVDGtR1jOR0Ksh50xeDaM0N+y23A6rWcIPgJ86m3YQpQSU4iqIAMYgBkCeCRW9NyoRvcWa7klbgcISTGEACENxoJEyqJkDuqx2ZkxmT54RryGdRrvsuECQJA8B0SNAKIt10oQS5HSAd72fGlRBEwRpBz4VSb3s5BbVGBYlBWNCU5Aq5GBHlV7t6Z76rF4tApXmQoHFr15GsWo+PQY5JY3cSuW+9lJJ7ZtKjEYuOc55TPsnyFW/0O2AO2i0PFAA7NCQf6v3+VU28WTEkA5AiZAMT5HerT/RepKWVGImDHHSTJ5DPvqmE7o1x1H5F0jPdormbstvfCmsYXgKDxSRjmOGuDXlQ617QFTfYoaQlOYyHL772sVbfSr/ABkK0JyA5yRGnOarTFnSpMq3TIy1OJORB4ZhQ4+7SzytBnqHDpFfZs6itQUNBAGmQMEDzq0dl2mJgkYiFYDwVyB66/PlUN2z4jiiJO71Cjx650++yothTZlba1Zp/OTEeIjxNZ5z3NGKeZzlubB153QVOLDaQpCcKcB4iNUn5z16U3dl0pSpLRlRAKgDw6fmnPhRCwW9QUhttJdIzUACoqMZpAGeFAHiRUiwXiyrGoiYwpEZqJgQEkfEVZRTvJNKgS5jyCAX1NMoQrC44tRwpABO4IBJBw8c+elDrSso1MTBWomVqPAFRzyjM86vd2WZKlp38LmIqWCkEbwGWkpAjv1offnowW4cfrCFEkQAIzUcoSatxauCdS4DCPFMpCkhxSVYgACJCjCVHkD/AHrUq13u+ptLK3AsBZW222QVBatSpQGScyfHplYrw9EloSCtTraW0DmIA4yZpFh2KdRhBUhKnRCBGHADmVKGoyHHOSNK0vU4atUWqTxu12B7P61C1tYuyQMC1wlQJUM/aEDKeoGfGjFyW1orbFpLfZMJhJwZkmMRKhmtRgZdKtdw7FzZ+zcfSGl5wlGJUGSTiUYEgcqULjsNnQXAoY9W+1OIkDTEgaBXyEVieri+EXPLKXMmU965DaHHHktlptRSEo4nPLLnnNHLpfAawHitICphMJOQ6kxT9s2mFpCQ0ktNpVK1EjFOEjCIyHHTgJqo2m8sagoCEJzQngAkzMcScqqluyqmZMr3cIIrtIBVGsugKVzSkSQNB7Yp8oCUFajvKnjoAAIHfApq1o31ECQ4XlDnG5PdMipVqaExHsSAP065dVUPSRQRLbaP8ECCr2ogQkDJA66k1b9nbAEpJAlRCc40jQd2tVuyoBU8qNGsfUqcJg/9tXe5WxgBHKD5zPzrdgi3JDR7CzRPKKkIphun0musi4g2pic/77jVZvey5E9+fKftV1db6R3kUFt9mgiOM/TurNqce6IJIpNmsmMKSfdgiOIHtAedW7Yh5DbG8rPIkjSJiBzgH5ihC7AUoWUwFhBy4Ak6jxER+9EbE1AmYSIIg+yFDl108K4Usv420LGexMEba2yckyFFSsJORA6cuA4aUBYu8hRSrSEkAflkA9MyQBxo+812qt/IymDPEyFeWGfAUwy0FoUCMyBKVHWSQkAjhwy4zpSvLwCc2+yCs7gjJSEc+CoA8vsakWdrs7O5uwpQlI13uniZqTaLKENoPHeJGpJToAePtR3Cm1WYqZSPeJmOAGYKY8QfCq7uq9lPYv0TertPOOvrCHAEobBByJkrM9dwQdMNXW8bis4Q4uzoaxkgqU1hxRO8DGhIJFZ5ZikZK/xB7Y1BHxD5YhVhbv8AfQj8RDVrCUziwQqDoUuRmdfKnzNuSkuDoYp3X10UB60uNWgBCFLCRvlIISo8YwHdHjUi27XqhKkIW0tJMDtC4iYicKxi4n3qPXjdTClBxt15sOCSCI8fZM01dXo9s9qeCPW3goyc0oOmsSgdK1rJBpSmq/guyY3J79y5+wXs9fFuvG0tsiCEEKUrBuI5KWNJyOEE6/KXtJegs9rWGXFOYSc1lJJcUIOYAyAIgRxqzbPXk3d3rNhZaU6QskPktpxFSBBWBB3dMhpFVO77hWlTalgytalHQkkKAJUrQZpVprSSeNy648fZlyeyKm32hxAb7RWkRMJPcRl0zppu6XFqwndJ+LhzJHT9qsdksiSSED2QEgnmZJg8PZjr0qU3YpSoTv8AP8p5c9AKClFdIpeRlXtG9IbBwj8Nsfr9tZ6kAVHVYwDh4JqzJuoKIOYBJAGgmBE8zkAD302bEnBCxlERpPKOXfRc66E3DJlVnbUn2ktZ5aDFiH+WKfFgLiMiApQIBM8QCftUuzWYYQcOHEkDPgnDAB5GVHL+xMuSyHs251CRJ/MJB+1HAt0uQLsh3dZAh8lRGAogjkEFYE/1Hyo5s41LUKyKThKdDKcgVDmRBioNzWUPLWozhC1ZjjBOEdwzV4jlVraswExkTmeuXHyrr4YNO/HguSo6kU5XiiK9FakMLtCQCYEU08zjEhI01OdOCeM/OuKHI1GrCAnbIZUo6QOGoneyqOliEEfEmI0nDBzPPe+R50ecZJ1qNaLMSkRBgg+RE1yc+gUnaKnArd23dIBUqQoqzORmdegiKSGyRi4YkjQaRJ15kjzqwru6UqTORmIyIkf+aW1d4EgkZ5zHEeHSqo/4+SlbJs5srS2sbDa8wpKwojPXIanpNdu5vEtKiIxQf0kYsXnIqzO2BJGElRGRiIGRrwsyYISAmAeau76mitFUgbCvG5kqUMaAqFKAWVqSkSQNBrznhFSmHlfwyEhqCAAIzHvePKjTllxwRJOc8NeVeXYwDBGVWT0SnIu3OqRW7JdhwAK93dHOBA+3zohcS0JtOX+G0tSsshllnRN2wYkxJHd+40oJZbNiUoIThSZCj8ciMzqRH1o6mEljWLGu/wDWX6fFCVym6oDqV2icRBTjK3UqAKXN2YBOqVARlxznTOSwpTkocEKQRvDLGD7STynDINFW7iwqSU8MjJJkR17znUn/AIWApZ+LACdch04cfOsq0kn2qM8k06TArFl7PtOkR8z94qfZ2hCDGgz7xkRnzqc3dxGcg9Ijj89TS02DCAnDICp48+dWLSSTRS4MGKs+FZPuyOGke9HSMXjUU2TGVEiAIkaiE55dDB86OrsUkGOIPHh/Y8hSW7vEnqZjPkRTf8NtE2Ay7bGYk6mJ8TI8anosJTiCYg5joeP7+FTm7DHCpSLOeRHga34dOsaLFGiDdlgDTKUgCc5j7jxFEMU8I+ddQ0RoT4Cu9l1rSkMcxxpS1xEjLnyps15JpqCf/9k=";
+    /* 		$wishcomment = "this is comment";
 
-			$data['wishcomment'] = $wishcomment;
-			$data['wishimage'] = $wishimgage;
-			$data['clientid'] = $clientid;
-			$data['employeeid'] = $employeeid;
-			$data['wishflag'] = $wishflag;
-			$data['createdby'] = $createdby;
-			
-			$wishdata = json_encode($data);
-	*/	
-	$wishcomm = "";
-	//$wishimg = "";
-	$imgname = "";
-	
-	if(!empty($wishdata))
-	{ 
+      $wishimgage ="";      // base 64 data
 
-		$request = json_decode($wishdata, true);
-		//print_r($request);die;
-	
-		$wishcomm = $request["wishcomment"];
+      $data['wishcomment'] = $wishcomment;
+      $data['wishimage'] = $wishimgage;
+      $data['clientid'] = $clientid;
+      $data['employeeid'] = $employeeid;
+      $data['wishflag'] = $wishflag;
+      $data['createdby'] = $createdby;
 
-		$wishimg = !empty($request["wishimage"]) ? $request["wishimage"] : '' ;
-	
-		$clientid = $request["clientid"];
-		$employeeid = $request["employeeid"];
-	
-		$wishflag = $request["wishflag"];
-		$createdby = $request["createdby"];
-		
-		$number = $obj->randomNumber(3);
-		//echo "rand number".$number; die;
-		IF ($wishimg != "")
-			$imgname = $obj->convertIntoImage($wishimg,$number);
-			
-		//echo "image anme".$imgname;
-		$result = $obj->saveWish($wishcomm,$imgname,$clientid,$employeeid,$wishflag,$createdby);
-		echo $result;
-	} 
-	
-	else
-	{
-		$result['status'] =0;
-		$result['msg'] = "invalid json";
-	 echo json_encode($result);
-	}
+      $wishdata = json_encode($data);
+     */
+    $wishcomm = "";
+    //$wishimg = "";
+    $imgname = "";
+
+    if (!empty($jsonArr['clientid'])) {
+
+        $request = $jsonArr;
+        //print_r($request);die;
+
+        $wishcomm = $request["wishcomment"];
+
+        $wishimg = !empty($request["wishimage"]) ? $request["wishimage"] : '';
+
+        $clientid = $request["clientid"];
+        $employeeid = $request["employeeid"];
+
+        $wishflag = $request["wishflag"];
+        $createdby = $request["createdby"];
+
+        $number = $obj->randomNumber(3);
+        $maxid = $obj->maxId();
+        //echo "rand number".$number; die;
+        IF ($wishimg != "")
+            $imgname = $obj->convertIntoImage($wishimg, $number);
+        $fullpath = !empty($imgname) ? dirname(SITE_URL) . "/" . "images/wishimg/" . $imgname : "";
+
+        //echo "thisis full path-".$fullpath;
+        /*         * **********************get keypem****************************** */
+        $googleapiIOSPem = $push->getKeysPem($clientid);
+
+        /*         * ****************** end get key pem *************************** */
+
+        /*         * ********************************* save wish ************************************** */
+        $result = $obj->saveWish($wishcomm, $imgname, $clientid, $employeeid, $wishflag, $createdby);
+
+        /*         * ******************************** end save wish *********************************** */
+
+
+        /*         * ********************* like comment push notification ***************************** */
+        $like = 'LIKE_YES';
+        if (!isset($like) && $like != 'LIKE_YES') {
+            $like = 0;
+            $like_val = '';
+        } else {
+            $like_val = '';
+            $like = 1;
+        }
+
+        $comment = 'COMMENT_YES';
+        if (!isset($comment) && $comment != 'COMMENT_YES') {
+            $comment = 0;
+            $comment_val = '';
+        } else {
+            $comment_val = '';
+            $comment = 1;
+        }
+
+        $PUSH_NOTIFICATION = 'PUSH_YES';
+//    if (!isset($push_noti)) {
+//        $PUSH_NOTIFICATION = 'PUSH_NO';
+//    } else {
+//        $PUSH_NOTIFICATION = 'PUSH_YES';
+//    }
+
+        /*         * **************************end like comment pushnotification ********************** */
+
+        /*         * ***************************************** get user details ***************************** */
+        $username = $user->getUserDetail($clientid, $createdby);
+       //    print_r($username);
+        /*         * ******************************* end get user details *********************************** */
+
+        date_default_timezone_set('Asia/Calcutta');
+        $POST_ID = $maxid;
+        $POST_IMG = "";
+        $POST_TITLE = $wishcomm;
+        $POST_TEASER = "";
+        $POST_CONTENT = substr($username['userName']['firstName'] . ' ' . $username['userName']['lastName'] . " Wished " . '"' . $wishcomm, 0, 30) . '....."';
+        $DATE = date('Y-m-d H:i:s');
+        $FLAG = 19;
+        $flag_name = "Wish : ";
+        $BY = $username['userName']['firstName'] . ' ' . $username['userName']['lastName'];
+
+        /*         * ************************ fet user image *********************************** */
+        $imgdev = "dev";
+        $userimage = $push->getImage($createdby, $imgdev);
+        //print_r($userimage);
+        $image = $userimage[0]['userImage'];
+        $userimg = $image;
+        /*         * ********************************end get user image ***************************** */
+
+        $employeeId = array($employeeid);
+
+        /*         * ************************** get registration token  for sending push **************** */
+        $reg_token = $push->getGCMDetails($employeeId, $clientid);
+        $token1 = json_decode($reg_token, true);
+
+        //echo "registration token ";
+        //print_r($token1);
+        /*         * ***************************** end get registration token  for sending push  ************************** */
+
+        /*         * *******************Create file of user which this post send  start******************** */
+        $val[] = array();
+        foreach ($token1 as $row) {
+            array_push($val, $row["userUniqueId"] . "," . $row["registrationToken"]);
+        }
+
+        $file = @fopen("../send_push_datafile/" . $maxid . ".csv", "w");
+
+        foreach ($val as $line) {
+            @fputcsv($file, @explode(',', $line));
+        }
+        @fclose($file);
+
+        /*         * ******************************************************************************************* */
+
+        $hrimg = $userimg;
+        $sf = "successfully send";
+        $ids = array();
+        $idsIOS = array();
+
+        foreach ($token1 as $row) {
+            if ($row['deviceName'] == 3) {
+                array_push($idsIOS, $row["registrationToken"]);
+            } else {
+                array_push($ids, $row["registrationToken"]);
+            }
+        }
+
+        $data = array('Id' => $POST_ID, 'Title' => $POST_TITLE, 'Content' => $POST_CONTENT, 'SendBy' => $BY, 'Picture' => $hrimg, 'image' => $fullpath, 'Date' => $DATE, 'flag' => $FLAG, 'flagValue' => $flag_name, 'success' => $sf, 'like' => $like_val, 'comment' => $comment_val);
+
+        //print_r($data);
+
+        $device = 'ios';
+        $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'],$device);
+        $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
+
+        $rt = json_decode($revert, true);
+        //$iosrt = json_decode($IOSrevert, true);
+        //print_r($rt);
+        //print_r($iosrt);
+
+        echo $result;
+    } else {
+        $result['status'] = 0;
+        $result['msg'] = "invalid json";
+        echo json_encode($result);
+    }
+}
 ?>

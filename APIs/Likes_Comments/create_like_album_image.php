@@ -26,7 +26,7 @@ if (!empty($jsonArr['clientid'])) {
     $obj = new Like();
 
     extract($jsonArr);
-    $response = $obj->create_Like($clientid, $userid, $albumid, $imageid, $device);
+    $response = $obj->create_Like($clientid, $userid, $albumid, $imageid, $device,$deviceId);
 } else {
     $response['success'] = 0;
     $response['result'] = "Invalid json";

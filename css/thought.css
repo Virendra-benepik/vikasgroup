@@ -32,8 +32,8 @@ font-size:18px;font-weight:500;
     margin-top: -72px;
     /* margin: 26% 0% 0px 18%; */
     margin-right: -150px;
-}}
-.background_iphone_Image{    background: url("../images/mobile.jpg");    width: 82%;    margin-left: 8.77%;}
+}
+.background_iphone_Image{ background: url("../images/mobile.jpg");    width: 82%;    margin-left: 8.77%;}
 
 .androidContentTab{ 
    position: absolute;
@@ -47,9 +47,6 @@ font-size:18px;font-weight:500;
     border: 1px solid #dcdcdc;
   
 }
-
-}
-
 
 .iphoneContentTab{position: absolute;
     border: 1px solid #dcdcdc;

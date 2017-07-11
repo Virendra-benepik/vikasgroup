@@ -14,15 +14,15 @@ class Like {
         $this->DB = $db->getConnection_Communication();
     }
 
-    function create_Like($clientid, $userid, $albumid, $imageid, $device) {
+    function create_Like($clientid, $userid, $albumid, $imageid, $device,$deviceId) {
 
         date_default_timezone_set('Asia/Calcutta');
         $cd = date("Y-m-d H:i:s");
         $status = 1;
 
         try {
-            $query = "insert into Tbl_Analytic_AlbumLike(clientId,userId,albumId,imageId,createdDate,status,deviceName)
-             values(:cli,:userid,:albumid,:imgid,:cd,:sta,:dev)";
+            $query = "insert into Tbl_Analytic_AlbumLike(clientId,userId,albumId,imageId,createdDate,status,deviceName,deviceId)
+             values(:cli,:userid,:albumid,:imgid,:cd,:sta,:dev,:did)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
@@ -31,6 +31,7 @@ class Like {
             $stmt->bindParam(':cd', $cd, PDO::PARAM_INT);
             $stmt->bindParam(':sta', $status, PDO::PARAM_INT);
             $stmt->bindParam(':dev', $device, PDO::PARAM_STR);
+              $stmt->bindParam(':did', $deviceId, PDO::PARAM_STR);
             if ($stmt->execute()) {
 
                 $query2 = "select count(imageId) as total_likes from Tbl_Analytic_AlbumLike where albumId =:albumid AND imageId = :imgid AND status = :sta AND clientId=:cli";
@@ -89,11 +90,10 @@ class Like {
 
     /*     * ******************************* get total like and comment ************************************************* */
 
-    function getTotalLikeANDcomment($clientid, $albumid, $imageid) {
+    function getTotalLikeANDcomment($clientid, $albumid, $imageid,$imgpath='') {
         $status = 1;
 
-        $path = dirname(SITE_URL);
-        
+        $path = ($imgpath  == '')?dirname(SITE_URL)."/":site_url;
         try {
             $query = "select *,DATE_FORMAT(createdDate,'%d %b %Y %h:%i %p') as likeDate from Tbl_Analytic_AlbumLike where albumId =:albumid AND imageId = :imgid and clientId=:cli AND status = :status";
             $stmt = $this->DB->prepare($query);
@@ -119,7 +119,7 @@ class Like {
                     $employeeid = $row["userId"];
                      
                  
-                    $query = "select Tbl_EmployeeDetails_Master.*,Tbl_EmployeePersonalDetails.*, IF(Tbl_EmployeePersonalDetails.userImage IS NULL OR Tbl_EmployeePersonalDetails.userImage='', '', if(Tbl_EmployeePersonalDetails.linkedIn = '1',Tbl_EmployeePersonalDetails.userImage, CONCAT('$path/',Tbl_EmployeePersonalDetails.userImage))) as userImage from Tbl_EmployeeDetails_Master join Tbl_EmployeePersonalDetails on Tbl_EmployeeDetails_Master.employeeId=Tbl_EmployeePersonalDetails.employeeId where Tbl_EmployeeDetails_Master.employeeId=:empid";
+                    $query = "select Tbl_EmployeeDetails_Master.*,Tbl_EmployeePersonalDetails.*, IF(Tbl_EmployeePersonalDetails.userImage IS NULL OR Tbl_EmployeePersonalDetails.userImage='', '', if(Tbl_EmployeePersonalDetails.linkedIn = '1',Tbl_EmployeePersonalDetails.userImage, CONCAT('$path',Tbl_EmployeePersonalDetails.userImage))) as userImage from Tbl_EmployeeDetails_Master join Tbl_EmployeePersonalDetails on Tbl_EmployeeDetails_Master.employeeId=Tbl_EmployeePersonalDetails.employeeId where Tbl_EmployeeDetails_Master.employeeId=:empid";
                     $stmt = $this->DB->prepare($query);
                     $stmt->bindParam(':empid', $employeeid, PDO::PARAM_STR);
                     $stmt->execute();

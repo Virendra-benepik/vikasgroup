@@ -59,7 +59,7 @@ if ($jsonArr) {
         $sub = "Feedback of Merchant";
         $msg.="Dear " . $name . ",";
         $msg.="<br/><br/>";
-        $msg.="<br/>Thank you for providing merchant feedback to $name. We will act on your feedback accordingly.";
+        $msg.="<br/>Thank you for providing merchant feedback to Benepik. We will act on your feedback accordingly.";
         $msg.="<br/><br/>";
         $msg.="<br/>For your information, here is a copy of your message:";
         $msg.="<br/><br/>";
@@ -71,23 +71,26 @@ if ($jsonArr) {
         $msg.="<br/><br/>";
         $msg.="Thank You, <br/> Team $progn";
 
-        $from = "From: " . $progn . "<" . $dedi . ">";
+        $from = $dedi;
 
         if ($mail != "") {
             $mesg->forMail($mail, $sub, $msg, $from);
         }
-
+ $from1 = $dedi;
         $sub2 = "Merchant Feedback";
 
-        $adminMailid = "webveeru@gmail.com,info@benepik.com,benepik@gmail.com";
-        $msg2.="Merchant Name : " . $mname;
+        $adminMailid = "sau_org@yahoo.co.in.com,info@benepik.com,benepik@gmail.com";
+       
+        $msg2.="Dear Sir,";
+        $msg2.="<br/><br/>Merchant feedback given below";
+        $msg2.="<br/><br/>Merchant Name : " . $mname;
         $msg2.="<br/>Message : " . $message;
         $msg2.="<br/>Name : " . $name . ",";
         $msg2.="<br/>Email : " . $mail;
         $msg2.="<br/><br/><br/>";
         $msg2.="Thank You, <br/> Team $progn";
 
-        $mesg->forMailToSir($adminMailid, $sub2, $msg2, $from);
+        $mesg->forMailToSir($adminMailid, $sub2, $msg2, $from1);
     }
     echo json_encode($result);
 }

@@ -8,10 +8,10 @@ $clientid = $_REQUEST['clientid'];
 
 $result = $obj->getClientDemoGraphy($clientid);
 echo $_GET['callback'].'('.$result.')';
-/*$result1 = json_decode($result);
-echo "<pre>";
-print_r($result1);
-echo "</pre>";*/
+//$result1 = json_decode($result);
+//echo "<pre>";
+//print_r($result1);
+//echo "</pre>";
 }
 else
 {

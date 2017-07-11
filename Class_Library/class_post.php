@@ -17,7 +17,7 @@ class Post {
         $imagevalue = filesize($source_url);
         $valueimage = $imagevalue / 1024;
 
-        if ($valueimage > 40) {
+        if ($valueimage > 200) {
             $info = getimagesize($source_url);
 
             if ($info['mime'] == 'image/jpeg')
@@ -341,6 +341,66 @@ class Post {
             echo $e;
         }
     }
+
+/************************ update post *****************************/	
+function updatePost($cid,$pid,$title,$content, $POST_IMG, $post_date, $USERID , $leadername='')
+{
+	
+if($leadername=='')
+	{
+		$teaser='';
+	}
+	else{
+		$teaser = $leadername;
+	}
+	
+ $this->client = $cid;
+ $this->id = $pid;
+ $this->title = $title;
+ $this->img = $POST_IMG;
+ $this->pdate = $post_date;
+		try
+		{
+                 $qu1 = "update Tbl_C_WelcomeDetails set title=:ptitle,image=:pimg, updatedDate =:cd,updatedBy=:by where id =:pid and clientId =:cid";
+                 $stmt1 = $this->DB->prepare($qu1);
+                 $stmt1->bindParam(':cid',$this->client, PDO::PARAM_STR);
+                 $stmt1->bindParam(':pid',$this->id, PDO::PARAM_STR);
+                 $stmt1->bindParam(':ptitle',$this->title, PDO::PARAM_STR);
+                 $stmt1->bindParam(':pimg',$this->img, PDO::PARAM_STR);
+                 $stmt1->bindParam(':cd',$this->pdate, PDO::PARAM_STR);
+                 $stmt1->bindParam(':by',$USERID, PDO::PARAM_STR);  
+                 $stmt1->execute();        
+                  /*********************************************/             
+		         $qu = "update Tbl_C_PostDetails set post_title=:ptitle,post_content=:content,post_img =:pimg, updatedDate =:cd,updatedBy=:by,postTeaser=:teaser where post_id =:pid and clientId =:cid";
+                 $stmt = $this->DB->prepare($qu);
+                 $stmt->bindParam(':cid',$this->client, PDO::PARAM_STR);
+                 $stmt->bindParam(':pid',$this->id, PDO::PARAM_STR);
+                 $stmt->bindParam(':ptitle',$this->title, PDO::PARAM_STR);
+                 $stmt->bindParam(':pimg',$this->img, PDO::PARAM_STR);
+                 $stmt->bindParam(':content',$content, PDO::PARAM_STR);
+                 $stmt->bindParam(':cd',$this->pdate, PDO::PARAM_STR);
+                 $stmt->bindParam(':by',$USERID, PDO::PARAM_STR);
+				  $stmt->bindParam(':teaser',$teaser, PDO::PARAM_STR);
+                if($stmt->execute())
+                {   
+                $response['success'] = 1;
+                $response['msg'] = 'Post Updated Successfully';  
+                }
+                else 
+				{
+				$response['success'] = 0;
+                $response['msg'] = 'Post not Updated';
+				}   
+		}
+		catch(PDOException $ex)
+		{
+		 echo $ex;
+                 $response['success'] = 0;
+                $response['msg'] = 'there is some error please contact info@benepik.com'.$ex;
+		}
+      return($response);
+}	
+/********************** end update post ***************************/
 
 }
 

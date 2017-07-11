@@ -60,7 +60,8 @@ class GetGroupData
            $stmt->bindParam(':cid',$this->clientid, PDO::PARAM_STR);
 	   $stmt->execute();
 	    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	  
+            //echo "<pre>";
+           // print_r($rows);
 	   $count = count($rows);
            $response['success'] = 1;
 	    $response['posts'] = array();

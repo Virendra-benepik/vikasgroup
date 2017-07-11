@@ -14,13 +14,13 @@ class Like {
         $this->DB = $db->getConnection_Communication();
     }
 
-    function create_Like($clientid, $pid, $likby, $flag, $device) {
+    function create_Like($clientid, $pid, $likby, $flag, $device,$deviceId) {
         date_default_timezone_set('Asia/Calcutta');
         $cd = date("Y-m-d H:i:s");
 
         try {
-            $query = "insert into Tbl_Analytic_PostLike(clientId,postId,likeBy,likeDate,flagType,device)
-             values(:cli,:pt,:li,:cd,:flag,:device)";
+            $query = "insert into Tbl_Analytic_PostLike(clientId,postId,likeBy,likeDate,flagType,device,deviceId)
+             values(:cli,:pt,:li,:cd,:flag,:device,:did)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':pt', $pid, PDO::PARAM_STR);
@@ -28,6 +28,7 @@ class Like {
             $stmt->bindParam(':cd', $cd, PDO::PARAM_STR);
             $stmt->bindParam(':flag', $flag, PDO::PARAM_STR);
             $stmt->bindParam(':device', $device, PDO::PARAM_STR);
+            $stmt->bindParam(':did', $deviceId, PDO::PARAM_STR);
             if ($stmt->execute()) {
 
                 $query2 = "select count(postId) as total_likes from Tbl_Analytic_PostLike where postId =:pi and clientId=:cli";
@@ -108,7 +109,7 @@ class Like {
                     $rows = $stmt->fetch(PDO::FETCH_ASSOC);
 
                     $post["name"] = $rows["firstName"];
-                    $post["userImage"] = $path . $rows["userImage"];
+                    $post["userImage"] = ($rows["userImage"] == "")?"":$path . $rows["userImage"];
                     $post["likeDate"] = $row["likeDate"];
                     $post["clientId"] = $row["clientId"];
                     array_push($response["Posts"], $post);

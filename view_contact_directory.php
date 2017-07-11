@@ -1,29 +1,9 @@
 <?php include 'navigationbar.php';?>
-		<?php include 'leftSideSlide.php';?>
+<?php include 'leftSideSlide.php';?>
 	                             
 
 	<!----------------------------------------------------------->
-	<?php
-/*	if(isset($_GET['cp_id']))
-	{
-	$val = $_GET['cp_id'];
 	
-	$string = "cpid=$val";
-$sub_req_url ="http://admin.benepik.com/employee/virendra/benepik_admin/lib/link_delete_contact_directory.php";
-$ch = curl_init($sub_req_url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-curl_setopt($ch, CURLOPT_POSTFIELDS,  "$string");
-curl_setopt($ch, CURLOPT_HEADER, 0);
-curl_setopt($ch, CURLOPT_POST, 1);
-
-$resp = curl_exec($ch);
-curl_close($ch);
-$getval1 = json_decode($resp,true);
-$msg = $getval1['message'];
-echo "<script>alert('$msg')</script>";
-echo "<script>window.location='view_contact_directory.php'</script>";
-	}*/
-	?>
 	
 <?php
 session_start();
@@ -70,19 +50,12 @@ margin-top:60px !important;
                                 </div>
   
                                 <div class="card-body">
-                                    <table class="datatable table table-responsive" id="myTable" cellspacing="0" width="100%" style="border-bottom-width: 2px;
-    border-bottom-style: solid;
-    
-    width: 100%;
-    padding: 0px 0px 15px 0px;
-    background: #DDD;">
-                                        <thead style="    background: #fff;
-    
-    letter-spacing: 0.5px;
-    font-family: sans-serif;">
+                                    <table class="datatable table table-responsive" id="myTable" cellspacing="0" width="100%">
+                                        <thead>
                                             <tr>
                                                 <th>Image</th>
                                                 <th>Name</th>
+                                                 <th>Company</th>
                                                 <th>Location</th>
                                                 <th>Department</th>
                                                   <th>Contact No.(Office)</th>
@@ -95,6 +68,7 @@ margin-top:60px !important;
                                             <tr>
                                              <th>Image</th>
                                                 <th>Name</th>
+                                                <th>Company</th>
                                                 <th>Location</th>
                                                 <th>Department</th>
                                                  <th>Contact No.(Office)</th>
@@ -109,12 +83,11 @@ margin-top:60px !important;
                                      for($i=0; $i<$count; $i++)
                                               {
                                      $name = $getval['posts'][$i]['userName'];
-
                                      ?>       	
-					      <tr style="background-color: rgba(221, 221, 221, 0.49);">
-                                              <td><img src="<?php echo $path.$getval['posts'][$i]['userImage']; ?>"class="img img-circle img-responsive"  onerror='this.src="images/u.png"' id="news_images2" /></td>
+					      <tr>
+                                              <td><img src="<?php echo $getval['posts'][$i]['imgPath']; ?>"class="img img-circle img-responsive" onerror='this.src="images/u.png"' id="news_images2" /></td>
                                                 <td class="padding_right_px"><?php echo $name; ?></td>
-                                                
+                                                 <td class="padding_right_px"><?php echo $getval['posts'][$i]['companyName']; ?></td>
                                                  <td class="padding_right_px"><?php echo $getval['posts'][$i]['locationName']; ?></td>
                                                  <td class="padding_right_px"><?php echo $getval['posts'][$i]['departmentName']; ?></td>
                                                  <td class="padding_right_px"><?php echo $getval['posts'][$i]['contactNoOffice']; ?></td>

@@ -13,7 +13,7 @@ class Comment {
         $this->DB = $db->getConnection_Communication();
     }
 
-    function create_Comment($clientid, $albumid, $imageid, $employeeid, $comment, $flag, $device) {
+    function create_Comment($clientid, $albumid, $imageid, $employeeid, $comment, $flag, $device,$deviceId) {
 
         date_default_timezone_set('Asia/Calcutta');
 
@@ -21,8 +21,8 @@ class Comment {
         $status = 1;
 
         try {
-            $query = "insert into Tbl_Analytic_AlbumComment(clientId,userId,albumId,imageId,comments,createdDate,flag,status,deviceName)
-            values(:cli,:userid,:albumid,:imgid,:comment,:cd,:flag,:status,:dev)";
+            $query = "insert into Tbl_Analytic_AlbumComment(clientId,userId,albumId,imageId,comments,createdDate,flag,status,deviceName,deviceId)
+            values(:cli,:userid,:albumid,:imgid,:comment,:cd,:flag,:status,:dev,:did)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':albumid', $albumid, PDO::PARAM_INT);
@@ -33,6 +33,7 @@ class Comment {
             $stmt->bindParam(':dev', $device, PDO::PARAM_STR);
             $stmt->bindParam(':cd', $cd, PDO::PARAM_STR);
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            $stmt->bindParam(':did', $deviceId, PDO::PARAM_INT);
 
 
             if ($stmt->execute()) {
@@ -120,10 +121,11 @@ class Comment {
         }
     }
 
-    function Comment_display($clientid, $albumid, $imageid) {
+    function Comment_display($clientid, $albumid, $imageid,$imgpath='') {
         $status = 1;
-        $path = dirname(SITE_URL);
-      //  echo $path;
+		
+		$path = ($imgpath  == '')?dirname(SITE_URL)."/":site_url;
+		
         try {
             $query = "select *,DATE_FORMAT(createdDate,'%d %b %Y %h:%i %p') as commentDate from Tbl_Analytic_AlbumComment where albumId =:albumid AND imageId = :imgid and clientId=:cli and 	status=:status order by commentId desc";
             $stmt = $this->DB->prepare($query);
@@ -167,7 +169,7 @@ class Comment {
                     $employeeid = $row["userId"];
 
 
-                    $query = "select Tbl_EmployeeDetails_Master.*,Tbl_EmployeePersonalDetails.*,IF(Tbl_EmployeePersonalDetails.userImage IS NULL OR Tbl_EmployeePersonalDetails.userImage='', '', if(Tbl_EmployeePersonalDetails.linkedIn = '1',Tbl_EmployeePersonalDetails.userImage, CONCAT('$path/',Tbl_EmployeePersonalDetails.userImage))) as userImage from Tbl_EmployeeDetails_Master join Tbl_EmployeePersonalDetails on Tbl_EmployeeDetails_Master.employeeId=Tbl_EmployeePersonalDetails.employeeId where Tbl_EmployeeDetails_Master.employeeId=:empid";
+                    $query = "select Tbl_EmployeeDetails_Master.*,Tbl_EmployeePersonalDetails.*,IF(Tbl_EmployeePersonalDetails.userImage IS NULL OR Tbl_EmployeePersonalDetails.userImage='', '', if(Tbl_EmployeePersonalDetails.linkedIn = '1',Tbl_EmployeePersonalDetails.userImage, CONCAT('$path',Tbl_EmployeePersonalDetails.userImage))) as userImage from Tbl_EmployeeDetails_Master join Tbl_EmployeePersonalDetails on Tbl_EmployeeDetails_Master.employeeId=Tbl_EmployeePersonalDetails.employeeId where Tbl_EmployeeDetails_Master.employeeId=:empid";
                     $stmt = $this->DB->prepare($query);
                     $stmt->bindParam(':empid', $employeeid, PDO::PARAM_STR);
                     $stmt->execute();
@@ -196,6 +198,7 @@ class Comment {
             $query = "SELECT * FROM Tbl_Analytic_AlbumComment WHERE clientId=:cli and albumId=:aId and imageId=:imageId";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $clientId, PDO::PARAM_STR);
+            $stmt->bindParam(':aId', $postId, PDO::PARAM_STR);
             $stmt->bindParam(':aId', $postId, PDO::PARAM_STR);
             $stmt->bindParam(':imageId', $imageId, PDO::PARAM_STR);
             $stmt->execute();

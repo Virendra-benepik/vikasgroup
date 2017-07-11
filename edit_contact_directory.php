@@ -36,22 +36,23 @@ function editcontact()
     var atpos = x.indexOf("@");
     var dotpos = x.lastIndexOf(".");
 	
-	if(location.value == 0)
+	if(designation.value == "")
 	{
-	alert("Please Select Location");
-	location.focus();
+	alert("Please Enter Designation");
+	designation.focus();
 	return false;
 	}
+	
 	if(department.value == 0)
 	{
 	alert("Please Select Department");
 	department.focus();
 	return false;
 	}
-	if(designation.value == "")
+	if(location.value == 0)
 	{
-	alert("Please Enter Designation");
-	designation.focus();
+	alert("Please Select Location");
+	location.focus();
 	return false;
 	}
 	if(contact_personal.value == "")
@@ -72,13 +73,14 @@ function editcontact()
 	contact_personal.focus();
 	return false;
 	}
-		
+	
 	if(contact_office.value == "")
 	{
-	alert("Please Enter Office Contact Number");
+	alert("Please Enter Office Number");
 	contact_office.focus();
 	return false;
 	}
+		
 	if(isNaN(contact_office.value))
 	{
 	alert("Please Enter valid Office Number");
@@ -108,7 +110,7 @@ function editcontact()
 }
 
 function check() {
-        if (confirm('Are You Sure, You want to Add this Contact?')) {
+        if (confirm('Are You Sure, You want to Update this Contact?')) {
             return true;
         } else {
             return false;
@@ -185,15 +187,33 @@ $count  = count($val['posts']);
     margin: auto;"><h3><strong>Edit Contact Directory</strong></h3><hr>
     
       <form method="post" name="editcontactperson" action="Link_Library/link_update_contact_directory.php" onsubmit="return check()">
-                                        <div class="form-group col-sm-4">
+                                        <div class="row">
+										<div class="form-group col-sm-6">
                                             <label for="exampleInputEmail1">Employee Username</label>
                                             <input style="color:#2d2a3b;" type="hidden" name="idcontact" value="<?php echo $_GET['contactid'];?>" />
                                             <input style="color:#2d2a3b;"type="hidden" name="idclient" value="<?php echo $client_id; ?>" />
                                             <input style="color:#2d2a3b;" type="text" name="employeeCode" class="form-control" id="exampleInputEmail1" value="<?php echo $output1['userName']; ?>" readonly/>
                                         </div>
-                                        <div class="form-group col-sm-4">
+										<div class="form-group col-sm-6">
+                                            <label for="exampleInputdesignation">Designation<span style="color:red">*</span></label>
+                                            <input style="color:#2d2a3b;"type="text" name="designation" class="form-control" id="exampleInputdesignation" placeholder="Designation" value="<?php echo $output1['designation'];?>">
+                                        </div>
+										</div>
+										
+                                        
+										<div class="row" style="margin-top:10px;">
+                                         <div class="form-group col-sm-6">
+                                            <label for="exampleInputEmail1">Select Department<span style="color:red">*</span></label>
+                                           <select name='department' id='departmentid' style="width:100%;" class="form-control">
+                          <option value="<?php echo $output1['deptId']; ?>"><?php echo $output1['departmentName']; ?></option>
+                                            
+                                            </select>
+<div id="departmentsdisplay"></div>
+                                        </div>
+										
+										<div class="form-group col-sm-6">
                                             <label for="exampleInputPassword1">Select Location<span style="color:red">*</span></label>
-                                            <select name='location' id='location' style="width:300px;" id="sel_location">
+                                            <select name='location' id='location' id="sel_location" style="width:100%;" class="form-control">
                                             <option value="<?php echo $output1['locationID']; ?>"><?php echo $output1['locationName']; ?></option>
                                            <?php
                                            for($r=0;$r<$count;$r++)
@@ -207,37 +227,32 @@ if($val['posts'][$r]['locationName']!=$output1['locationName'])
                                             </select>
                                             
                                         </div>
-
-                                         <div class="form-group col-sm-4">
-                                            <label for="exampleInputEmail1">Select Department<span style="color:red">*</span></label>
-                                           <select name='department' id='departmentid' style="width:300px;">
-                          <option value="<?php echo $output1['deptId']; ?>"><?php echo $output1['departmentName']; ?></option>
-                                            
-                                            </select>
-<div id="departmentsdisplay"></div>
-                                        </div>
-				    <div class="form-group col-sm-12">
-                                            <label for="exampleInputdesignation">Designation<span style="color:red">*</span></label>
-                                            <input style="color:#2d2a3b;"type="text" name="designation" class="form-control" id="exampleInputdesignation" placeholder="Designation" value="<?php echo $output1['designation'];?>">
-                                        </div>
-				<div class="form-group col-sm-12">
+				    </div>
+				<div class="row" style="margin-top:10px;">
+				<div class="form-group col-sm-6">
                                             <label for="exampleInputEmail1">Personal Contact No.<span style="color:red">*</span></label>
 <input style="color:#2d2a3b;"type="text" name="personalMobNo" class="form-control" id="exampleInputEmail1" placeholder="Add Contact No." value="<?php echo $output1['contactNoPersonal']; ?>" >
                                         </div>
-				<div class="form-group col-sm-12">
+				<div class="form-group col-sm-6">
                                             <label for="exampleInputEmail1">Office Contact No.<span style="color:red">*</span></label>
 <input style="color:#2d2a3b;" type="text" name="officeMobNo" class="form-control" id="exampleInputEmail1" placeholder="Add Contact No." value="<?php echo $output1['contactNoOffice']; ?>" >
                                         </div>
-					<div class="form-group col-sm-12">
+										</div>
+					<div class="row" style="margin-top:10px;">
+					<div class="form-group col-sm-6">
                                             <label for="exampleInputEmail1">Email Id<span style="color:red">*</span></label>
                                             <input style="color:#2d2a3b;" type="text" name="emailId" class="form-control" id="exampleInputEmail1" placeholder="Add Email Id" value="<?php echo $output1['emailId']; ?>">
                                         </div>  
-                                        
+                                        <div class="form-group col-sm-6"></div>
+					</div>
+					<div class="row" style="margin-top:10px;">
                                         <div class="form-group col-sm-12">
                                        <center> <button type="submit" name="user_form" class="btn btn-success" onclick="return editcontact();"/>Submit</button></center>
 										</div>
+										</div>
                                     </form>
-                </div>
+                
+				</div>
                 
                 
       <?php

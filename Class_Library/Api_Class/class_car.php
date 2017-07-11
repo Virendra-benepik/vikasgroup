@@ -94,7 +94,7 @@ class Car {
     function GetCars($clientid, $employeeid) {
 
         try {
-            $query = "select Tbl_EmployeeCarDetails.* from Tbl_EmployeeCarDetails join Tbl_EmployeeDetails_Master on Tbl_EmployeeCarDetails.employeeId = Tbl_EmployeeDetails_Master.employeeId where Tbl_EmployeeDetails_Master.clientId=:cli and Tbl_EmployeeDetails_Master.employeeId=:empid and Tbl_EmployeeCarDetails.clientId=:cli order by Tbl_EmployeeCarDetails.autoId desc";
+            $query = "select Tbl_EmployeeCarDetails.*,DATE_FORMAT(Tbl_EmployeeCarDetails.insertedDate,'%d %b %Y %h:%i %p') as insertedDate from Tbl_EmployeeCarDetails join Tbl_EmployeeDetails_Master on Tbl_EmployeeCarDetails.employeeId = Tbl_EmployeeDetails_Master.employeeId where Tbl_EmployeeDetails_Master.clientId=:cli and Tbl_EmployeeDetails_Master.employeeId=:empid and Tbl_EmployeeCarDetails.clientId=:cli order by Tbl_EmployeeCarDetails.autoId desc";
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':empid', $employeeid, PDO::PARAM_STR);

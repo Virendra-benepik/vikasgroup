@@ -36,30 +36,7 @@ $value = json_decode($result, true);
                     <span class="glyphicon glyphicon-thumbs-up"></span> Likes
                 </button>
                 <?php
-/*
-				//                require_once('Class_Library/class_post_like.php');
-//                $object = new Like();
-//                $val = $object->like_display($postId);
-//                $val1 = json_decode($val, true);
-//                echo $val1;
-                
-                  $postid = $_GET['idpost'];
-                  $string = "post_id=$postid";
-                  //$sub_req_url = "http://thomasinternational.benepik.com/webservices/communication_api/like_display.php";
-                  $sub_req_url = SITE."Link_Library/android_like_display.php";
-                  $ch = curl_init($sub_req_url);
-                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-                  curl_setopt($ch, CURLOPT_POSTFIELDS,  "$string");
-                  curl_setopt($ch, CURLOPT_HEADER, 0);
-                  curl_setopt($ch, CURLOPT_POST, 1);
 
-                  $resp = curl_exec($ch);
-                  curl_close($ch);
-                  $getcat = json_decode($resp,true);
-//                  echo'<pre>';print_r($getcat);
-                  $val = $getcat['total_like'];
-                  echo $val;
-*/
 				  $object = new Like();
                   $val = $object->likeView($postId,$clientid,$flag);
                   $getcat = json_decode($val, true);
@@ -71,26 +48,7 @@ $value = json_decode($result, true);
                     <span class="glyphicon glyphicon-comment"></span> Comments
                 </button>
                 <?php
-/*                $postid = $_GET['idpost'];
-                $string = "post=$postid";
 
-                //$sub_req_url ="http://thomasinternational.benepik.com/webservices/communication_api/c//omment_display.php";
-                $sub_req_url = SITE . "Link_Library/android_comment_display.php";
-                $ch = curl_init($sub_req_url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, "$string");
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_setopt($ch, CURLOPT_POST, 1);
-
-                $resp = curl_exec($ch);
-                curl_close($ch);
-                $get = json_decode($resp, true);
-                //echo"<pre>";
-                //print_r($get);
-                $resul = count($get['posts']);
-
-                echo $resul;
-*/
 				$objt = new Comment();
                 $val = $objt->CommentView($postId,$clientid,$flag);
                 $get = json_decode($val, true);

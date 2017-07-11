@@ -19,36 +19,30 @@ $value = json_decode($result, true);
 
             <div class="row">
                 <div class=" col-sm-4 col-md-4 col-lg-4"></div>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"> 
-
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="border: 1px solid #f1f1f0;" > 
+		<div class="row" style="margin-top:10px;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+			
+					<?php echo "<div style='font-size: 11px; font-weight: bold;color: gray; margin-bottom: 1%;'>" . $value['posts'][0]['created_date'] . "</div>"; ?>
+								
                     <?php
                     echo "<h4>" . $value['posts'][0]['post_title'] . "</h4>";
                     ?>
 
-                    <img src="<?php echo $path . $value['posts'][0]['post_img']; ?>"class="img img-responsive" onerror='this.src="images/u.png"'/>
-
-                    <?php echo "<br><div style='padding-left:20px;font-weight:bold;'>" . $value['posts'][0]['created_date'] . "</div><br><br>"; ?>
-
+                   <!-- <img style="margin-bottom:10px;" src="<?php echo $path . $value['posts'][0]['post_img']; ?>"class="img img-responsive" onerror='this.src="images/u.png"'/>-->
+					
+					<img src="<?php echo $path . $value['posts'][0]['post_img']; ?>"class="img img-responsive" style="box-shadow: gray 0px -1px 10px 1px;max-height: 250px; width: 100%; margin-bottom:10px;" onerror='this.src="images/u.png"'/>
+					
                     <?php
 					$str = $value['posts'][0]['post_content']; 
 					$word = wordwrap($str,50,"<br>\n",TRUE);
                     echo "<p style='text-align: justify'>" . $word . "</p><br>";
                     ?>
-
-
-
-
-                </div>
-                <div class=" col-sm-4 col-md-4 col-lg-4"></div>
-            </div>
-
-
-
-
-            <div class="row">
-                <div class=" col-sm-4 col-md-4 col-lg-4"></div>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"> 
-                    <div class="row">
+			</div>
+		</div>
+		
+		<!---------------------- like comment ------------------------>
+		<div class="row">
 
 
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -103,18 +97,10 @@ $value = json_decode($result, true);
                         </div>
 
                     </div>
-
-                </div>
-                <div class=" col-sm-4 col-md-4 col-lg-4"></div>
-            </div>
-
-
-
-            <div class="row">
-                <div class=" col-sm-4 col-md-4 col-lg-4"></div>
-                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"> 
-
-                    <div class="row">
+		<!------------------ / like comment -------------------------->
+		
+		<!----------------------- total comment ---------------------->
+		 <div class="row">
 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
@@ -146,14 +132,9 @@ $value = json_decode($result, true);
 
 
                     </div>
-
-                </div>
-                <div class=" col-sm-4 col-md-4 col-lg-4"></div>
-            </div>
-
-
-
-            <!--**********pop up for like (start)***********-->
+		<!----------------------- / total comment -------------------->
+		
+		<!--**********pop up for like (start)***********-->
 
             <div class="modal fade" id="myModalLikepop" role="dialog">
                 <div class="modal-dialog ">
@@ -191,12 +172,11 @@ $value = json_decode($result, true);
                     </div>
                 </div>
             </div>
-
-
             <!--**********pop up for like (end)***********-->
-
-
-
+        </div>
+		
+                <div class=" col-sm-4 col-md-4 col-lg-4"></div>
+            </div>
 
         </div>
     </div>

@@ -99,7 +99,8 @@ if ((!class_exists('Reading') && include("../../Class_Library/class_reading.php"
             $PUSH_NOTIFICATION = 'PUSH_YES';
         }
 
-        $userimage = $push->getImage($USERID);
+		$devname = "dev";
+        $userimage = $push->getImage($USERID,$devname);
 
         $image = $userimage[0]['userImage'];
 
@@ -132,19 +133,22 @@ $teaser = "";
           echo "</pre>"; */
 
 
-        /***************************get group admin uuid  form group admin table if user type not= all *************************** */
+        /*************get group admin uuid  form group admin table if user type not= all *********************** */
+        
+        
         if ($User_Type != 'All') {
-            $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
+            //$groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
 
 
-            $adminuuid = json_decode($groupadminuuid, true);
+            //$adminuuid = json_decode($groupadminuuid, true);
             /* echo "hello groupm admin id";
               echo "<pre>";
               print_r($adminuuid)."<br/>";
               echo "</pre>";
               "--------------all employee id---------"; */
 
-            $allempid = array_merge($token, $adminuuid);
+          //  $allempid = array_merge($token, $adminuuid);
+            $allempid = array_merge($token);
             /* echo "<pre>";
               print_r($allempid);
               echo "<pre>";
@@ -160,8 +164,8 @@ $teaser = "";
             $allempid1 = $token;
         }
 
-        /*         * ******* insert into post sent to table for analytic sstart************ */
-
+        /******** insert into post sent to table for analytic sstart************ */
+        
         $total = count($allempid1);
         /* echo "<pre>";
           print_r($allempid1); die;
@@ -203,7 +207,7 @@ $teaser = "";
         
         if ($PUSH_NOTIFICATION == 'PUSH_YES') 
             {
-            $hrimg = dirname(SITE_URL) . $image;
+            $hrimg = $image;
             $sf = "successfully send";
             $ids = array();
             $idsIOS = array();
@@ -219,16 +223,24 @@ $teaser = "";
             $IOSrevert = $push->sendAPNSPush($data, $idsIOS, $googleapiIOSPem['iosPemfile'],$device);
             $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
 
+			//print_r($data);
+			
             $rt = json_decode($revert, true);
             if ($rt['success'] == 1) {
-                $response = $revert;
+                //$response = $revert;
+			   $response['success'] = 1;
+			   $response['msg'] = "Post send";
+			   $response = json_encode($response);
             }
         } else {
-            $response = $rt;
+            //$response = $rt;
+			$response['success'] = 0;
+			$response['msg'] = "There is some Error , please contact info@benepik.com";
+			$response = json_encode($response);
         }
     } else {
         $response['success'] = 0;
-        $response['result'] = "Invalid json";
+        $response['msg'] = "Invalid json";
 
         $response = json_encode($response);
     }

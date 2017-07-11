@@ -25,9 +25,9 @@ $jsonArr = json_decode(file_get_contents("php://input"), true);
 if (!empty($jsonArr['clientid'])) {
     $obj = new Comment();
 //$read = new Reading();
-
+$imagepath = site_url;
     extract($jsonArr);
-    $response = $obj->Comment_display($clientid,$albumid,$imageid);
+    $response = $obj->Comment_display($clientid,$albumid,$imageid,$imagepath);
 } else {
     $response['success'] = 0;
     $response['result'] = "Invalid json";

@@ -27,14 +27,15 @@ if (file_exists("../../Class_Library/Api_Class/class_survey.php")
 	/*{
 		"clientid":""
 		"employeeid":"",
-		"sdate":""
+		"surveyId":""
 	}*/
     if (!empty($jsonArr['clientid'])) {
 		
         extract($jsonArr);
         $obj = new Survey();  // create object of class cl_module.php
-        $response = $obj->getSurveyQuestion($clientid, $employeeid, $sdate);
-    } else {
+        $response = $obj->getSurveyQuestion($clientid, $employeeid, $surveyId);
+    } 
+    else {
         $response['success'] = 0;
         $response['result'] = "Invalid json";
     }

@@ -222,7 +222,7 @@ JOIN Tbl_ContactDirectoryPerson ON Tbl_ContactDirectoryPerson.clientId = Tbl_Cli
     public $clientids;
     public $locations;
 
-    function viewContactDetails($cid, $loc, $depart) {
+  /*  function viewContactDetails($cid, $loc, $depart) {
         $this->clientids = $cid;
         $this->locations = $loc;
         $this->department = $depart;
@@ -265,19 +265,13 @@ JOIN Tbl_ContactDirectoryPerson ON Tbl_ContactDirectoryPerson.clientId = Tbl_Cli
 
     function clientContactDetails($cid1) {
         $this->clientids = $cid1;
-        $server_name = SITE_URL;
+       // $server_name = SITE_URL;
+        //$server_name = SITE_URL."vikasgroup"."/";
+		$server_name = SITE;
         try {
-            $query = "select Tbl_ContactDirectoryPerson.contactId,
-            Tbl_ContactDirectoryPerson.locationId,
-            Tbl_ContactDirectoryPerson.departmentId,
-            Tbl_ContactDirectoryPerson.empCode,
-            Tbl_ContactDirectoryPerson.contactNoPersonal,
-            Tbl_ContactDirectoryPerson.contactNoOffice,
-            Tbl_ContactDirectoryPerson.userName,
-            Tbl_ContactDirectoryPerson.designation, Concat('" . $server_name . "',Tbl_ContactDirectoryPerson.imgPath) as imgPath,
-            Tbl_ContactDirectoryPerson.emailId,Tbl_ContactDirectoryLocation.*,Tbl_ContactDirectoryDepartment.* from Tbl_ContactDirectoryPerson join Tbl_ContactDirectoryDepartment on Tbl_ContactDirectoryPerson.departmentId = Tbl_ContactDirectoryDepartment.deptId join Tbl_ContactDirectoryLocation on Tbl_ContactDirectoryPerson.locationId = Tbl_ContactDirectoryLocation.locationID
-            left join Tbl_EmployeePersonalDetails as edm on edm.employeeCode = Tbl_ContactDirectoryPerson.empCode
-            where Tbl_ContactDirectoryPerson.clientId =:id1 order by Tbl_ContactDirectoryPerson.contactId";
+            $query = "select cp.*, edm.employeeId,if(edm.userImage IS NULL or edm.userImage = '',if(cp.imgPath = '' or cp.imgPath IS NULL,'',Concat('" . $server_name . "',cp.imgPath)),Concat('" . $server_name . "',edm.userImage)) as imgPath,company.companyName,cl.*,cd.* from Tbl_ContactDirectoryPerson as cp join Tbl_ContactDirectoryDepartment as cd on cp.departmentId = cd.deptId join Tbl_ContactDirectoryLocation as cl on cp.locationId = cl.locationID
+            left join Tbl_EmployeePersonalDetails as edm on edm.employeeCode = cp.empCode join Tbl_Client_CompanyDetails as company on company.companyUniqueId = cp.companyId
+            where cp.clientId =:id1 order by cp.contactId";
             //$server_name = "http://".$_SERVER['SERVER_NAME']."/";
             /* $query = "select Tbl_ContactDirectoryPerson.contactId,Tbl_ContactDirectoryPerson.locationId,Tbl_ContactDirectoryPerson.departmentId,Tbl_ContactDirectoryPerson.userUniqueId,Tbl_ContactDirectoryPerson.contactNoPersonal,Tbl_ContactDirectoryPerson.contactNoOffice,Tbl_ContactDirectoryPerson.designation, Concat('".$server_name."',Tbl_ContactDirectoryPerson.imgPath) as imgPath,Tbl_ContactDirectoryPerson.userName,Tbl_ContactDirectoryPerson.emailId,Tbl_ContactDirectoryLocation.*,Tbl_ContactDirectoryDepartment.* from Tbl_ContactDirectoryPerson join Tbl_ContactDirectoryDepartment on Tbl_ContactDirectoryPerson.departmentId = Tbl_ContactDirectoryDepartment.deptId join Tbl_ContactDirectoryLocation on Tbl_ContactDirectoryPerson.locationId = Tbl_ContactDirectoryLocation.locationID where Tbl_ContactDirectoryPerson.clientId =:id1 order by Tbl_ContactDirectoryPerson.contactId"; */
 
@@ -285,14 +279,14 @@ JOIN Tbl_ContactDirectoryPerson ON Tbl_ContactDirectoryPerson.clientId = Tbl_Cli
             $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':id1', $this->clientids, PDO::PARAM_STR);
             $stmt->execute();
-            $rows = $stmt->fetchAll();
-//            echo'<pre>';
-//            print_r($rows);die;
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//           echo'<pre>';
+//           print_r($rows);die;
             if ($rows) {
                 $response['success'] = 1;
                 $response['msg'] = "Successfully Display data";
-                $response['posts'] = array();
-                foreach ($rows as $row) {
+                $response['posts'] = $rows;
+               /* foreach ($rows as $row) {
                     $post["contactId"] = $row["contactId"];
                     $post["locationId"] = $row["locationId"];
                     $post["locationName"] = $row["locationName"];
@@ -305,9 +299,10 @@ JOIN Tbl_ContactDirectoryPerson ON Tbl_ContactDirectoryPerson.clientId = Tbl_Cli
                     $post["imgpath"] = $row["imgPath"];
                     $post["userName"] = $row["userName"];
                     $post["emailId"] = $row["emailId"];
+                    $post["emailId"] = $row["emailId"];
 
                     array_push($response['posts'], $post);
-                }
+                }*/
             } else {
                 $response['success'] = 0;
                 $response['msg'] = "No Display data";

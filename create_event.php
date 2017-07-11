@@ -25,10 +25,10 @@ function ValidatePostEvent()
     var event_date = document.form1.event_date;
 	var todatdate = document.form1.today;
 	var event_time = document.form1.event_time;
-	var cost = document.form1.cost;
+	//var cost = document.form1.cost;
 	var uploadimage = document.form1.uploadimage;
 	var event_content = document.form1.event_content;
-	
+	var gr = document.getElementById('selectedids').value;
     if (title.value == "")
     {
         window.alert("Please Enter Title.");
@@ -59,12 +59,12 @@ function ValidatePostEvent()
         event_time.focus();
         return false;
     }
-	if (cost.value == "")
+	/*if (cost.value == "")
     {
         window.alert("Please Enter Cost.");
         cost.focus();
         return false;
-    }
+    }*/
 	if (uploadimage.value == "")
     {
         window.alert("Please Upload Image.");
@@ -77,7 +77,11 @@ function ValidatePostEvent()
         event_content.focus();
         return false;
     }
-
+	if (gr == "")
+    {
+        window.alert("Please Select Group");
+        return false;
+    }
     return true;
 }
 </script>
@@ -99,7 +103,7 @@ function ValidatePostEvent()
 			var venuename = $("#venue").val();
 			var edate = $("#event_date").val();
 			var etime = $("#event_time").val();
-			var etime = $("#event_time").val();
+			//var cost = $("#cost").val();
            // var content = CKEDITOR.instances.editor1.getData();
             var description = $("#comment").val();
 			
@@ -110,6 +114,7 @@ function ValidatePostEvent()
 			$(".venPost").html(venuename);
 			$(".datePost").html(edate);
 			$(".timePost").html(etime);
+			//$(".costPost").html(cost);
 			$(".desPost").html(description);
            // $(".contentPost").html(content);
 
@@ -150,48 +155,59 @@ function ValidatePostEvent()
                 <div class="row mobile_articals"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 "><i class="fa fa-arrow-left"style="color:#fff !important;    padding-top: 8px;"></i><font class="white_color">Article</font></div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                            <p class="titlePost NewsPriviewtitle" style="margin-top:-13px ! important;"></p> 
-                            <p class="author previewAuthor"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
+                            <p class="previewAuth"><font style="color:#acacac;">Author:</font> <font style="font-size:10px;"><?php echo $username = $_SESSION['user_name']; ?></font> </p>
 
                         </div>
                     </div>
                  
 				
+				<div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
+					<p class="titlePost"></p>
+					</div>
+                </div>
+				
 					
                 </div>
                    <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <img class="post_img img img-responsive imagePost previewImage" /></div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <img class="post_img" /></div>
                 </div>
 				
 				 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="venPost" style="margin-top:-10px;"></p>
+					 <p class="venPost CommanNamePost"></p>
 					 </div>
 				</div>
 				
 				
 				 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="datePost" style="margin-top:-30px;"></p>
+					 <p class="datePost CommanNamePost"></p>
 					 </div>
 				</div>
 				
 				 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="timePost" style="margin-top:-30px;"></p>
+					 <p class="timePost CommanNamePost"></p>
 					 </div>
 				</div>
+				
+				<!--<div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
+					 <p class="costPost CommanNamePost"></p>
+					 </div>
+				</div>-->
 				
 				<div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-					 <p class="desPost" style="margin-top:-30px;"></p>
+					 <p class="desPost CommanNamePost" style="white-space:pre-wrap !important;"></p>
 					 </div>
 				</div>
 				
                
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">  
-                        <p class="date" style="margin-top:-30px;" >Date: <?php echo date("d/m/Y"); ?></p>
+                        <p class="date" style="margin-top:0px;" >Date: <?php echo date("d/m/Y"); ?></p>
                     </div>
                 </div>
 
@@ -218,7 +234,7 @@ function ValidatePostEvent()
 
             <div class="row " >
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h3><strong>Create New Event</strong></h3><hr>
+                    <h3><strong>Save The Date</strong></h3><hr>
                 </div>
             </div>
 
@@ -247,6 +263,62 @@ function ValidatePostEvent()
                             </div>
                         </div>
 						
+						<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                <label for="Article image">UPLOAD IMAGE (Max Image Upload Size: 2MB, Image Resolution: 640X362)</label><br/>
+
+                                <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>-->
+
+                                <script type="text/javascript">
+                    function showimagepreview1(input) {
+                        if (input.files && input.files[0]) {
+                            var filerdr = new FileReader();
+                            filerdr.onload = function (e) {
+								var image = new Image();
+                                            image.src = e.target.result;
+                                            image.onload = function () {
+                                                //alert($("#uploadimage")[0].files[0].size);
+                                                var height = this.height;
+                                                var width = this.width;
+                                                var size = parseFloat($("#uploadimage")[0].files[0].size / 1024).toFixed(2);
+                                                if (size > 2000)
+                                                {
+                                                    alert("Sorry, your Image Size is too large , Max 2MB Size Are Allowed");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+
+                                                else if (height > 1000 || width > 1000) {
+                                                    alert("Width and Height must not exceed 1000 X 1000 px.");
+                                                    $('#imgprvw').attr('src', '');
+                                                    $('.post_img').attr('src', '');
+                                                    $('#uploadimage').val("");
+                                                    return false;
+                                                }
+                                                else
+                                                {
+                                                    $('#imgprvw').attr('src', e.target.result);
+                                                    $('.post_img').attr('src', e.target.result);
+                                                }
+                                            }
+                               // $('#imgprvw').attr('src', e.target.result);
+                               // $('.post_img').attr('src', e.target.result);
+                            }
+                            filerdr.readAsDataURL(input.files[0]);
+                        }
+                    }
+                                </script>
+                                <img id="imgprvw" alt="uploaded image preview"/>
+                                <div>
+                                    <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />
+                                </div>
+
+
+                            </div>
+						</div>
 						
 						 <div class="row">
     
@@ -268,11 +340,20 @@ function ValidatePostEvent()
 					     </div>
 						 
 						 
-						 <div class="row">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                 <div class="form-group">
+									<label for="comment">Description</label>
+									<textarea style="color:#2d2a3b;" class="form-control" rows="4" id="comment" cols="8" name="event_content" placeholder="Event Description" ></textarea>
+									</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
 						  <div class="form-group col-md-6">
                                      
                                   
-									<label for="exampleInputPassword1">Registration</label>
+									<label for="exampleInputPassword1">Allow Registration</label>
                                       <div>
                                          <div class="col-md-4">
                                         <input type="radio" id="user2" name="reg"  value="Yes">
@@ -291,69 +372,33 @@ function ValidatePostEvent()
 									<!--<input type="hidden" id="user2" name="reg"  value="No">-->
                           </div>
 						   <div class="form-group col-md-6">
-						   <label for="TIME">Cost</label>
-							<input style="color:#2d2a3b;" type="text" name="cost" id="cost" class="form-control" placeholder="Enter Cost"/>
+						   <!--<label for="TIME">Cost</label>
+							<input style="color:#2d2a3b;" type="text" name="cost" value="free" id="cost" class="form-control" placeholder="Enter Cost"/>-->
+							
+							<input style="color:#2d2a3b;" type="hidden" name="cost" value="" id="cost" class="form-control" placeholder="Enter Cost"/>
+							
 							</div>
 							</div>
-						
-						
-
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-
-                                <label for="Article image">UPLOAD IMAGE</label>
-
-                                <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
-
-                                <script type="text/javascript">
-                    function showimagepreview1(input) {
-                        if (input.files && input.files[0]) {
-                            var filerdr = new FileReader();
-                            filerdr.onload = function (e) {
-                                $('#imgprvw').attr('src', e.target.result);
-                                $('.post_img').attr('src', e.target.result);
-                            }
-                            filerdr.readAsDataURL(input.files[0]);
-                        }
-                    }
-                                </script>
-                                <img id="imgprvw" alt="uploaded image preview"/>
-                                <div>
-                                    <input type="file" id="uploadimage" name="uploadimage" accept="image/*" onchange="showimagepreview1(this)" />
-                                </div>
-
-
-                            </div>
-
-
-                            <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
-                                 <div class="form-group">
-									<label for="comment">Description</label>
-									<textarea style="color:#2d2a3b;" class="form-control" rows="4" id="comment" cols="8" name="event_content" placeholder="Event Description" ></textarea>
-									</div>
-                            </div>
-                        </div>
-
-                        
 						
 						
                         <div class="form-group col-sm-12">
 
 
-                            <label for="exampleInputPassword1">Select User</label>
+                            <label for="exampleInputPassword1">Select Group</label>
                             <div>
-                                <div class="col-md-6">
-                                    <input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
-                                    <label for="radio5">
-                                        Send Post to All Groups
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
+								<div class="col-md-6">
                                     <input type="radio" id="user" ng-model="content"  name="user3" value="Selected">
                                     <label for="radio6">
-                                        Send Post to Selected Groups
+                                        Select Groups
                                     </label>
                                 </div>
+                                <div class="col-md-6">
+                                    <!--<input type="radio" id="user2" name="user3" ng-model="content" value="All" ng-checked="true">
+                                    <label for="radio5">
+                                        Send Post to All Groups
+                                    </label>-->
+                                </div>
+                                
                             </div>
 
                         </div>
@@ -389,9 +434,39 @@ function ValidatePostEvent()
                     <!---------------------------------long news from End here--------------------------------->	
 
                     <div class="col-xs-4 col-md-4 col-lg-4 col-sm-4"id="rightpublicationdiv">
-                        <div class="publication">
+                        <div class="publication" style="margin-top:20px;">
                             <!---------------------------------------------------------------------->
                            
+						   <!------------------ like comment ----------------------->
+						   <div class="publication"><p id="publication_heading">Options</p><hr>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+                                        <p class="publication_leftcontent" style="font-weight:500;" data-toggle="tooltip" data-placement="left" title="Post Comment (Enable/Disable) in case of Enable(On) User enable to comment on the post ">Comment ?</p>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+
+
+                                        <div class="checkbox"style="margin-top:-10px;">
+                                            <label><input type="checkbox" data-toggle="toggle" name="comment" value="COMMENT_YES" checked></label>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+                                        <p class="publication_leftcontent" style="font-weight:500;"data-toggle="tooltip" data-placement="left" title="Post Like(Enable/Disable) in case of Enable(On) User enable to like the post ">Like ?</p>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"id="rightpublicationdiv6">
+                                        <div class="checkbox"style="margin-top:-10px;">
+                                            <label><input type="checkbox" data-toggle="toggle" name="like" value="LIKE_YES" checked></label></div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+						   <!----------- end like comment -------------------------->
+						   
                             <div class="publication"><p id="publication_heading">Notification</p><hr>
                                 
                                 <div class="row">
@@ -429,8 +504,8 @@ function ValidatePostEvent()
                     <br/>
                     <center><div class="form-group col-md-12">	
                             <input type="submit" name="news_post"  class="btn btn-md btn-info news_postBtn" style="text-shadow:none;font-weight:normal;" value="Publish" required onclick ="return ValidatePostEvent();"/>
-                            <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 53.5%" value="Preview" />
-                                    </a>
+<!--                            <a href="#meetop"><input type="button" name="preview_post"  id="preview_post" class="btn btn-md btn-info preview_postBtn" style="    text-shadow: none; font-weight: normal; position: absolute; left: 53.5%" value="Preview" />
+                                    </a>-->
 
                         </div>
                     </center>

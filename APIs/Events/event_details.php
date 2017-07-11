@@ -1,5 +1,4 @@
 <?php
-
 error_reporting(E_ALL ^ E_NOTICE);
 if (file_exists("../../Class_Library/class_event.php") && include("../../Class_Library/class_event.php")) {
     if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -27,7 +26,7 @@ if (file_exists("../../Class_Library/class_event.php") && include("../../Class_L
         $event = new Event();
         extract($jsonArr);
 
-        $response = $event->event_details($clientid, $eventid, $flag);
+        $response = $event->event_details($clientid, $eventid, $empid, $flag);
     } else {
         $response['success'] = 0;
         $response['message'] = "Invalid json";

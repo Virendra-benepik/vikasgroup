@@ -52,7 +52,7 @@ class BookAppoint {
 
                         $post["userName"] = $result['firstName'] . " " . $result['lastName'];
                         $post["userMail"] = $result['emailId'];
-                        $post["contact"] = $result['contact'];
+                        $post["contact"] = $mobile;
                         $post["merchantMobile"] = $row["details"];
                         $post["merchantEmail"] = $row["email_id"];
                         $post["merchantBranchLocation"] = $row["branch_name"];

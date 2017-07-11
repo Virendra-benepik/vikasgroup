@@ -39,8 +39,8 @@ if (!empty($postdata)) {
     $uploadImage = $userdata['uploadImage'];
     $employeeid = $userdata['employeeid'];
 
-    $response = $obj->userImageUpload($clientid, $uploadImage, $employeeid, $dname);
-
+    $result = $obj->userImageUpload($clientid, $uploadImage, $employeeid, $dname);
+    $response = json_decode($result, true);
 } else {
     $response['success'] = 0;
     $response['result'] = "Invalid json";

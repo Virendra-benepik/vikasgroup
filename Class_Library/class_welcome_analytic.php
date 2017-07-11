@@ -247,7 +247,7 @@ DATE_FORMAT(pc.commentDate,'%d %b %Y %h:%i %p') as commentDate from Tbl_Analytic
                 echo $e;
             }
         } else {
-            $query = "select * from Tbl_Analytic_PostComment where clientId = :cid order by autoId desc limit 3";
+            $query = "select *,DATE_FORMAT(commentDate,'%d %b %Y %h:%i %p') as commentDate from Tbl_Analytic_PostComment where clientId = :cid order by autoId desc limit 3";
             try {
                 $stmt = $this->DB->prepare($query);
                 $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);
@@ -285,14 +285,21 @@ DATE_FORMAT(pc.commentDate,'%d %b %Y %h:%i %p') as commentDate from Tbl_Analytic
         }
     }
 
-    function latestChannel($cid) {
+    function latestChannel($cid,$user_type,$user_uniqueid) {
         $this->client = $cid;
-
+		if($user_type == 'Admin')
+		{
         $query = "select * , DATE_FORMAT(createdDate,'%d %b %Y %h:%i %p') as createdDate  from Tbl_ClientGroupDetails where clientId = :cid order by createdDate desc limit 0,3";
-        try {
+        }
+		else
+		{
+		$query = "select tgd.*, DATE_FORMAT(tgd.createdDate,'%d %b %Y %h:%i %p') as createdDate from Tbl_ClientGroupAdmin as tga JOIN Tbl_ClientGroupDetails as tgd ON tga.groupId = tgd.groupId and tga.clientId = tgd.clientId where tgd.clientId = :cid and tga.userUniqueId = :uuid and tgd.status = 'active' order by tgd.createdDate desc limit 0,3";	
+		}
+		try {
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cid', $this->client, PDO::PARAM_STR);
-            $stmt->execute();
+			if($user_type != 'Admin'){$stmt->bindParam(':uuid', $user_uniqueid, PDO::PARAM_STR);}
+			$stmt->execute();
         } catch (PDOException $e) {
             echo $e;
         }
