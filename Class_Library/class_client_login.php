@@ -32,7 +32,7 @@ class ClientLogin
      $query = "select C.*,CA.*,U.*,UP.* from Tbl_ClientAdminDetails as CA 
      join Tbl_ClientDetails_Master as C on C.client_id = CA.clientId 
      join Tbl_EmployeeDetails_Master as U on CA.userUniqueId = U.employeeId 
-     join Tbl_EmployeePersonalDetails as UP on UP.employeeId = U.employeeId where U.emailId = :mail or U.employeeCode = :mail";
+     join Tbl_EmployeePersonalDetails as UP on UP.employeeId = U.employeeId where U.emailId = :mail or U.employeeCode = :mail AND U.status = 'Active'";
              $stmt = $this->DB->prepare($query);
            
              $stmt->execute(array(':mail'=>$this->emailid));

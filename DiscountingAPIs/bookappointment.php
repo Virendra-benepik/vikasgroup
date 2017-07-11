@@ -1,6 +1,7 @@
 <?php
 
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);ini_set('display_errors', 1);
+
 if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && include("../Class_Library/Api_Class/class_bookappointment.php")) {
 
     if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -25,18 +26,18 @@ if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && inclu
     $jsonArr = json_decode(file_get_contents("php://input"), true);
     
     if (!empty($jsonArr['clientid'])) {
-        include("../Class_Library/Api_Class/class_messageSentTo.php");
+        include_once("../Class_Library/Api_Class/class_messageSentTo.php");
         $mesg = new messageSent();
         $obj = new BookAppoint();
         extract($jsonArr);
 
         $result = $obj->BookAppointment($clientid, $employeeid, $dealid, $branchid, $dates, $times, $mobile, $service, $message);
-
+      
         if ($result['success'] == 1) {
 
             $userName = $result['posts'][0]['userName'];
             $userMail = $result['posts'][0]['userMail'];
-            $usercontact = $result['posts'][0]['contact'];
+            $usercontact = $mobile;
             $merchantMobile = $result['posts'][0]["merchantMobile"];
             $merchantEmail = $result['posts'][0]["merchantEmail"];
             $merchantBranchLocation = $result['posts'][0]["merchantBranchLocation"];
@@ -108,7 +109,7 @@ if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && inclu
                         . " . "
                         . " Your request has been forwarded .";
 
-                $mobileUserMessage = "Benepik Member booking on "
+                $mobileMerchantMessage = "Benepik Member booking on "
                         . $dates
                         . " "
                         . $times
@@ -153,8 +154,7 @@ if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && inclu
               . $mobile
               . ". Call the customer for confirmation."; */
             /*             * **************************************************************************************************** */
-//$headingmerchant="Benepik Member has booked a car service as per the following details: ";
-            $merchantbookingheading = $merchantName . "  Details: ";
+            $merchantbookingheading = $merchantName . " Booking Details: ";
 
             $mailMerchantBody = stripslashes('Dear ' . $merchantName . ',<br/><br/>' . $headingmerchant . '<br />'
                     . " Name: " . $userName . '<br />'
@@ -162,14 +162,15 @@ if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && inclu
                     . " Email: " . $userMail . '<br />'
                     . $merchantbookingheading . $jsonArr['dates'] . ", " . $jsonArr['times'] . '<br />'
                     . " Location: " . $merchantBranchLocation . '<br />'
+                    . " Comment : " . $jsonArr['message'] . '<br/><br/>'
                     . 'Please call the customer for confirmation' . '<br /><br/>'
-                    . 'Regards,' . '<br />' . 'Team Vikas Live');
+                    . 'Regards,' . '<br />' . 'Team Benepik');
 
             $sub = "Benepik " . $merchantName . " Request";
 
-            /*             * ************************************* mail body to sir ***************************************** */
-//            $mailidsir="saurabh.jain@benepik.com";
-            $mailidsir = "gagandeep@benepik.com";
+            /*************************************** mail body to sir ***************************************** */
+            $mailidsir="saurabh.jain@benepik.com,sau_org@yahoo.co.in";
+//            $mailidsir = "gagandeep@benepik.com";
 		  // $mailidsir = "monikagupta05051994@gmail.com";
 
             $mailMessage = stripslashes("Dear Team benepik," . "<br/><br/>" . $headingmerchant . "<br />"
@@ -179,12 +180,13 @@ if (file_exists("../Class_Library/Api_Class/class_bookappointment.php") && inclu
                     . " Date: " . $jsonArr['dates'] . '<br />'
                     . " Time: " . $jsonArr['times'] . '<br />'
                     . " Merchant Name: " . $merchantName . '<br />'
-                    . " Location: " . $merchantBranchLocation . '<br/><br/>'
-                    . 'Regards,' . '<br />' . 'Team Vikas Live');
+                    . " Location: " . $merchantBranchLocation . '<br/>'
+                    . " Comment : " . $jsonArr['message'] . '<br/><br/>'
+                    . 'Regards,' . '<br />' . 'Team Benepik');
 
-            $sub = "Vikas Live appointment Request";
-            //$from1 = "From: <info@benepik.com>";
-			$from1 = "From: Vikas Live<vikaslive@benepik.com>";
+            $sub = "Benepik appointment Request";
+            $from1 = "info@benepik.com";
+			
             /*             * ******************************************************* */
 
             

@@ -160,8 +160,8 @@
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left:15px;margin-bottom:10px;">
                             <label for="Article image" style="font-weight: 600 ! important;">UPLOAD IMAGE (Max Image Upload Size: 2MB, Image Resolution: 640X362)</label>
 
-                            <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
-
+                            <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+							-->
                             <script type="text/javascript">
 
                             function showimagepreview1(input) {

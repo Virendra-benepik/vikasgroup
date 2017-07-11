@@ -39,6 +39,8 @@ if ((!class_exists('Family') && include("../../Class_Library/Api_Class/class_fam
         $flagtype = 6;
         $module = '';   
         extract($jsonArr);
+        $deviceId = (!empty($deviceId))?$deviceId:"";
+        $device = (!empty($device))?$device:"";
         $analytic_obj->listAppview($clientid, $uid, $device, $deviceId, $flagtype);
         $response = $obj->EventDisplays($clientid, $uid, $value, $module);
     } else {

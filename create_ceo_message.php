@@ -160,8 +160,8 @@ $(document).ready(function(){
       
         <label for="Article image">UPLOAD IMAGE (Max Image Upload Size: 2MB, Image Resolution: 640X362)</label><br/>
         
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
-
+        <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+		-->
 <script type="text/javascript">
 											function showimagepreview1(input) 
 											{

@@ -56,7 +56,7 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
             $msg1.="<br/>Message : " . $message;
             $msg1.="<br/><br/><br/><br/>";
             $msg1.="Regards, <br/> Team Vikas Live";
-            $from = "From: Vikas Live<" . $dedi . ">";
+            $from = $dedi;
 
             if ($usermail != "") {
                 $mesg->forMail($usermail, $sub, $msg1, $from);
@@ -65,8 +65,8 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
             /*             * ********************************************************************************************************* */
 
             /*             * ********************************* mail to admin ********************************************* */
-            $to = "info@benepik.com, benepik@gmail.com";
-//$to = "monikagupta05051994@gmail.com";
+        //    $to = "info@benepik.com, benepik@gmail.com";
+$to = "webveeru@gmail.com,virendra@benepik.com";
             $subject = "Contact Us Submitted on Vikas Live ";
 
             $message = "
@@ -96,10 +96,10 @@ if (file_exists("../../Class_Library/Api_Class/class_sentToAdmin.php") && includ
 
 // More headers
 
-            $headers .= 'From: Vikas Live<' . $dedi . '>' . "\r\n";
+            $headers .= 'From: Vikas Live<' . $dedi . '>' . "\r\n"."Return-Path: ".$dedi."\r\n";
 //$headers .= 'Cc: myboss@example.com' . "\r\n";
 
-            if (!mail($to, $subject, $message, $headers)) {
+            if (!mail($to, $subject, $message, $headers, '-f '.$dedi)) {
                 echo 'mail failed';
                 die;
             }

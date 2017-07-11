@@ -38,6 +38,8 @@ require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
 
         $module = '';
         extract($jsonArr);
+        $deviceId = (!empty($deviceId))?$deviceId:"";
+        $device = (!empty($device))?$device:"";
           $analytic_obj->listAppview($clientid, $employeeid, $device, $deviceId, $flagtype);
         $response = $obj->getAllNoticesDetails($clientid,$employeeid,$value);
     } 

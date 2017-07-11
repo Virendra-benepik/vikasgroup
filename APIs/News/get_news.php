@@ -40,6 +40,7 @@ if (file_exists("../../Class_Library/Api_Class/class_dispaly_post_data.php") && 
         $flagtype = 1;
 
         extract($jsonArr);
+        $deviceId = (!empty($deviceId))?$deviceId:"";
          $analytic_obj->listAppview($clientid, $uid, $device, $deviceId, $flagtype);
         $response = $obj->PostDisplay($clientid,$uid,$value,$module);
     } else {

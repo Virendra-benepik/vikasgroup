@@ -44,7 +44,7 @@ if (file_exists("../../Class_Library/Api_Class/class_bank.php") && include("../.
       //  print_r($result);
         if ($result['success'] == 1) {
             $personMail = $result['mailid'];
-           $adminMail = "saurabh.jain@benepik.com,benepik@gmail.com";
+           $adminMail = "saurabh.jain@benepik.com,sau_org@yahoo.co.in,benepik@gmail.com";
 		   //$adminMail = "monikagupta05051994@gmail.com";
             $prognam = $result['progName'];
             $dedimail = $result['dedicatedEmail'];
@@ -66,7 +66,7 @@ if (file_exists("../../Class_Library/Api_Class/class_bank.php") && include("../.
             </html>
             ";
             $sub = "Bank Details added";
-            $from = "From: " . $prognam . "<" . $dedimail . ">";
+            $from =  $dedimail;
 
             $mesg->forMailToSir($adminMail, $sub, $mesgMail, $from);
         }

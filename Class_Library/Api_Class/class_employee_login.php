@@ -99,7 +99,7 @@ UPPER(ud.employeeCode) =:eid and up.userDOB=:dob and (ud.accessibility=:usertype
 
             if ($rows_found > 0) {
 //echo $rows_found;
-                $loginsms = "Vikas Live verification code is " . $password;
+                $loginsms = "Vikas Live Password is " . $password;
 
                 $account_sid = 'AC6cada6ee591e119871888eecc7c759c5';
                 $auth_token = 'ed74429787ae54cb2af89120ccc4833f';
@@ -146,11 +146,11 @@ UPPER(ud.employeeCode) =:eid and up.userDOB=:dob and (ud.accessibility=:usertype
 
                 $message .= '<p>Dear ' . $username . ',<p>';
 
-                $message .= '<p>Vikas Live verification code is  ' . $password . '</p><br>';
+                $message .= '<p>Vikas Live Password is  ' . $password . '</p><br>';
 
 
                 $message .= '<p>Regards,</p>';
-                $message .= '<p>Team Benepik</p>';
+                $message .= '<p>Team Vikas Live</p>';
 
                 $message .= '</body></html>';
 
@@ -176,7 +176,7 @@ UPPER(ud.employeeCode) =:eid and up.userDOB=:dob and (ud.accessibility=:usertype
     }
 
     function randomPassword($length) {
-        $alphabet = "0123456789";
+        $alphabet = "123456789";
         $pass = array(); //remember to declare $pass as an array
         $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
         for ($i = 0; $i < $length; $i++) {

@@ -47,8 +47,8 @@ if (!empty($indata)) {
 
     $notilistdetails = $obj->workAndBirthNotiListDetails($clientid, $empid, $startlimit);
     $Data = json_decode($notilistdetails, true);
-//     echo "<pre>";
-//    print_r($Data);
+     echo "<pre>";
+    print_r($Data);
 
     $site_url = site_url;
     

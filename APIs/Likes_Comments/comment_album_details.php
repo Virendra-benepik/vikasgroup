@@ -46,7 +46,7 @@ if (!empty($jsonArr['clientid'])) {
 
     $googleapiIOSPem = $push->getKeysPem($clientid);
 
-    $createComment = $comments->create_Comment($clientid, $albumid, $imageid, $employeeid, $comment, $flag, $device);
+    $createComment = $comments->create_Comment($clientid, $albumid, $imageid, $employeeid, $comment, $flag, $device,$deviceId);
     $myArray = $comments->getAlbumGroups($clientid, $albumid, $imageid);
 
     $POST_ID = $albumid;

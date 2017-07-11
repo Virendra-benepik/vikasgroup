@@ -45,15 +45,15 @@ $clientid = $_SESSION['client_id'];
                         var jsonData = JSON.parse(resdata);
                         $('#myTable tbody').remove();
                         for (var i = 0; i < resdata.length; i++) {
-                            /*if(jsonData[i].deviceName == 2)
-                             {
-                             var device = 'Android';
-                             }
-                             else
-                             {
-                             var device = 'IOS';
-                             }*/
-                            var newRow = '<tbody><tr><td>' + jsonData[i].sn + '</td><td>' + jsonData[i].employeeCode + '</td><td>' + jsonData[i].firstName + jsonData[i].lastName + '</td><td>' + jsonData[i].deviceName + '</td><td>' + jsonData[i].date_entry_time + '</td></tr><tbody>';
+/*if(jsonData[i].deviceName == 2)
+{
+    var device = 'Android';
+}
+else
+{
+    var device = 'IOS';
+}*/
+                            var newRow = '<tbody><tr><td>'+ jsonData[i].sn +'</td><td>'+ jsonData[i].employeeCode +'</td><td>' + jsonData[i].firstName + jsonData[i].lastName + '</td><td>' + jsonData[i].deviceName + '</td><td>' + jsonData[i].date_entry_time + '</td></tr><tbody>';
                             $('#myTable').append(newRow);
 
                         }
@@ -139,8 +139,13 @@ $clientid = $_SESSION['client_id'];
                     {
                         JSONToCSVConvertor(jsonrestable, "Login_Analytic", true);
                     }
+					else
+					{
+					alert('No Record Found');
+					}
                     return true;
                 } else {
+					
                     return false;
                 }
 
@@ -182,21 +187,21 @@ $clientid = $_SESSION['client_id'];
 
         <div class="row" style="margin-top:10px;">
             <form action="" method="POST">
-                <input type="hidden" name="clientid" id="clientid" value="<?php echo $clientid; ?> ">
-                <input type="hidden" name="device" id="device" value="All">
-                <!--                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                  
-                                    <div class="form-group">
-                                        <label for="sel1" style="margin-left:80px;">Device :</label>
-                                        <select style="color:#2d2a3b;" name="device" class="form-control" id="device">
-                                            <option value ="All">All</option>
-                                            <option value ="2">Android</option>
-                                            <option value ="3">iphone</option>
-                
-                                        </select>
-                
-                                    </div>
-                                </div>-->
+                  <input type="hidden" name="clientid" id="clientid" value="<?php echo $clientid; ?> ">
+                     <input type="hidden" name="device" id="device" value="All">
+<!--                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                  
+                    <div class="form-group">
+                        <label for="sel1" style="margin-left:80px;">Device :</label>
+                        <select style="color:#2d2a3b;" name="device" class="form-control" id="device">
+                            <option value ="All">All</option>
+                            <option value ="2">Android</option>
+                            <option value ="3">iphone</option>
+
+                        </select>
+
+                    </div>
+                </div>-->
                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
                         <label for="pwd">Date From :</label>
@@ -245,10 +250,10 @@ $clientid = $_SESSION['client_id'];
                                         <table class="datatable table table-responsive" cellspacing="2" width="100%" id="myTable">
                                             <thead>
                                                 <tr>
-                                                    <th>SN</th>
+													<th>SN</th>
                                                     <th>Employee Id</th>
                                                     <th>Employee Name</th>
-
+                                                   
                                                     <th>Device</th>
                                                     <th>Login Date</th> 
 
@@ -256,10 +261,10 @@ $clientid = $_SESSION['client_id'];
                                             </thead>
                                             <tfoot>
                                                 <tr>
-                                                    <th>SN</th>
+												    <th>SN</th>
                                                     <th>Employee Id</th>
                                                     <th>Employee Name</th>
-
+                                                    
                                                     <th>Device</th>
                                                     <th>Login Date</th>
                                                 </tr>

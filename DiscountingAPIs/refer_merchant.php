@@ -71,15 +71,15 @@ if (!empty($jsonArr)) {
         $msg.="<br/><br/><br/>";
         $msg.="Regards, <br/> Team Vikas Live";
 
-        $from = "From: Vikas Live <vikaslive@benepik.com>";
+        $from = "vikaslive@benepik.com";
 
         if ($mail != "") {
             $mesg->forMail($mail, $sub, $msg, $from);
         }
 
         $sub2 = "Merchant refered on Vikas Live ";
-        $adminMailid = "<saurabh.jain@benepik.com>,<info@benepik.com>,benepik@gmail.com";
-//        $adminMailid = "<virendra@benepik.com>";
+       $adminMailid = "saurabh.jain@benepik.com,info@benepik.com,benepik@gmail.com";
+        //   $adminMailid = "virendra@benepik.com,webveeru@gmail.com";
 
         $msg2.="Dear Team Benepik,";
         $msg2.="<br/><br/>";
@@ -95,9 +95,9 @@ if (!empty($jsonArr)) {
         $msg2.="<br/><br/><br/>";
         $msg2.="Regards, <br/> Team Vikas Live";
 
-        $from = "From: Vikas Live <vikaslive@benepik.com>";
+        $from1 = "vikaslive@benepik.com";
 
-        $mesg->forMailToSir($adminMailid, $sub2, $msg2, $from);
+        $mesg->forMailToSir($adminMailid, $sub2, $msg2, $from1);
     }
 
     echo json_encode($result);

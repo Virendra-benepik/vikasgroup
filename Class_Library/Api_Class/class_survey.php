@@ -204,13 +204,13 @@ class Survey {
 		       $inSurvey = implode(",", $arr);
 	   	     
 		       		
-		    $query3 = "select distinct(postId) from Tbl_Analytic_PostSentToGroup where clientId=:cli and status = 1 and flagType = 20 and groupId IN('" . $in . "')";
+		    $query3 = "select distinct(postgroup.postId) from Tbl_Analytic_PostSentToGroup as postgroup JOIN Tbl_C_SurveyDetails as survey ON postgroup.postId = survey.surveyId where survey.expiryDate >= CURDATE() AND postgroup.clientId=:cli and postgroup.status = 1 and postgroup.flagType = 20 and postgroup.groupId IN('" . $in . "')";
 		    
 		    if(!empty($inSurvey) && ($inSurvey!='')){
-			$query3 .= " and postId NOT IN($inSurvey) ";
+			$query3 .= " and postgroup.postId NOT IN($inSurvey) ";
 		    }
 		    
-		    $query3 .= "order by autoId desc";
+		    $query3 .= "order by postgroup.autoId desc";
 		    // "limit $val,8";
 //echo ($query3);die;
                     $stmt3 = $this->DB->prepare($query3);
@@ -218,9 +218,9 @@ class Survey {
                     $stmt3->execute();
                     $rows3 = $stmt3->fetchAll(PDO::FETCH_ASSOC);
 
-		    $query1 = "select count(distinct(postId)) as total from Tbl_Analytic_PostSentToGroup where clientId=:cid and status = 1 and flagType = 20 and groupId IN('" . $in . "')";
+		    $query1 = "select count(distinct(postgroup.postId)) as total from Tbl_Analytic_PostSentToGroup as postgroup JOIN Tbl_C_SurveyDetails as survey ON postgroup.postId = survey.surveyId where survey.expiryDate >= CURDATE() AND postgroup.clientId=:cid and postgroup.status = 1 and postgroup.flagType = 20 and postgroup.groupId IN('" . $in . "')";
 		    if(!empty($inSurvey) && ($inSurvey!='')){
-			$query1 .= " and postId NOT IN($inSurvey)";
+			$query1 .= " and postgroup.postId NOT IN($inSurvey)";
 		    }
 
 	            $nstmt1 = $this->DB->prepare($query1);

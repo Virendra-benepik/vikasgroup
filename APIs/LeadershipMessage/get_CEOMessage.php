@@ -2,7 +2,7 @@
 error_reporting(E_ALL ^ E_NOTICE);
 
 if (file_exists("../../Class_Library/class_get_ceomessage.php") && include("../../Class_Library/class_get_ceomessage.php")) {
-require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
+//require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
         header('Access-Control-Allow-Credentials: true');
@@ -33,11 +33,13 @@ require_once('../../Class_Library/Api_Class/class_AppAnalytic.php');
 
     if (!empty($jsonArr['clientid']) && !empty($jsonArr['uid'])) {
         $obj = new GetCEOMessage();
-         $analytic_obj = new AppAnalytic();
+        // $analytic_obj = new AppAnalytic();
         $flagtype = 9;
 
         extract($jsonArr);
-         $analytic_obj->listAppview($clientid, $uid, $device, $deviceId, $flagtype);
+        $deviceId = (!empty($deviceId))?$deviceId:"";
+        
+       //  $analytic_obj->listAppview($clientid, $uid, $device, $deviceId, $flagtype);
         $response = $obj->getAllCEOMessageFORandroid($clientid, $uid, $value);
     } else {
         $result['success'] = 0;

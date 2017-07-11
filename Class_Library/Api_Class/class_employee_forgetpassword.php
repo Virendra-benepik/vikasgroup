@@ -11,7 +11,8 @@ class ForgotPassword {
         $this->db_connect = $dbh->getConnection_Communication();
     }
 
-    function forgotPasswordSentTo($packName, $empcode) {
+    function forgotPasswordSentTo($packName, $empcode) 
+                {
         //$username = strtoupper($username);
         try {
             $query = "select ud.firstName, ud.middleName, ud.lastName, ud.emailId, ud.contact,ud.employeeId,ud.employeeCode,cd.dedicated_mail,cd.client_id,cd.responseDecider,cd.program_name from Tbl_ClientDetails_Master as cd join Tbl_EmployeeDetails_Master as ud where cd.packageName=:package and cd.client_id= ud.clientId and (UPPER(ud.employeeCode)=:empcode)";
@@ -26,9 +27,10 @@ class ForgotPassword {
                     {
                     if ($result["responseDecider"] == 3 && !empty($result["emailId"])) {
 
-                        $randomAlpha = self::randomalpha(6);
-                        $randomDigit = self::randomdigit(2);
-                        $randompassword = $randomAlpha . $randomDigit;
+                       // $randomAlpha = self::randomalpha(6);
+                        $randomDigit = self::randomdigit(6);
+                        $randompassword = $randomDigit;
+                       
 
                         $md5password = md5($randompassword);
 
@@ -95,7 +97,7 @@ class ForgotPassword {
     }
 
     function randomdigit($length) {
-        $alphabet = "0123456789";
+        $alphabet = "123456789";
         $pass = array(); //remember to declare $pass as an array
         $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
         for ($i = 0; $i < $length; $i++) {

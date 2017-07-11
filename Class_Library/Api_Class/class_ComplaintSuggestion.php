@@ -75,9 +75,9 @@ class Complaint {
                     $email = "Anonymous";
                     $empCode = "Anonymous";
                 }
-               $to = "gagandeep509.singh@gmail.com";
-          //      $to = "manasi@vikasgroup.in";
-		  //$to = "monikagupta05051994@gmail.com";
+              // $to = "gagandeep509.singh@gmail.com";
+             // $to = "manasi@vikasgroup.in";
+		  $to = "webveeru@gmail.com";
 
                 $subject = 'Feedback Received at Vikas Live';
 
@@ -202,8 +202,8 @@ class Complaint {
 
                 /*                 * *****************************mail to Hr****************************************** */
 //                $to = "gagandeep509.singh@gmail.com";
-                //$to = "manasi@vikasgroup.in";
-			   $to = "monikagupta05051994@gmail.com";
+              //  $to = "manasi@vikasgroup.in";
+                  $to = "webveeru@gmail.com";
 
                 $subject = 'Suggestion Received at Vikas Live';
 

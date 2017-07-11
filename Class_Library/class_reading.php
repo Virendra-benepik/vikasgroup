@@ -451,6 +451,27 @@ class Reading {
 
 /***************************** end thought sent to group *****************/
 
+/****************************************************************************************/
+    
+     function getGroupDetails($clientId, $GroupId) {
+        date_default_timezone_set('Asia/Calcutta');
+        $today = date("Y-m-d H:i:s");
+        try {
+            $query = "select * from Tbl_ClientGroupDetails where clientId = :cid and groupId = :gid";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':cid', $clientId, PDO::PARAM_STR);
+            $stmt->bindParam(':gid', $GroupId, PDO::PARAM_STR);
+            $stmt->execute();
+           $VAL =  $stmt->fetch(PDO::FETCH_ASSOC);
+            return $VAL; 
+               
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+	
+	/***************************************************************************************/
+
 }
 
 ?>

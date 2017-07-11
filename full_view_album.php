@@ -41,6 +41,10 @@ div.desc {
 </style>
 
 <div class="row" style="width:93%;height:auto;margin-top: 80px;margin-left:5%;border:1px solid #cdcdcd;">
+<br/>
+	<!--<p><?php echo "<pre>";print_r($value1);echo "</pre>"; ?></p>-->
+	<div class="col-md-12"><a href="addMorealbumImage.php?albumid=<?php echo $value; ?>"><button class="btn btn-primary">Add more images</button></a></div>
+	
 	<div class=" col-sm-12 col-md-12 col-offset-md-3">
 	 
 	<?php

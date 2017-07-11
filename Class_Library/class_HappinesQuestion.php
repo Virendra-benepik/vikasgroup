@@ -59,14 +59,15 @@ class HappinessQuestion {
         return json_encode($result);
     }
 
-    function createSurvey($clientid, $surveytitle, $noofques, $createdby, $createddate, $expiryDate, $startdate, $status) {
+    function createSurvey($clientid, $surveytitle, $noofques, $createdby, $createddate, $expiryDate, $startdate, $status, $enableComment) {
         // echo $status;
         try {
-            $query = "insert into Tbl_C_SurveyDetails(clientId,surveyTitle,quesno,createdBy,createdDate,    expiryDate,startDate,status)values(:cid,:stitle,:quesno, :createdby,  :createddate, :expiryDate,:startdate,:status )";
+            $query = "insert into Tbl_C_SurveyDetails(clientId,surveyTitle,quesno,createdBy,createdDate,    expiryDate,startDate,status,enableComment)values(:cid, :stitle, :quesno, :createdby, :createddate, :expiryDate, :startdate, :status, :enable_comment)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cid', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':stitle', $surveytitle, PDO::PARAM_STR);
             $stmt->bindParam(':quesno', $noofques, PDO::PARAM_STR);
+            $stmt->bindParam(':enable_comment', $enableComment, PDO::PARAM_STR);
             $stmt->bindParam(':createdby', $createdby, PDO::PARAM_STR);
             $stmt->bindParam(':createddate', $createddate, PDO::PARAM_STR);
             $stmt->bindParam(':expiryDate', $expiryDate, PDO::PARAM_STR);
@@ -205,7 +206,7 @@ class HappinessQuestion {
         //  $this->utype = $user_type;
 
         try {
-            $query = "select * from Tbl_C_HappinessQuestion where clientId=:cli and surveyId=:sid";
+            $query = "select question.*,survey.surveyTitle from Tbl_C_HappinessQuestion as question join Tbl_C_SurveyDetails as survey on survey.surveyId=question.surveyId where question.clientId=:cli and question.surveyId=:sid";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
             $stmt->bindParam(':sid', $this->sid, PDO::PARAM_STR);
@@ -226,6 +227,84 @@ class HappinessQuestion {
             }
         } catch (PDOException $e) {
             echo $e;
+        }
+    }
+
+    function getSurveyCountDept($sid, $qid, $value, $dept) {
+        try {
+            $squery = "SELECT count(happiness.value) AS surveycount FROM Tbl_Analytic_EmployeeHappiness as happiness join Tbl_EmployeeDetails_Master as master on master.employeeId=happiness.userUniqueId WHERE happiness.surveyId =:sid1 AND happiness.questionId=:qid and happiness.value=:val and master.department=:dept";
+
+            $stmt2 = $this->DB->prepare($squery);
+            $stmt2->bindParam(':sid1', $sid, PDO::PARAM_STR);
+            $stmt2->bindParam(':qid', $qid, PDO::PARAM_STR);
+            $stmt2->bindParam(':val', $value, PDO::PARAM_STR);
+            $stmt2->bindParam(':dept', $dept, PDO::PARAM_STR);
+            $stmt2->execute();
+            $rows2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+            return $rows2;
+        } catch (Exception $ex) {
+            echo $ex;
+        }
+    }
+
+    function getSurveyCountLocation($sid, $qid, $value, $location, $company = '') {
+        try {
+            $squery = "SELECT count(happiness.value) AS surveycount FROM Tbl_Analytic_EmployeeHappiness as happiness join Tbl_EmployeeDetails_Master as master on master.employeeId=happiness.userUniqueId WHERE happiness.surveyId =:sid1 AND happiness.questionId=:qid and happiness.value=:val and master.location=:loc";
+            if (!empty($company)) {
+                $squery .= " and master.companyUniqueId='$company'";
+            }
+
+            $stmt2 = $this->DB->prepare($squery);
+            $stmt2->bindParam(':sid1', $sid, PDO::PARAM_STR);
+            $stmt2->bindParam(':qid', $qid, PDO::PARAM_STR);
+            $stmt2->bindParam(':val', $value, PDO::PARAM_STR);
+            $stmt2->bindParam(':loc', $location, PDO::PARAM_STR);
+            $stmt2->execute();
+            $rows2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+            return $rows2;
+        } catch (Exception $ex) {
+            echo $ex;
+        }
+    }
+
+    function getSurveyCountCompany($sid, $qid, $value, $companyId) {
+        try {
+            $squery = "SELECT count(happiness.value) AS surveycount FROM Tbl_Analytic_EmployeeHappiness as happiness join Tbl_EmployeeDetails_Master as master on master.employeeId=happiness.userUniqueId WHERE happiness.surveyId =:sid1 AND happiness.questionId=:qid and happiness.value=:val and (master.companyName=:companyId or master.companyUniqueId=:companyId)";
+
+            $stmt2 = $this->DB->prepare($squery);
+            $stmt2->bindParam(':sid1', $sid, PDO::PARAM_STR);
+            $stmt2->bindParam(':qid', $qid, PDO::PARAM_STR);
+            $stmt2->bindParam(':val', $value, PDO::PARAM_STR);
+            $stmt2->bindParam(':companyId', $companyId, PDO::PARAM_STR);
+            $stmt2->execute();
+            $rows2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+            return $rows2;
+        } catch (Exception $ex) {
+            echo $ex;
+        }
+    }
+
+    function getSurveyCountAge($sid, $qid, $value, $age) {
+        try {
+            $squery = "SELECT count(happiness.value) AS surveycount FROM Tbl_Analytic_EmployeeHappiness as happiness join Tbl_EmployeePersonalDetails as personal on personal.employeeId=happiness.userUniqueId WHERE happiness.surveyId =:sid1 AND happiness.questionId=:qid and happiness.value=:val and ";
+            if ($age[0] >= '60+') {
+                $squery .= "floor(datediff(curdate(),personal.userDOB) / 365) >= 60";
+            } else {
+                $squery .= "floor(datediff(curdate(),personal.userDOB) / 365) between $age[0] and $age[1]";
+            }
+
+            $stmt = $this->DB->prepare($squery);
+            $stmt->bindParam(':sid1', $sid, PDO::PARAM_STR);
+            $stmt->bindParam(':qid', $qid, PDO::PARAM_STR);
+            $stmt->bindParam(':val', $value, PDO::PARAM_STR);
+//            $stmt->bindParam(':age1', $age[0], PDO::PARAM_STR);
+//            $stmt->bindParam(':age2', $age[1], PDO::PARAM_STR);
+            $stmt->execute();
+            $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $rows;
+        } catch (Exception $ex) {
+            echo $ex;
         }
     }
 
@@ -386,14 +465,12 @@ class HappinessQuestion {
                 }
                 $emoveval = rtrim($val, ',');
 //echo "respondent user-".$emoveval;
-                if($emoveval == '')
-                {
-                    $query3 = "select distinct(postsent.userUniqueId) from Tbl_Analytic_PostSentTo as postsent where postsent.flagType = 20 and postsent.userUniqueId NOT IN ('". $emoveval ."')";
+                if ($emoveval == '') {
+                    $query3 = "select distinct(postsent.userUniqueId) from Tbl_Analytic_PostSentTo as postsent where postsent.flagType = 20 and postsent.userUniqueId NOT IN ('" . $emoveval . "')";
+                } else {
+                    $query3 = "select distinct(postsent.userUniqueId) from Tbl_Analytic_PostSentTo as postsent where postsent.flagType = 20 and postsent.userUniqueId NOT IN (" . $emoveval . ")";
                 }
- else {
-                $query3 = "select distinct(postsent.userUniqueId) from Tbl_Analytic_PostSentTo as postsent where postsent.flagType = 20 and postsent.userUniqueId NOT IN (". $emoveval .")";
- }
-             //   echo "-------------->".$query3."-------------";
+                //   echo "-------------->".$query3."-------------";
                 $stmt3 = $this->DB->prepare($query3);
 
                 $stmt3->execute();
@@ -422,14 +499,14 @@ class HappinessQuestion {
         }
         return json_encode($response);
     }
-    
+
     function SurveycommentDetails($sid, $cid) {
         $this->idclient = $cid;
         $this->sid = $sid;
         //  $this->utype = $user_type;
 
         try {
-            $query = "select survey.surveyTitle, happiness.userUniqueId, happiness.comment, happiness.surveyId, avg(happiness.value) as avgRating from Tbl_Analytic_EmployeeHappiness as happiness join Tbl_C_SurveyDetails as survey on happiness.surveyId=survey.surveyId where happiness.clientId=:cli and happiness.surveyId=:sid group by happiness.userUniqueId";
+            $query = "select survey.surveyTitle,survey.enableComment, happiness.userUniqueId, happiness.comment, happiness.surveyId, avg(happiness.value) as avgRating from Tbl_Analytic_EmployeeHappiness as happiness join Tbl_C_SurveyDetails as survey on happiness.surveyId=survey.surveyId where happiness.clientId=:cli and happiness.surveyId=:sid group by happiness.userUniqueId";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $this->idclient, PDO::PARAM_STR);
             $stmt->bindParam(':sid', $this->sid, PDO::PARAM_STR);
@@ -452,5 +529,85 @@ class HappinessQuestion {
             echo $e;
         }
     }
+
+    public function getCompanyLocation($cid, $companyId) {
+        try {
+            $query = "select location from Tbl_EmployeeDetails_Master where clientId=:cid and companyUniqueId=:companyId group by location";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':cid', $cid, PDO::PARAM_STR);
+            $stmt->bindParam(':companyId', $companyId, PDO::PARAM_STR);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $rows;
+        } catch (Exception $ex) {
+            echo $e;
+        }
+    }
+	
+	/************************************** SURVEY Expire *****************************/
+	function Expireviewsurvey($clientid , $currentdate){
+        
+		try {
+            $query = "select surveyId from Tbl_C_SurveyDetails where clientId = :cli AND expiryDate < :date and status = 1";
+            $stmt = $this->DB->prepare($query);
+            $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
+            $stmt->bindParam(':date', $currentdate, PDO::PARAM_STR);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			
+            $response = array();
+            if ($rows) {
+				for($i=0; $i<count($rows); $i++)
+				{
+					$surveyid = $rows[$i]['surveyId'];
+					$status = 0;
+					$flag = 20;
+					/***************************** update status *************************/
+					
+					$query1 = "update Tbl_C_SurveyDetails set status=:sta1 where surveyId =:sid1";
+					$stmt1 = $this->DB->prepare($query1);
+					$stmt1->bindParam(':sid1', $surveyid, PDO::PARAM_STR);
+					$stmt1->bindParam(':sta1', $status, PDO::PARAM_STR);
+					$stmt1->execute();
+					
+					$query2 = "update Tbl_Analytic_PostSentToGroup set status=:sta2 where postId =:sid2 and flagType = :flag2";
+					$stmt2 = $this->DB->prepare($query2);
+					$stmt2->bindParam(':sid2', $surveyid, PDO::PARAM_STR);
+					$stmt2->bindParam(':sta2', $status, PDO::PARAM_STR);
+					$stmt2->bindParam(':flag2', $flag, PDO::PARAM_STR);
+					$stmt2->execute();
+								
+					$query3 = "update Tbl_C_HappinessQuestion set status=:sta3 where surveyId =:sid3";
+					$stmt3 = $this->DB->prepare($query3);
+					$stmt3->bindParam(':sid3', $surveyid, PDO::PARAM_STR);
+					$stmt3->bindParam(':sta3', $status, PDO::PARAM_STR);
+					$finalres = $stmt3->execute();
+					/******************************* / update status *********************/
+				}
+					if($finalres)
+					{
+					$response["success"] = 1;
+					$response["message"] = "survey expired successfully";
+					return json_encode($response);
+					}
+					else
+					{
+					$response["success"] = 0;
+					$response["message"] = "survey not expire successfully";
+					return json_encode($response);
+					}
+            }
+			else 
+			{
+                $response["success"] = 0;
+                $response["message"] = "not available";
+                return json_encode($response);
+            }
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+	/************************************** / SURVEY expire ******************************/
 
 }

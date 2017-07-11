@@ -3,6 +3,7 @@
 require_once('../Class_Library/class_reading.php');
 require_once('../Class_Library/class_ceo_message.php');
 require_once('../Class_Library/class_push_notification.php');
+require_once('../Class_Library/class_get_group.php'); // use for custom group
 
 date_default_timezone_set('Asia/Calcutta');
 $post_date = date('Y-m-d H:i:s A');
@@ -13,7 +14,7 @@ $push = new PushNotification();                         // object of class push 
 //$db = new Connection_Client();
 
 $read = new Reading();
-
+$customGroup = new Group();   
 $maxid = $obj->maxID();  //---------get latest post_id
 
 $target = '../images/post_img/';   // folder name for storing data
@@ -111,7 +112,8 @@ if (!empty($_POST))
               print_r($myArray)."<br/>";
               echo "</pre>"; */
         }
-
+		//echo "<pre>";
+		//print_r($myArray);
 
 		 $userimage = $push->getImage($USERID);
 		 $image = $userimage[0]['userImage'];
@@ -127,15 +129,56 @@ if (!empty($_POST))
         $result1 = $obj->createWelcomeData($clientid, $POST_ID, $type, $POST_TITLE, $POST_IMG, $DATE, $USERID, $FLAG);
 
         $groupcount = count($myArray);
+		$general_group = array();
+		$custom_group = array();
         for ($k = 0; $k < $groupcount; $k++) {
 //echo "group id".$myArray[$k];
             $result1 = $read->postSentToGroup($clientid, $maxid, $myArray[$k], $FLAG);
 //echo $result1;
+
+		/*********************** group details *********************/
+         $groupdetails = $read->getGroupDetails($clientid, $myArray[$k]);  //get all groupdetails
+        if ($groupdetails['groupType'] == 2) {
+            array_push($custom_group, $myArray[$k]);
+        } else {
+            array_push($general_group, $myArray[$k]);
         }
+		/*************** / group details *********************/
+        }
+		/*echo "custom";
+		print_r($custom_group);
+		echo "general";
+		print_r($general_group);*/
+		
 
         /*         * ****************  fetch all user employee id from user detail start **************************** */
-        $gcm_value = $push->get_Employee_details($User_Type, $myArray, $clientid);
-        $token = json_decode($gcm_value, true);
+		
+		if (count($general_group) > 0) {
+       
+        $gcm_value = $push->get_Employee_details($User_Type, $general_group, $clientid);
+    
+        $generaluserid = json_decode($gcm_value, true);
+
+    }
+    else{   
+               $generaluserid = array();
+    }
+    if (count($custom_group) > 0) {
+        $gcm_value1 = $customGroup->getCustomGroupUser($clientid, $custom_group);
+        $customuserid = json_decode($gcm_value1, true);
+
+    }
+     else{
+              $customuserid = array();
+    }
+		/*echo "custom";
+		print_r($customuserid);
+		echo "general";
+		print_r($generaluserid);*/
+	
+		
+        //$gcm_value = $push->get_Employee_details($User_Type, $myArray, $clientid);
+        //$token = json_decode($gcm_value, true);
         /* echo "hello user  id";
           echo "<pre>";
           print_r($token);
@@ -146,6 +189,10 @@ if (!empty($_POST))
       
         
         if ($User_Type != 'All') {
+			
+			$allempid = array_merge($generaluserid, $customuserid);
+			$allempid1 = array_values(array_unique($allempid));
+			
 //echo "within not all user type".$User_Type."<br/>";
            // $groupadminuuid = $push->getGroupAdminUUId($myArray, $clientid);
            // $adminuuid = json_decode($groupadminuuid, true);
@@ -156,23 +203,27 @@ if (!empty($_POST))
               echo "--------------all employee id---------"; */
 
            // $allempid = array_merge($token, $adminuuid);
-             $allempid = array_merge($token);
+             //$allempid = array_merge($token);
             /* echo "<pre>";
               print_r($allempid);
               echo "<pre>";
 
               echo "--------------all unique employee id---------"; */
 
-            $allempid1 = array_values(array_unique($allempid));
+           // $allempid1 = array_values(array_unique($allempid));
             /*
               echo "user unique id";
               echo "<pre>";
               print_r($allempid1);
               echo "<pre>"; */
         } else {
+			$allempid1 = $generaluserid;
 //echo "within all user type".$User_Type."<br/>";
-            $allempid1 = $token;
+            //$allempid1 = $token;
+			
         }
+		//print_r($allempid);
+		//print_r($allempid1);
 
         /*         * ******* insert into post sent to table for analytic sstart************ */
 
@@ -191,10 +242,10 @@ if (!empty($_POST))
         /*         * *** get all registration token  for sending push **************** */
         $reg_token = $push->getGCMDetails($allempid1, $clientid);
         $token1 = json_decode($reg_token, true);
-        /* echo "----regtoken------";
+         /*echo "----regtoken------";
           echo "<pre>";
           print_r($token1);
-          echo "<pre>"; */
+          echo "<pre>";*/ 
         /*         * *******************Create file of user which this post send  start******************** */
         $val[] = array();
         foreach ($token1 as $row) {
@@ -219,7 +270,8 @@ if (!empty($_POST))
 
            // $hrimg = SITE_URL . $_SESSION['image_name'];
 		   
-		    $hrimg = $userimage;
+		    //$hrimg = $userimage;
+			$hrimg = ($image=='')?'':SITE_URL .$image;
             $sf = "successfully send";
             $ids = array();
             $idsIOS = array();
@@ -241,6 +293,9 @@ if (!empty($_POST))
             $revert = $push->sendGoogleCloudMessage($data, $ids, $googleapiIOSPem['googleApiKey']);
             $rt = json_decode($revert, true);
 
+			//print_r($IOSrevert);
+			//print_r($rt);
+			
             if ($rt) {
                 if ($dev == 'd1') {
                     echo "<script>alert('Post Successfully Send');</script>";
@@ -251,13 +306,18 @@ if (!empty($_POST))
                     echo "<script>window.location='../create_ceo_message.php'</script>";
                 }
             }
+			else
+			{
+				echo "<script>alert('Post Successfully Send');</script>";
+				echo "<script>window.location='../create_ceo_message.php'</script>";
+			}
         } else {
             echo "<script>alert('Post Successfully Send');</script>";
             echo "<script>window.location='../create_ceo_message.php'</script>";
         }
 
 
-        /****************************if condition 2 end************************************************* */
+        /*         * **************************if condition 2 end**************************************************************** */
     }
 } else {
     ?>

@@ -186,8 +186,8 @@ $(document).ready(function(){
       
         <label for="Article image">Upload Image<span style="color:red">*</span>(Max Image Upload Size: 2MB, Image Resolution: 640X362)</label>
         
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
-
+        <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+-->
 <script type="text/javascript">
 /*function showimagepreview1(input) {
 if (input.files && input.files[0]) {

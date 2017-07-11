@@ -26,13 +26,14 @@ $jsonArr = json_decode(file_get_contents("php://input"), true);
 	"post_id":"Post-1",
 	"employeeid":"pSNx6y5WCp1EuIOsoS3iBesrFSObKF",
 	"flag":"1",
-	"device":"IOS"
+	"device":"IOS",
+        "deviceId":""
 }*/
 if (!empty($jsonArr['clientid'])) {
     $obj = new Like();
 
     extract($jsonArr);
-    $response = $obj->create_Like($clientid, $post_id, $employeeid, $flag, $device);
+    $response = $obj->create_Like($clientid, $post_id, $employeeid, $flag, $device,$deviceId);
 } 
 else 
 {

@@ -21,7 +21,7 @@ class LoginUser {
 //       echo "passs-".$password."\n";
         if (!empty($usertype)) {
             try {
-                $query = "select ud.log_status,udp.userDOB,udp.userFatherName,udp.userMothername,udp.userSpouseName,udp.childrenName,ud.accessibility, bcd.defaultLocation, bcd.client_id,bcd.androidAppVersion,bcd.iosAppVersion, ASCII(SUBSTRING(bcd.defaultLocation, 1, 1)) as cityCode,bcd.clientType,if(bcd.logoImageName IS NULL or bcd.logoImageName='', '', concat('" . site_url . "',bcd.logoImageName)) as  logoImageName,if(bcd.welcomeImageName IS NULL or bcd.welcomeImageName='', '', concat('" . site_url . "',bcd.welcomeImageName)) as welcomeImageName,bcd.googleApiKey,ud.employeeId,ud.firstName,ud.middleName,ud.lastName,ud.emailId,ud.validity,ud.department,ud.designation,ud.contact,ud.companyName, if(udp.userImage IS NULL or udp.userImage='','', concat('" . site_url . "',udp.userImage)) as  userImage from Tbl_EmployeeDetails_Master as ud join  Tbl_ClientDetails_Master as bcd on bcd.client_id = ud.clientId join Tbl_EmployeePersonalDetails as udp on udp.employeeId = ud.employeeId where ((UPPER(ud.employeeCode)=:ecode) or (UPPER(ud.emailId)=:ecode)) and ud.password = :password and ud.status = 'Active' and bcd.status = 'Active' and bcd.packageName= :pack";
+                $query = "select ud.log_status,udp.userDOB,udp.userFatherName,udp.userMothername,udp.userSpouseName,udp.childrenName,ud.accessibility, bcd.client_id,bcd.androidAppVersion,bcd.iosAppVersion, ASCII(SUBSTRING(bcd.defaultLocation, 1, 1)) as cityCode,bcd.clientType,if(bcd.logoImageName IS NULL or bcd.logoImageName='', '', concat('" . site_url . "',bcd.logoImageName)) as  logoImageName,if(bcd.welcomeImageName IS NULL or bcd.welcomeImageName='', '', concat('" . site_url . "',bcd.welcomeImageName)) as welcomeImageName,bcd.googleApiKey,ud.employeeId,ud.firstName,ud.middleName,ud.lastName,ud.emailId,ud.validity,ud.department,ud.designation,ud.contact,ud.companyName, ud.location as defaultLocation, if(udp.userImage IS NULL or udp.userImage='','', concat('" . site_url . "',udp.userImage)) as  userImage from Tbl_EmployeeDetails_Master as ud join  Tbl_ClientDetails_Master as bcd on bcd.client_id = ud.clientId join Tbl_EmployeePersonalDetails as udp on udp.employeeId = ud.employeeId where ((UPPER(ud.employeeCode)=:ecode) or (UPPER(ud.emailId)=:ecode)) and ud.password = :password and ud.status = 'Active' and bcd.status = 'Active' and bcd.packageName= :pack";
 
                 if ($usertype == "Guest") {
                     $query .= " and ud.accessibility='guestuser'";
@@ -38,7 +38,7 @@ class LoginUser {
                 $stmt->bindParam(':pack', $packageName, PDO::PARAM_STR);
                 if ($stmt->execute()) {
                     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                    // print_r($result);die;
+                   // print_r($result);die;
                     if ($result) {
                         $response = array();
                         $response["success"] = 1;
@@ -168,10 +168,10 @@ class LoginUser {
             
             if($stmt->execute()){
                $response['success'] = 1;
-	       $response['message'] = "User logged out successfully";
+	       $response['message'] = "You have successfully logged out";
 	    }else{
 	    	$response['success'] = 0;
-  	        $response['message'] = "User log out failed";
+  	        $response['message'] = "Log out failed";
 	    }
         } catch (PDOException $e) {
             echo $e;
@@ -180,7 +180,29 @@ class LoginUser {
         return $response;
     }
 
-   
+    /*********************************** check spalsh open *********************************/
+    
+     function checkspalshopen($cid,$uid,$device,$deviceId,$appversion) {
+        date_default_timezone_set('Asia/Kolkata');
+        $login_date = date('Y-m-d H:i:s');
+        $devicename = ($device == 2)?'Android':'Ios';
+
+
+        try {
+            $query = "insert into Tbl_Analytic_AppView(userUniqueId,deviceId,date_of_entry,clientId,device,appVersion) values(:empid, :devId, :dat, :cid, :dev, :appv)";
+            $stmt = $this->db_connect->prepare($query);
+            $stmt->bindParam(':empid', $uid, PDO::PARAM_STR);
+             $stmt->bindParam(':devId', $deviceId, PDO::PARAM_STR);
+                $stmt->bindParam(':dat', $login_date, PDO::PARAM_STR);
+            $stmt->bindParam(':cid', $cid, PDO::PARAM_STR);
+            $stmt->bindParam(':dev',$devicename, PDO::PARAM_STR);
+             $stmt->bindParam(':appv',$appversion, PDO::PARAM_STR);
+          
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
 }
 
 ?>

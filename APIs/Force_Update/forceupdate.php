@@ -38,13 +38,17 @@ if (file_exists("../../Class_Library/Api_Class/class_employee_app_login.php") &&
          $analytic_obj = new AppAnalytic();
         
         $cid = $jsonArr["clientid"];
-       //echo "clientid ".$cid."<br>";
+ 
         $uid = $jsonArr['uid'];
-         $device = $jsonArr['device'];
-          $deviceId = $jsonArr['deviceId'];
-            $appVersion = $jsonArr['appVersion'];
-       //echo "user id ".$uid;
-        $response = $obj->forceValidUserUpdation($cid, $uid);    
+        $device = $jsonArr['device'];
+        $deviceId = $jsonArr['deviceId'];
+        $appVersion = $jsonArr['appVersion'];
+ 
+        $response = $obj->forceValidUserUpdation($cid, $uid);
+        if($response['success'] == '1') {
+		$response['posts'][0]['androidUpgradeLink'] = "https://iphone.benepik.com/vikaslive";
+		$response['posts'][0]['iosUpgradeLink']     = "https://iphone.benepik.com/vikaslive";
+        }
         $analytic_obj->checkspalshopen($cid,$uid,$device,$deviceId,$appVersion);
     }
     else {

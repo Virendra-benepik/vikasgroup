@@ -27,9 +27,11 @@ Class messageSent {
     function forMail($mailid, $sub, $mailMessage, $from) {
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= $from . "\r\n";
+     //   $headers .= $from . "\r\n";
 //        mail($mailid, $sub, $mailMessage, $headers);
-        if (!mail($mailid, $sub, $mailMessage, $headers)) {
+         $headers .= "From: <".$from.">"."\r\n"."Return-Path: ".$from."\r\n";
+        
+        if (!mail($mailid, $sub, $mailMessage, $headers, '-f '.$from)) {
             echo 'Mail Falied';
             die;
         } 
@@ -44,11 +46,14 @@ Class messageSent {
 //echo "this is from-".$from;die;
         $headers = "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= $from . "\r\n";
+      //  $headers .= $from . "\r\n";
         /* $headers .= "CC: mk73142@gmail.com\r\n";  
           $headers .= "BCC: mk73142@gmail.com\r\n"; */
+        
+        $headers .= "From: <".$from.">"."\r\n"."Return-Path: ".$from."\r\n";
 
-        if(!mail($mailid, $sub, $mailMessage, $headers)){
+
+        if(!mail($mailid, $sub, $mailMessage, $headers, '-f '.$from)){
             echo 'Mail failed';die;
         }
     }

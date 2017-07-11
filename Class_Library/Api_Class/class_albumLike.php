@@ -14,15 +14,15 @@ class Like {
         $this->DB = $db->getConnection_Communication();
     }
 
-    function create_Like($clientid, $userid, $albumid, $imageid, $device) {
+    function create_Like($clientid, $userid, $albumid, $imageid, $device,$deviceId) {
 
         date_default_timezone_set('Asia/Calcutta');
         $cd = date("Y-m-d H:i:s");
         $status = 1;
 
         try {
-            $query = "insert into Tbl_Analytic_AlbumLike(clientId,userId,albumId,imageId,createdDate,status,deviceName)
-             values(:cli,:userid,:albumid,:imgid,:cd,:sta,:dev)";
+            $query = "insert into Tbl_Analytic_AlbumLike(clientId,userId,albumId,imageId,createdDate,status,deviceName,deviceId)
+             values(:cli,:userid,:albumid,:imgid,:cd,:sta,:dev,:did)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
@@ -31,6 +31,7 @@ class Like {
             $stmt->bindParam(':cd', $cd, PDO::PARAM_INT);
             $stmt->bindParam(':sta', $status, PDO::PARAM_INT);
             $stmt->bindParam(':dev', $device, PDO::PARAM_STR);
+              $stmt->bindParam(':did', $deviceId, PDO::PARAM_STR);
             if ($stmt->execute()) {
 
                 $query2 = "select count(imageId) as total_likes from Tbl_Analytic_AlbumLike where albumId =:albumid AND imageId = :imgid AND status = :sta AND clientId=:cli";

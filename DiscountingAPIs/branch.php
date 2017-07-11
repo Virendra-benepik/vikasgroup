@@ -23,10 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 $jsonArr = json_decode(file_get_contents("php://input"), true);
-
+//print_r($jsonArr);
 if (!empty($jsonArr)) {
     $obj = new Connection_Deal();
     $objDeal = new Category();
+  
     $file = basename(__FILE__, '');
     $response = $obj->discountingCurl($jsonArr, $file);
     extract($jsonArr);

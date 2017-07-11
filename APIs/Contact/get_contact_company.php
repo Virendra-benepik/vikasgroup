@@ -29,13 +29,25 @@ if (file_exists("../../Class_Library/Api_Class/class_contact_directory.php") && 
         $company_obj = new ContactLocation();  // create object of class cl_module.php
         $obj = new UserUniqueId();
         $Data = $obj->getUserData($clientid, $empid);
+       
         $user = json_decode($Data, true);
+        // print_r($user);
+        
         $usertype = $user[0]['accessibility'];
+        $department = $user[0]['department'];
         
         $companyId = '';
-        if (($usertype != 'Admin')) {
-            $companyId = $user[0]['companyUniqueId'];
+//        if (($usertype != 'Admin' && strtoupper($department) == 'CORPORATE' )) {
+//            echo "iam here";
+//            $companyId = $user[0]['companyUniqueId'];
+//        }
+        if($usertype == 'Admin' || strtoupper($department) == 'CORPORATE' )
+        {
+            $companyId = '';
         }
+ else {
+     $companyId = $user[0]['companyUniqueId'];
+ }
         $response = $company_obj->viewCompanies($clientid, $companyId);
     } else {
         $response['success'] = 0;

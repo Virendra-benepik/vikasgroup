@@ -1,6 +1,8 @@
 <?php
 
-require_once('class_connect_db_Communication.php');
+if(!class_exists('Connection_Communication')){
+    require_once('class_connect_db_Communication.php');
+}
 
 class ContactLocation {
 
@@ -88,7 +90,7 @@ class ContactLocation {
         return $response;
     }
 
-    public function viewCompanies($cid, $companyUniqueId) {
+    public function viewCompanies($cid, $companyUniqueId='') {
         $this->clientid = $cid;
         
         try {
@@ -141,7 +143,7 @@ class ContactLocation {
                         . "Tbl_ContactDirectoryPerson.contactNoOffice,"
                         . "Tbl_ContactDirectoryPerson.designation,"
                         . "if(Tbl_EmployeePersonalDetails.userImage IS NULL or Tbl_EmployeePersonalDetails.userImage='','', ConCat('$server_name',Tbl_EmployeePersonalDetails.userImage)) as imgpath,cl.locationName, 
-                        Tbl_ContactDirectoryPerson.userName,Tbl_ContactDirectoryPerson.emailId from  Tbl_ContactDirectoryPerson left join Tbl_EmployeePersonalDetails on Tbl_EmployeePersonalDetails.employeeCode =Tbl_ContactDirectoryPerson.empCode join Tbl_ContactDirectoryLocation as cl on cl.locationId = Tbl_ContactDirectoryPerson.locationId where Tbl_ContactDirectoryPerson.clientId =:id1 and Tbl_ContactDirectoryPerson.locationId=:loc and Tbl_ContactDirectoryPerson.departmentId=:dep";
+                        Tbl_ContactDirectoryPerson.userName,Tbl_ContactDirectoryPerson.emailId from  Tbl_ContactDirectoryPerson left join Tbl_EmployeePersonalDetails on Tbl_EmployeePersonalDetails.employeeCode =Tbl_ContactDirectoryPerson.empCode join Tbl_ContactDirectoryLocation as cl on cl.locationId = Tbl_ContactDirectoryPerson.locationId where Tbl_ContactDirectoryPerson.clientId =:id1 and Tbl_ContactDirectoryPerson.locationId=:loc and Tbl_ContactDirectoryPerson.departmentId=:dep and Tbl_ContactDirectoryPerson.status = 'Active'";
                 $stmt = $this->db_connect->prepare($query);
 
                 $stmt->bindParam(':id1', $this->clientids, PDO::PARAM_STR);
@@ -158,7 +160,7 @@ class ContactLocation {
                         . "Tbl_ContactDirectoryPerson.contactNoOffice,"
                         . "Tbl_ContactDirectoryPerson.designation,"
                         . "if(Tbl_EmployeePersonalDetails.userImage IS NULL or Tbl_EmployeePersonalDetails.userImage='','', ConCat('$server_name',Tbl_EmployeePersonalDetails.userImage)) as imgpath, cl.locationName,
-                        Tbl_ContactDirectoryPerson.userName,Tbl_ContactDirectoryPerson.emailId from  Tbl_ContactDirectoryPerson left join Tbl_EmployeePersonalDetails on Tbl_EmployeePersonalDetails.employeeCode =Tbl_ContactDirectoryPerson.empCode join Tbl_ContactDirectoryLocation as cl on cl.locationId = Tbl_ContactDirectoryPerson.locationId where Tbl_ContactDirectoryPerson.clientId =:id1 and Tbl_ContactDirectoryPerson.locationId=:loc";
+                        Tbl_ContactDirectoryPerson.userName,Tbl_ContactDirectoryPerson.emailId from  Tbl_ContactDirectoryPerson left join Tbl_EmployeePersonalDetails on Tbl_EmployeePersonalDetails.employeeCode =Tbl_ContactDirectoryPerson.empCode join Tbl_ContactDirectoryLocation as cl on cl.locationId = Tbl_ContactDirectoryPerson.locationId where Tbl_ContactDirectoryPerson.clientId =:id1 and Tbl_ContactDirectoryPerson.locationId=:loc and Tbl_ContactDirectoryPerson.status = 'Active'";
                 $stmt = $this->db_connect->prepare($query);
                 $stmt->bindParam(':id1', $this->clientids, PDO::PARAM_STR);
                 $stmt->bindParam(':loc', $this->locations, PDO::PARAM_STR);

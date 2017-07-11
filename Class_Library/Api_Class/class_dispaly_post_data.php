@@ -217,10 +217,10 @@ class PostDisplay {
             $stmt->bindParam(':flag', $flag, PDO::PARAM_STR);
             $stmt->execute();
             $rows = $stmt->fetch(PDO::FETCH_ASSOC);
-            //print_r($rows);
+           // print_r($rows);
             $response['success'] = 1;
             $response['message'] = "data found";
-            $response['data'] = $rows;
+            $response['data'] = array($rows);
         } catch (Exception $ex) {
             echo $e;
             $response['success'] = 0;

@@ -45,8 +45,7 @@ if($flag >0)
            echo "<script>window.location='../addchannel.php?clientid=".$clientid."'</script>";
 }
  else {
- 
-     $grouptype = 1;
+ $grouptype = 1;
 /********************************* insert group details **********************************/
 $groupdetails = $obj->createGroup($clientid,$groupmaxid,$groupname,$groupdesc,$createdby,$channel_date,$status,$grouptype);
 $groupadmin = $obj->createGroupAdmin($clientid,$groupmaxid,$createdby,$createdby);

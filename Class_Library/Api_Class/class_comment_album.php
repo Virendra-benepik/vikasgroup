@@ -13,7 +13,7 @@ class Comment {
         $this->DB = $db->getConnection_Communication();
     }
 
-    function create_Comment($clientid, $albumid, $imageid, $employeeid, $comment, $flag, $device) {
+    function create_Comment($clientid, $albumid, $imageid, $employeeid, $comment, $flag, $device,$deviceId) {
 
         date_default_timezone_set('Asia/Calcutta');
 
@@ -21,8 +21,8 @@ class Comment {
         $status = 1;
 
         try {
-            $query = "insert into Tbl_Analytic_AlbumComment(clientId,userId,albumId,imageId,comments,createdDate,flag,status,deviceName)
-            values(:cli,:userid,:albumid,:imgid,:comment,:cd,:flag,:status,:dev)";
+            $query = "insert into Tbl_Analytic_AlbumComment(clientId,userId,albumId,imageId,comments,createdDate,flag,status,deviceName,deviceId)
+            values(:cli,:userid,:albumid,:imgid,:comment,:cd,:flag,:status,:dev,:did)";
             $stmt = $this->DB->prepare($query);
             $stmt->bindParam(':cli', $clientid, PDO::PARAM_STR);
             $stmt->bindParam(':albumid', $albumid, PDO::PARAM_INT);
@@ -33,6 +33,7 @@ class Comment {
             $stmt->bindParam(':dev', $device, PDO::PARAM_STR);
             $stmt->bindParam(':cd', $cd, PDO::PARAM_STR);
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+            $stmt->bindParam(':did', $deviceId, PDO::PARAM_INT);
 
 
             if ($stmt->execute()) {

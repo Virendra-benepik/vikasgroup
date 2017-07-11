@@ -76,7 +76,7 @@
                                     </li>
 
                                     <li><a href="create_onboard.php"><span class="icon fa fa-newspaper-o" aria-hidden="true"></span>Welcome Aboard</a>
-
+									</li>
                                     <li><a href="create_event.php"><span class="icon fa fa-newspaper-o"></span> Save the Date</a>
                                     </li>
 
@@ -277,27 +277,6 @@
                         </div>
                     </li>
 
-                     <!-- group creating -->	
-
-<!--                    <li class="panel panel-default dropdown">
-                        <a data-toggle="collapse" href="viewchannel.php">
-                            <span class="icon fa fa-users"></span><span class="title"> Group</span>
-                        </a>
-
-                        <div id="group1" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <ul class="nav navbar-nav">
-
-                                    <li><a href="addchannel.php?clientid=<?php echo $_SESSION['client_id']; ?>"><span class="glyphicon glyphicon-plus"></span> Create Group</a>
-                                    </li>
-                                    <li><a href="viewchannel.php"><span class="glyphicon glyphicon-plus"></span> View Group</a>
-                                    </li>
-                                     <li><a href="index.html">Landing Page</a>
-                                     </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>-->
                        <li>
                         <a href="viewchannel.php">
                             <span class="icon fa fa-users"></span><span class="title">Group</span>
@@ -305,12 +284,12 @@
                     </li>
                     <!-- create post -->	
 
-                    <li class="panel panel-default dropdown ">
-                        <a data-toggle="collapse" href="#dropdown-element">
+                    <!--<li class="panel panel-default dropdown ">
+                        <a data-toggle="collapse" href="#dropdownelement">
                             <span class="icon fa fa-desktop"></span><span class="title">Create Posts</span>
                         </a>
-                        <!-- Dropdown level 1 -->
-                        <div id="dropdown-element" class="panel-collapse collapse">
+                       
+                        <div id="dropdownelement" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <ul class="nav navbar-nav">
 
@@ -339,9 +318,50 @@
                             </div>
                         </div>
                     </li>
+-->
 
-                    <!-- view post -->	
 
+<!------------------------------------------------------------------------------>
+					<li class="panel panel-default dropdown">
+                        <a data-toggle="collapse" href="#createpost">
+                            <span class="icon fa fa-file-text-o"></span><span class="title">Create Posts </span>
+                        </a>
+                        <!-- Dropdown level 1 -->
+                        <div id="createpost" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="postnews.php"><span class="icon fa fa-newspaper-o"></span> What's up</a>
+                                    </li>
+                                    <li><a href="postmessage.php"><span class="icon fa fa-envelope-o"></span> Message</a></li> 
+                                    <li><a href="postpicture.php"><span class="icon fa fa-picture-o"></span> Picture</a></li>
+									<li><a href="create_ceo_message.php"><span class="icon fa fa-newspaper-o"></span>Leadership Connect</a></li>  
+                                    <li><a href="multipleImageUpload.php"><span class="icon fa fa-cloud-upload" aria-hidden="true"></span> Memories</a></li>
+                                                   
+                                                                       
+
+                                    <li><a href="create_onboard.php"><span class="icon fa fa-newspaper-o" aria-hidden="true"></span>Welcome Aboard</a>
+                                    </li>
+                                
+                                    <li><a href="create_event.php"><span class="icon fa fa-newspaper-o"></span> Save the Date</a>
+                                    </li>
+									
+									<li><a href="create_notice.php"><span class="glyphicon glyphicon-plus"></span> Add Announcement</a>
+									</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </li>
+					
+	<!------------------------------------------------------------->				
+					
+					
+					
+					<!-- view post -->	
+
+					
+					
+					
                     <li class="panel panel-default dropdown">
                         <a data-toggle="collapse" href="#ViewPost">
                             <span class="icon fa fa-file-text-o"></span><span class="title">View Post </span>
@@ -482,7 +502,9 @@
                                     <li><a href="analytic_login.php"><span class="glyphicon glyphicon-plus"></span>Login Analytics</a>
                                     </li>
                                     
-                                    <li><a href="analytic_activeuser.php"><span class="glyphicon glyphicon-plus"></span>Active User Analytics</a>
+                                    <li><a href="analytic_activeuser.php"><span class="glyphicon glyphicon-plus"></span>Active User(date wise)</a>
+                                    </li>
+                                    <li><a href="analytic_activeuser_company.php"><span class="glyphicon glyphicon-plus"></span>Active User(Company wise)</a>
                                     </li>
 
                                 </ul>

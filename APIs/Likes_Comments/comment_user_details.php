@@ -29,7 +29,8 @@ $jsonArr = json_decode(file_get_contents("php://input"), true);
 	"employeeid":"bllQIibhNzypMGlEtwU8Bn5JpbdHdp",
 	"message":"hello nice comment",
 	"flag":"1"
-	"device":"IOS"
+	"device":"IOS",
+         "deviceId":""
 }*/
 if (!empty($jsonArr['clientid'])) {
     $comment = new Comment();
@@ -47,7 +48,7 @@ if (!empty($jsonArr['clientid'])) {
 
     $googleapiIOSPem = $push->getKeysPem($clientid);
 
-    $createComment = $comment->create_Comment($clientid, $post_id, $employeeid, $message, $flag, $device);
+    $createComment = $comment->create_Comment($clientid, $post_id, $employeeid, $message, $flag, $device,$deviceId);
     $myArray = $comment->getGroups($clientid, $post_id, $flag);
 	//print_r($myArray);
     $POST_ID = $post_id;

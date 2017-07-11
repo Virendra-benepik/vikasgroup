@@ -399,18 +399,29 @@ class LoginAnalytic {
 	
 /*********************** analytic get active user Details ********************************/
 	
-	function graphGetActiveUser($client, $fromdt, $enddte) {
+	function graphGetActiveUser($client, $fromdt, $enddte,$company) {
         try {
            
-	 $query = "SELECT count(userUniqueId) as totalview,count(distinct(userUniqueId)) as uniqueview,DATE_FORMAT(date_of_entry,'%d/%m/%Y') as date_of_entry FROM Tbl_Analytic_TrackUser where (DATE(date_of_entry) BETWEEN :fromdte AND :enddte) AND clientId = :client and description = 'Open Spalsh' group by DATE_FORMAT(date_of_entry,'%Y-%m-%d')";
+	$query =  " SELECT count(track.userUniqueId) as totalview,count(distinct(track.userUniqueId)) as uniqueview,DATE_FORMAT(track.date_of_entry,'%d/%m/%Y') as date_of_entry FROM Tbl_Analytic_TrackUser as track JOIN Tbl_EmployeeDetails_Master as edm ON track.userUniqueId = edm.employeeId where (DATE(track.date_of_entry) BETWEEN :fromdte AND :enddte) AND track.clientId = :client";
+	
+          if ($company == 'All'){
+                $query .= "";}
+				
+          if ($company != 'All'){
+           $query .= " AND edm.companyUniqueId = :comp";}
+						
+         $query .= " group by DATE_FORMAT(track.date_of_entry,'%Y-%m-%d')";
+         
+         
       $stmt = $this->db_connect->prepare($query);
             $stmt->bindParam(':client', $client, PDO::PARAM_STR);
             $stmt->bindParam(':fromdte', $fromdt, PDO::PARAM_STR);
             $stmt->bindParam(':enddte', $enddte, PDO::PARAM_STR);
+            if($company != 'All'){$stmt->bindParam(':comp', $company, PDO::PARAM_STR);}
 			$stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            return json_encode($result);
+            return json_encode($result,JSON_NUMERIC_CHECK);
             /* $response = array();
               if($result)
               {
@@ -425,6 +436,33 @@ class LoginAnalytic {
     }
 	
 	/************************ end analytic graph Job Details ***************************/
+    
+    function graphGetActiveUserCompany($client, $fromdt, $enddte) {
+        try {
+           
+	$query =  "SELECT count(track.userUniqueId) as totalview,count(distinct(track.userUniqueId)) as uniqueview,edm.companyName FROM Tbl_Analytic_TrackUser as track JOIN Tbl_EmployeeDetails_Master as edm ON track.userUniqueId = edm.employeeId where (DATE(track.date_of_entry) BETWEEN :fromdte AND :enddte) AND track.clientId = :client group by edm.companyUniqueId";
+	
+      $stmt = $this->db_connect->prepare($query);
+            $stmt->bindParam(':client', $client, PDO::PARAM_STR);
+            $stmt->bindParam(':fromdte', $fromdt, PDO::PARAM_STR);
+            $stmt->bindParam(':enddte', $enddte, PDO::PARAM_STR);
+          
+	$stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result,JSON_NUMERIC_CHECK);
+            /* $response = array();
+              if($result)
+              {
+
+              $response["Data"] = $result;
+              return json_encode($response);
+              }
+             */
+        } catch (PDOException $ex) {
+            echo $ex;
+        }
+    }
+    
 }
 
 ?>

@@ -11,6 +11,13 @@ $clientid = $_SESSION['client_id'];
 $user_uniqueid = $_SESSION['user_unique_id'];
 $user_type = $_SESSION['user_type'];
 
+/************************ expire survey ****************/
+date_default_timezone_set('Asia/Kolkata');
+$currentdate = date("Y-m-d");
+$resultexpiry = $poll_obj->Expireviewsurvey($clientid ,$currentdate);
+$resultexpiryarray = json_decode($resultexpiry,true);
+/************************ / expire survey **************/ 
+
 $result = $poll_obj->SurveyDetails($clientid, $user_uniqueid, $user_type);
 $getcat = json_decode($result, true);
 
@@ -53,6 +60,7 @@ if (isset($_GET['sid']) && isset($_GET['status'])) {
 
                             <div class="card-title">
                                 <div class="title">All Survey Details</div>
+								
                             </div>
                             <!-- <div style="float:top; margin-top:13px; font-size:20px;"> 
                              <a href="create_poll.php">
